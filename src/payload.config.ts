@@ -16,10 +16,17 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { Roles } from './collections/Roles'
+import { Students } from './collections/Students'
+import { Classrooms } from './collections/Classrooms'
+import { Teachers } from './collections/Teachers'
+import { Homeworks } from './collections/Homeworks'
+import { Notifications } from './collections/Notifications'
+import { Reports } from './collections/Reports'
+import { Settings } from './collections/Settings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
 export default buildConfig({
   admin: {
     components: {
@@ -64,7 +71,44 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    // default collections leave here for demo
+    Pages,
+    Posts,
+    Categories,
+    // used collections
+    Media,
+    Users,
+    Roles,
+    Students,
+    Classrooms,
+    Teachers,
+    Homeworks,
+    Notifications,
+    Reports,
+    Settings,
+
+    // {
+    //   slug: 'collection',
+    //   admin: {
+    //     useAsTitle: 'title',
+    //   },
+    //   fields: [
+    //     {
+    //       name: 'title',
+    //       type: 'text',
+    //     },
+    //     {
+    //       name: 'slug',
+    //       type: 'text',
+    //     },
+    //     {
+    //       name: 'description',
+    //       type: 'text',
+    //     },
+    //   ],
+    // },
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

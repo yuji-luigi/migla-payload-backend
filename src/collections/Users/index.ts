@@ -1,5 +1,4 @@
 import type { CollectionConfig } from 'payload'
-
 import { authenticated } from '../../access/authenticated'
 
 export const Users: CollectionConfig = {
@@ -12,14 +11,52 @@ export const Users: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'email'],
+    defaultColumns: ['name', 'surname', 'email'],
     useAsTitle: 'name',
+    components: {
+      // views: {
+      //   list: {
+      //     Component: '@/components/Tryout/CustomComponent.tsx',
+      //   },
+      // },
+      // beforeList: ['@/components/Tryout/CustomComponent.tsx'],
+    },
   },
+  hooks: {},
   auth: true,
+
   fields: [
     {
-      name: 'name',
-      type: 'text',
+      type: 'row',
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+        },
+        {
+          name: 'surname',
+          type: 'text',
+        },
+      ],
+    },
+    // {
+    //   type: 'ui',
+    //   name: 'fullname',
+    //   admin: {
+    //     components: {
+    //       Cell: '@/components/Tryout/CustomComponent.tsx',
+    //     },
+    //   },
+    // },
+    {
+      name: 'email',
+      type: 'email',
+    },
+    {
+      name: 'roles',
+      type: 'relationship',
+      relationTo: 'roles',
+      hasMany: true,
     },
   ],
   timestamps: true,
