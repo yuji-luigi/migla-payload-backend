@@ -29,6 +29,7 @@ import { slugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+
   access: {
     create: authenticated,
     delete: authenticated,
@@ -48,6 +49,8 @@ export const Posts: CollectionConfig<'posts'> = {
     },
   },
   admin: {
+    hidden: true,
+
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {

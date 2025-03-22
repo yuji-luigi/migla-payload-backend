@@ -1,8 +1,9 @@
-import type { CollectionConfig } from 'payload'
-
+import { getPayload, type CollectionConfig, type User } from 'payload'
+import payloadConfig from '../payload.config'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
+import { Role } from '../payload-types'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
@@ -15,6 +16,31 @@ export const Reports: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    hidden: ({ user }: { user: User }) => {
+      const hidden = !user.roles.some(
+        (role: Role) =>
+          role.slug === 'teacher' || role.slug === 'super_admin' || role.slug === 'admin',
+      )
+      return hidden
+    },
+  },
+
+  hooks: {
+    beforeChange: [
+      async ({ req, operation, originalDoc, data }) => {
+        // console.log({ req, operation, originalDoc, data })
+        const payload = await getPayload({ config: payloadConfig })
+        // const teacher = await payload.db.drizzle.select().from(teachers).where(eq(teachers.user, req.user.id))
+        const students = await payload.find({
+          collection: 'students',
+          where: {
+            classroom: data.classroom,
+          },
+        })
+        console.log({ students })
+        throw new Error('Not allowed')
+      },
+    ],
   },
   fields: [
     {

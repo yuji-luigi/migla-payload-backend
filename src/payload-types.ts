@@ -69,15 +69,15 @@ export interface Config {
     pages: Page;
     posts: Post;
     categories: Category;
-    media: Media;
     users: User;
-    roles: Role;
-    students: Student;
-    classrooms: Classroom;
     teachers: Teacher;
-    homeworks: Homework;
-    notifications: Notification;
+    students: Student;
     reports: Report;
+    classrooms: Classroom;
+    notifications: Notification;
+    homeworks: Homework;
+    media: Media;
+    roles: Role;
     settings: Setting;
     redirects: Redirect;
     forms: Form;
@@ -93,15 +93,15 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
-    roles: RolesSelect<false> | RolesSelect<true>;
-    students: StudentsSelect<false> | StudentsSelect<true>;
-    classrooms: ClassroomsSelect<false> | ClassroomsSelect<true>;
     teachers: TeachersSelect<false> | TeachersSelect<true>;
-    homeworks: HomeworksSelect<false> | HomeworksSelect<true>;
-    notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+    students: StudentsSelect<false> | StudentsSelect<true>;
     reports: ReportsSelect<false> | ReportsSelect<true>;
+    classrooms: ClassroomsSelect<false> | ClassroomsSelect<true>;
+    notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+    homeworks: HomeworksSelect<false> | HomeworksSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    roles: RolesSelect<false> | RolesSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -757,13 +757,12 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "students".
+ * via the `definition` "teachers".
  */
-export interface Student {
+export interface Teacher {
   id: number;
   name: string;
-  surname: string;
-  parent?: (number | User)[] | null;
+  user?: (number | null) | User;
   classroom?: (number | null) | Classroom;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -785,12 +784,13 @@ export interface Classroom {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "teachers".
+ * via the `definition` "students".
  */
-export interface Teacher {
+export interface Student {
   id: number;
   name: string;
-  user?: (number | null) | User;
+  surname: string;
+  parent?: (number | User)[] | null;
   classroom?: (number | null) | Classroom;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -799,16 +799,17 @@ export interface Teacher {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "homeworks".
+ * via the `definition` "reports".
  */
-export interface Homework {
+export interface Report {
   id: number;
   title: string;
+  subtitle: string;
   body: string;
-  teacher?: (number | null) | Teacher;
-  dueDate?: string | null;
-  issuedAt?: string | null;
-  files?: (number | Media)[] | null;
+  attachments?: (number | Media)[] | null;
+  students?: (number | Student)[] | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -828,17 +829,16 @@ export interface Notification {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reports".
+ * via the `definition` "homeworks".
  */
-export interface Report {
+export interface Homework {
   id: number;
   title: string;
-  subtitle: string;
   body: string;
-  attachments?: (number | Media)[] | null;
-  students?: (number | Student)[] | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  teacher?: (number | null) | Teacher;
+  dueDate?: string | null;
+  issuedAt?: string | null;
+  files?: (number | Media)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1038,40 +1038,40 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
-      } | null)
-    | ({
         relationTo: 'users';
         value: number | User;
-      } | null)
-    | ({
-        relationTo: 'roles';
-        value: number | Role;
-      } | null)
-    | ({
-        relationTo: 'students';
-        value: number | Student;
-      } | null)
-    | ({
-        relationTo: 'classrooms';
-        value: number | Classroom;
       } | null)
     | ({
         relationTo: 'teachers';
         value: number | Teacher;
       } | null)
     | ({
-        relationTo: 'homeworks';
-        value: number | Homework;
+        relationTo: 'students';
+        value: number | Student;
+      } | null)
+    | ({
+        relationTo: 'reports';
+        value: number | Report;
+      } | null)
+    | ({
+        relationTo: 'classrooms';
+        value: number | Classroom;
       } | null)
     | ({
         relationTo: 'notifications';
         value: number | Notification;
       } | null)
     | ({
-        relationTo: 'reports';
-        value: number | Report;
+        relationTo: 'homeworks';
+        value: number | Homework;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'roles';
+        value: number | Role;
       } | null)
     | ({
         relationTo: 'settings';
@@ -1327,6 +1327,105 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  surname?: T;
+  roles?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teachers_select".
+ */
+export interface TeachersSelect<T extends boolean = true> {
+  name?: T;
+  user?: T;
+  classroom?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "students_select".
+ */
+export interface StudentsSelect<T extends boolean = true> {
+  name?: T;
+  surname?: T;
+  parent?: T;
+  classroom?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reports_select".
+ */
+export interface ReportsSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  body?: T;
+  attachments?: T;
+  students?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "classrooms_select".
+ */
+export interface ClassroomsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notifications_select".
+ */
+export interface NotificationsSelect<T extends boolean = true> {
+  title?: T;
+  body?: T;
+  type?: T;
+  attachments?: T;
+  students?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homeworks_select".
+ */
+export interface HomeworksSelect<T extends boolean = true> {
+  title?: T;
+  body?: T;
+  teacher?: T;
+  dueDate?: T;
+  issuedAt?: T;
+  files?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -1420,109 +1519,10 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  surname?: T;
-  roles?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "roles_select".
  */
 export interface RolesSelect<T extends boolean = true> {
   name?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "students_select".
- */
-export interface StudentsSelect<T extends boolean = true> {
-  name?: T;
-  surname?: T;
-  parent?: T;
-  classroom?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "classrooms_select".
- */
-export interface ClassroomsSelect<T extends boolean = true> {
-  name?: T;
-  description?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "teachers_select".
- */
-export interface TeachersSelect<T extends boolean = true> {
-  name?: T;
-  user?: T;
-  classroom?: T;
-  slug?: T;
-  slugLock?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "homeworks_select".
- */
-export interface HomeworksSelect<T extends boolean = true> {
-  title?: T;
-  body?: T;
-  teacher?: T;
-  dueDate?: T;
-  issuedAt?: T;
-  files?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "notifications_select".
- */
-export interface NotificationsSelect<T extends boolean = true> {
-  title?: T;
-  body?: T;
-  type?: T;
-  attachments?: T;
-  students?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reports_select".
- */
-export interface ReportsSelect<T extends boolean = true> {
-  title?: T;
-  subtitle?: T;
-  body?: T;
-  attachments?: T;
-  students?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

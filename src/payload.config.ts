@@ -77,37 +77,16 @@ export default buildConfig({
     Posts,
     Categories,
     // used collections
-    Media,
     Users,
-    Roles,
-    Students,
-    Classrooms,
     Teachers,
-    Homeworks,
-    Notifications,
+    Students,
     Reports,
+    Classrooms,
+    Notifications,
+    Homeworks,
+    Media,
+    Roles,
     Settings,
-
-    // {
-    //   slug: 'collection',
-    //   admin: {
-    //     useAsTitle: 'title',
-    //   },
-    //   fields: [
-    //     {
-    //       name: 'title',
-    //       type: 'text',
-    //     },
-    //     {
-    //       name: 'slug',
-    //       type: 'text',
-    //     },
-    //     {
-    //       name: 'description',
-    //       type: 'text',
-    //     },
-    //   ],
-    // },
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
