@@ -808,6 +808,7 @@ export interface Report {
   body: string;
   attachments?: (number | Media)[] | null;
   students?: (number | Student)[] | null;
+  createdBy?: (number | null) | Teacher;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1380,6 +1381,7 @@ export interface ReportsSelect<T extends boolean = true> {
   body?: T;
   attachments?: T;
   students?: T;
+  createdBy?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

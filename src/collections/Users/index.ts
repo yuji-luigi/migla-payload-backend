@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { AuthStrategyResult, CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 
 export const Users: CollectionConfig = {
@@ -10,7 +10,46 @@ export const Users: CollectionConfig = {
     read: authenticated,
     update: authenticated,
   },
-  admin: {
+  auth: true,
+  /* {
+    strategies: [
+      {
+        name: 'custom-strategy',
+        authenticate: async ({ payload, headers }): Promise<AuthStrategyResult> => {
+          console.log('ji')
+          const usersQuery = await payload.find({
+            collection: 'users',
+            where: {
+              code: {
+                equals: headers.get('code'),
+              },
+              secret: {
+                equals: headers.get('secret'),
+              },
+            },
+          })
+
+          return {
+            // Send the user with the collection slug back to authenticate,
+            // or send null if no user should be authenticated
+            user: usersQuery.docs[0]
+              ? {
+                  collection: 'users',
+                  ...usersQuery.docs[0],
+                }
+              : null,
+
+            // Optionally, you can return headers
+            // that you'd like Payload to set here when
+            // it returns the response
+            responseHeaders: new Headers({
+              'some-header': 'my header value',
+            }),
+          }
+        },
+      },
+    ],
+  } */ admin: {
     defaultColumns: ['name', 'surname', 'email'],
     useAsTitle: 'name',
     components: {
@@ -22,8 +61,13 @@ export const Users: CollectionConfig = {
       // beforeList: ['@/components/Tryout/CustomComponent.tsx'],
     },
   },
-  hooks: {},
-  auth: true,
+  hooks: {
+    afterLogin: [
+      ({ req, user }) => {
+        console.log({ req, user })
+      },
+    ],
+  },
 
   fields: [
     {

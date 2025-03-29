@@ -1,7 +1,7 @@
 {
-  "name": "",
+  "name": "migla-cms-payload",
   "version": "1.0.0",
-  "description": "Website template for Payload",
+  "description": "MIGLA admin panel",
   "license": "MIT",
   "type": "module",
   "scripts": {

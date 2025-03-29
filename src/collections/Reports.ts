@@ -4,6 +4,8 @@ import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
 import { Role } from '../payload-types'
+import internal from 'stream'
+import { Classrooms } from './Classrooms'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
@@ -17,7 +19,7 @@ export const Reports: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     hidden: ({ user }: { user: User }) => {
-      const hidden = !user.roles.some(
+      const hidden = !user?.roles.some(
         (role: Role) =>
           role.slug === 'teacher' || role.slug === 'super_admin' || role.slug === 'admin',
       )
@@ -30,17 +32,52 @@ export const Reports: CollectionConfig = {
       async ({ req, operation, originalDoc, data }) => {
         // console.log({ req, operation, originalDoc, data })
         const payload = await getPayload({ config: payloadConfig })
-        // const teacher = await payload.db.drizzle.select().from(teachers).where(eq(teachers.user, req.user.id))
-        const students = await payload.find({
+        const userId = req.user?.id
+
+        if (!userId) {
+          throw new Error('User not authenticated')
+        }
+
+        // Step 1: Get the teacher document for this user
+        const teacherQuery = await payload.find({
+          collection: 'teachers',
+          where: {
+            user: {
+              equals: userId,
+            },
+          },
+          limit: 1,
+        })
+        console.log({ teacherQuery })
+        const teacher = teacherQuery.docs[0]
+        if (!teacher) {
+          throw new Error('Teacher not found')
+        }
+        data.createdBy = teacher.id
+        console.log({ teacher })
+        if (!teacher || !teacher.classroom) {
+          throw new Error('Teacher or classroom not found')
+        }
+        let classroomId = teacher.classroom
+        if (typeof teacher.classroom !== 'number') {
+          classroomId = teacher.classroom.id
+        }
+        // Step 2: Get all students in that classroom
+        const studentsQuery = await payload.find({
           collection: 'students',
           where: {
-            classroom: data.classroom,
+            classroom: {
+              equals: classroomId,
+            },
           },
         })
+
+        const students = studentsQuery.docs
         console.log({ students })
-        throw new Error('Not allowed')
+        data.students = students.map((student) => student.id)
       },
     ],
+    beforeRead: [async ({ req, query }) => {}],
   },
   fields: [
     {
@@ -71,7 +108,14 @@ export const Reports: CollectionConfig = {
       type: 'relationship',
       relationTo: 'students',
       hasMany: true,
-      hidden: true,
+      // hidden: true,
+    },
+    {
+      name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'teachers',
+      hasMany: false,
+      // hidden: true,
     },
     ...slugField(),
   ],
