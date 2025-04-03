@@ -390,6 +390,7 @@ export interface User {
   id: number;
   name?: string | null;
   surname?: string | null;
+  currentRole?: (number | null) | Role;
   roles?: (number | Role)[] | null;
   updatedAt: string;
   createdAt: string;
@@ -1333,6 +1334,7 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   surname?: T;
+  currentRole?: T;
   roles?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -9,6 +9,7 @@ type Props = {
 } & BannerBlockProps
 
 export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
+  // return <div>banner block</div>
   return (
     <div className={cn('mx-auto my-8 w-full', className)}>
       <div
