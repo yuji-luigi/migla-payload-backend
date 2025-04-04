@@ -6,29 +6,81 @@ import {
   type CollectionConfig,
 } from 'payload'
 import { authenticated } from '../../access/authenticated'
-
+import { Role } from '../../payload-types'
+function getIsAdmin(hydratedRoles: (Role | number)[]) {
+  return hydratedRoles
+    ?.map((role) => (typeof role === 'object' ? role.slug : null))
+    .some((role) => role === 'admin' || role === 'super_admin')
+}
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
     admin: authenticated,
-    create: authenticated,
-    delete: authenticated,
+
+    create: async ({ req }) => {
+      if (req.user) {
+        const user = await req.payload.findByID({
+          collection: 'users',
+          id: req.user?.id,
+          depth: 2, // Populate roles up to 2 levels deep
+        })
+        console.log(user)
+        if (user.roles && getIsAdmin(user.roles)) {
+          return true
+        }
+      }
+      return false
+    },
+    update: async ({ req, id }) => {
+      if (req.user?.id === id) {
+        return true
+      }
+      if (!req.user) {
+        throw new APIError('You must be logged in to access this resource', 401, null, true)
+      }
+      const user = await req.payload.findByID({
+        collection: 'users',
+        id: req.user?.id,
+        depth: 2, // Populate roles up to 2 levels deep
+      })
+      console.log(user)
+      if (user.roles && getIsAdmin(user.roles)) {
+        return true
+      }
+
+      return false
+    },
+    delete: async ({ req }) => {
+      if (req.user) {
+        const user = await req.payload.findByID({
+          collection: 'users',
+          id: req.user?.id,
+          depth: 2, // Populate roles up to 2 levels deep
+        })
+        console.log(user)
+        if (user.roles && getIsAdmin(user.roles)) {
+          return true
+        }
+      }
+      return false
+    },
     read: authenticated,
-    update: authenticated,
   },
   auth: true,
   admin: {
     defaultColumns: ['name', 'surname', 'email'],
     useAsTitle: 'name',
     components: {},
+    // hidden: ({ user }) => {
+    //   if (user?.roles && getIsAdmin(user.roles)) {
+    //     return false
+    //   }
+    //   return true
+    // },
   },
 
   hooks: {
-    me: [
-      ({ user, args }) => {
-        console.log('Me:', user)
-      },
-    ],
+    me: [({ user, args }) => {}],
 
     beforeLogin: [
       async ({ req, user, collection }) => {
@@ -36,18 +88,13 @@ export const Users: CollectionConfig = {
           const referer = req.headers.get('referer')
           if (referer && referer.startsWith('http')) {
             const url = new URL(referer)
-            console.log('jfipdoa')
             const roleId = Number(url.searchParams.get('role'))
-            console.log(roleId)
             if (!roleId) {
               throw new APIError('Role not found', 500, null, true)
             }
-            console.log('Before Login:', user)
-            console.log('Role:', roleId)
-            console.log('User roles:', user.roles)
+
             if (user.roles.includes(roleId)) {
               user.currentRole = roleId
-              console.log('success!!:')
               // Correct way to update user document
               await req.payload.update({
                 collection: collection.slug, // Use the collection name dynamically
@@ -66,44 +113,6 @@ export const Users: CollectionConfig = {
           console.error('Error in beforeLogin hook:', error)
           throw error
         }
-      },
-    ],
-    afterLogin: [
-      ({ req, user, context, token, collection }) => {
-        try {
-          const referer = req.headers.get('referer')
-          if (referer && referer.startsWith('http')) {
-            const url = new URL(referer)
-            const role = url.searchParams.get('role')
-
-            if (role) {
-              // Validate and assign the role to the user session
-              const userRoles = user.roles?.map((r: any) => r.slug) || []
-
-              if (userRoles.includes(role)) {
-                // Stamp the selected role onto the session
-                if (req.user) {
-                  context.role = role
-                  console.log(`User logged in with role: ${role}`)
-                } else {
-                  console.warn(`Invalid role selected: ${role}`)
-                }
-              } else {
-                console.warn('No role provided in URL')
-              }
-            }
-          } else {
-            console.warn('Referer header is not a valid URL or is missing')
-          }
-        } catch (error) {
-          console.error('Error extracting role from URL:', error)
-        }
-      },
-    ],
-    beforeRead: [
-      ({ req, query, context }) => {
-        console.log('Context:', context)
-        console.log('user:', req.user)
       },
     ],
   },
@@ -138,6 +147,7 @@ export const Users: CollectionConfig = {
       name: 'roles',
       type: 'relationship',
       relationTo: 'roles',
+
       hasMany: true,
     },
   ],

@@ -30,7 +30,6 @@ export const Reports: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, operation, originalDoc, data }) => {
-        // console.log({ req, operation, originalDoc, data })
         const payload = await getPayload({ config: payloadConfig })
         const userId = req.user?.id
 
@@ -48,13 +47,11 @@ export const Reports: CollectionConfig = {
           },
           limit: 1,
         })
-        console.log({ teacherQuery })
         const teacher = teacherQuery.docs[0]
         if (!teacher) {
           throw new Error('Teacher not found')
         }
         data.createdBy = teacher.id
-        console.log({ teacher })
         if (!teacher || !teacher.classroom) {
           throw new Error('Teacher or classroom not found')
         }
@@ -73,7 +70,6 @@ export const Reports: CollectionConfig = {
         })
 
         const students = studentsQuery.docs
-        console.log({ students })
         data.students = students.map((student) => student.id)
       },
     ],

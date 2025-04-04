@@ -2,7 +2,6 @@ import { ClientFieldProps, DefaultCellComponentProps, UIFieldServerProps } from 
 import React from 'react'
 
 export default function CustomComponent(props: DefaultCellComponentProps) {
-  console.log(props)
   return (
     <div>
       {props.rowData.name} {props.rowData.surname}{' '}
