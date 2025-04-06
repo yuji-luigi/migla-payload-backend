@@ -24,6 +24,7 @@ import { Homeworks } from './collections/Homeworks'
 import { Notifications } from './collections/Notifications'
 import { Reports } from './collections/Reports'
 import { Settings } from './collections/Settings'
+import { LogoGlobal } from './LogoGlobal/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -99,7 +100,7 @@ export default buildConfig({
     Settings,
   ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, LogoGlobal],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

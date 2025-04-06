@@ -118,10 +118,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    logoGlobal: LogoGlobal;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    logoGlobal: LogoGlobalSelect<false> | LogoGlobalSelect<true>;
   };
   locale: null;
   user: User & {
@@ -1857,6 +1859,17 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logoGlobal".
+ */
+export interface LogoGlobal {
+  id: number;
+  logo_square?: (number | null) | Media;
+  logo_rectangle?: (number | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1897,6 +1910,17 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logoGlobal_select".
+ */
+export interface LogoGlobalSelect<T extends boolean = true> {
+  logo_square?: T;
+  logo_rectangle?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
