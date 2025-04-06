@@ -15,6 +15,7 @@ const AfterLogin = (props: {
 }) => {
   const searchParams = useSearchParams()
   const hasRoleInUrl = !!searchParams.get('role')
+  const isTeacher = searchParams.get('role') === '3'
   return (
     <>
       <div
@@ -27,12 +28,26 @@ const AfterLogin = (props: {
           <CardIconAction title="Teacher" href="/admin/login?role=3" Icon={<User size={16} />} />
         </div>
       </div>
+      {isTeacher && (
+        <Button
+          onClick={() => {
+            fetch('/api/users/login', {
+              method: 'POST',
+              body: JSON.stringify({ email: 'test@test.com', password: 'test' }),
+            })
+          }}
+          className={styles.loginButton}
+        >
+          Login
+        </Button>
+      )}
       <div
         data-login-role-present={hasRoleInUrl}
+        data-login-role-id={searchParams.get('role')}
         className={`${styles.container} ${styles.roleLinks}`}
       >
-        <Link href="/admin/login?role=3">If you are an teacher</Link>
         <Link href="/admin/login?role=2">If you are an admin</Link>
+        <Link href="/admin/login?role=3">If you are an teacher</Link>
       </div>{' '}
     </>
   )

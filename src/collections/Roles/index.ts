@@ -3,6 +3,8 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from '@/fields/slug'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { User } from '../../payload-types'
+import { isAdmin } from '../../hooks/showOnlyAdmin'
 
 export const Roles: CollectionConfig<'roles'> = {
   slug: 'roles',
@@ -20,6 +22,9 @@ export const Roles: CollectionConfig<'roles'> = {
   admin: {
     defaultColumns: ['slug', 'updatedAt'],
     useAsTitle: 'slug',
+    hidden: ({ user }) => {
+      return !isAdmin(user as unknown as User)
+    },
   },
   fields: [
     {

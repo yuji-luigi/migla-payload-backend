@@ -6,31 +6,16 @@ import {
   type CollectionConfig,
 } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { Role } from '../../payload-types'
-function getIsAdmin(hydratedRoles: (Role | number)[]) {
-  return hydratedRoles
-    ?.map((role) => (typeof role === 'object' ? role.slug : null))
-    .some((role) => role === 'admin' || role === 'super_admin')
-}
+import { Role, User } from '../../payload-types'
+import { isAdmin } from '../../hooks/showOnlyAdmin'
+
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
     admin: authenticated,
 
-    create: async ({ req }) => {
-      if (req.user) {
-        const user = await req.payload.findByID({
-          collection: 'users',
-          id: req.user?.id,
-          depth: 2, // Populate roles up to 2 levels deep
-        })
-        console.log(user)
-        if (user.roles && getIsAdmin(user.roles)) {
-          return true
-        }
-      }
-      return false
-    },
+    create: async ({ req }) => isAdmin(req.user),
+
     update: async ({ req, id }) => {
       if (req.user?.id === id) {
         return true
@@ -43,12 +28,7 @@ export const Users: CollectionConfig = {
         id: req.user?.id,
         depth: 2, // Populate roles up to 2 levels deep
       })
-      console.log(user)
-      if (user.roles && getIsAdmin(user.roles)) {
-        return true
-      }
-
-      return false
+      return isAdmin(user)
     },
     delete: async ({ req }) => {
       if (req.user) {
@@ -57,10 +37,7 @@ export const Users: CollectionConfig = {
           id: req.user?.id,
           depth: 2, // Populate roles up to 2 levels deep
         })
-        console.log(user)
-        if (user.roles && getIsAdmin(user.roles)) {
-          return true
-        }
+        return isAdmin(user)
       }
       return false
     },
@@ -71,17 +48,12 @@ export const Users: CollectionConfig = {
     defaultColumns: ['name', 'surname', 'email'],
     useAsTitle: 'name',
     components: {},
-    // hidden: ({ user }) => {
-    //   if (user?.roles && getIsAdmin(user.roles)) {
-    //     return false
-    //   }
-    //   return true
-    // },
+    hidden: ({ user }) => {
+      return !isAdmin(user as unknown as User)
+    },
   },
 
   hooks: {
-    me: [({ user, args }) => {}],
-
     beforeLogin: [
       async ({ req, user, collection }) => {
         try {

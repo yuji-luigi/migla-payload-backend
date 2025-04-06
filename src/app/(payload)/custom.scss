@@ -1,6 +1,10 @@
 body:has(div[data-login-role-present='false']) {
   .login__form {
     display: none;
-    background-color: red;
+  }
+}
+body:has(div[data-login-role-id='3']) {
+  .form-submit button {
+    display: none;
   }
 }

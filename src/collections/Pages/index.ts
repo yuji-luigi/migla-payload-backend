@@ -38,7 +38,7 @@ export const Pages: CollectionConfig<'pages'> = {
     slug: true,
   },
   admin: {
-    hidden: true,
+    // hidden: true,
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) => {

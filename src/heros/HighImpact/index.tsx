@@ -7,14 +7,20 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import styles from './HighImpact.module.css'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({
+  links,
+  media,
+  richText,
+  mediaClassNames,
+}) => {
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {
     setHeaderTheme('dark')
   })
-
+  console.log(mediaClassNames)
   return (
     <div
       className="relative -mt-[10.4rem] flex items-center justify-center text-white"
@@ -36,9 +42,14 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
           )}
         </div>
       </div>
-      <div className="min-h-[80vh] select-none">
+      <div className={`min-h-[80vh] select-none ${styles.heroImage}`}>
         {media && typeof media === 'object' && (
-          <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
+          <Media
+            fill
+            imgClassName={`-z-10 object-cover ${mediaClassNames}`}
+            priority
+            resource={media}
+          />
         )}
       </div>
     </div>

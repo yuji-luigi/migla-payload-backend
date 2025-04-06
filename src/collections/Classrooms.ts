@@ -3,6 +3,8 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
+import { isAdmin } from '../hooks/showOnlyAdmin'
+import { User } from '../payload-types'
 
 export const Classrooms: CollectionConfig = {
   slug: 'classrooms',
@@ -14,6 +16,9 @@ export const Classrooms: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    hidden: ({ user }) => {
+      return !isAdmin(user as unknown as User)
+    },
   },
   fields: [
     {

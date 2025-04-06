@@ -2,11 +2,14 @@ import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
+import { isAdmin } from '../hooks/showOnlyAdmin'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
   access: {
-    read: () => true,
+    read: ({ req }) => {
+      return isAdmin(req.user)
+    },
   },
   fields: [
     {

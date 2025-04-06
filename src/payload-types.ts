@@ -180,6 +180,7 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    mediaClassNames?: string | null;
     links?:
       | {
           link: {
@@ -1152,6 +1153,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         type?: T;
         richText?: T;
+        mediaClassNames?: T;
         links?:
           | T
           | {

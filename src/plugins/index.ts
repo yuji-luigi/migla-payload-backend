@@ -11,8 +11,9 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
-import { Page, Post } from '@/payload-types'
+import { Page, Post, User } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { isAdmin } from '../hooks/showOnlyAdmin'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -28,6 +29,11 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
+      admin: {
+        hidden: ({ user }) => {
+          return !isAdmin(user as unknown as User)
+        },
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -59,7 +65,19 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    formSubmissionOverrides: {
+      admin: {
+        hidden: ({ user }) => {
+          return !isAdmin(user as unknown as User)
+        },
+      },
+    },
     formOverrides: {
+      admin: {
+        hidden: ({ user }) => {
+          return !isAdmin(user as unknown as User)
+        },
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -85,10 +103,15 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      admin: {
+        hidden: ({ user }) => {
+          return !isAdmin(user as unknown as User)
+        },
+      },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
     },
   }),
-  payloadCloudPlugin(),
+  payloadCloudPlugin({}),
 ]

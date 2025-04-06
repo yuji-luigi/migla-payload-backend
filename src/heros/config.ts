@@ -53,6 +53,11 @@ export const hero: Field = {
       }),
       label: false,
     },
+    {
+      name: 'mediaClassNames',
+      type: 'text',
+      label: 'Media Class Names',
+    },
     linkGroup({
       overrides: {
         maxRows: 2,
