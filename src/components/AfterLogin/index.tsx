@@ -25,7 +25,7 @@ const AfterLogin = (props: {
         <h2>Login as</h2>
         <div className={styles.roleCards}>
           <CardIconAction title="Admin" href="/admin/login?role=2" Icon={<User size={16} />} />
-          <CardIconAction title="Teacher" href="/admin/login?role=3" Icon={<User size={16} />} />
+          <CardIconAction title="Teacher" href="/teacher/login" Icon={<User size={16} />} />
         </div>
       </div>
       {isTeacher && (
@@ -47,7 +47,7 @@ const AfterLogin = (props: {
         className={`${styles.container} ${styles.roleLinks}`}
       >
         <Link href="/admin/login?role=2">If you are an admin</Link>
-        <Link href="/admin/login?role=3">If you are an teacher</Link>
+        <Link href="/teacher/login">If you are an teacher</Link>
       </div>{' '}
     </>
   )

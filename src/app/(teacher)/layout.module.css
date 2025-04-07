@@ -1,0 +1,10 @@
+.header {
+  background-color: var(--primary);
+  padding-inline: 16px;
+}
+
+.logo {
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 8px;
+}
