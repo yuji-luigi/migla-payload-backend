@@ -1,6 +1,7 @@
 .header {
   background-color: var(--primary);
   padding-inline: 16px;
+  z-index: 100;
 }
 
 .logo {

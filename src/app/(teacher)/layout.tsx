@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from './layout.module.css'
 import './globals.css'
+import CircleBoxTopLeft from './_components/decorations/CircleBox'
 export const metadata = {
   title: '先生 ログイン| MIGLA',
   description: 'MIGLA 先生方のログインページです',
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </nav>
           </div>
         </header>
+        <CircleBoxTopLeft />
         {children}
       </body>
     </html>

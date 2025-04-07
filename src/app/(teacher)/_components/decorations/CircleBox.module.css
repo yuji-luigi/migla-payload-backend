@@ -1,0 +1,35 @@
+.container {
+  --circle-box-opacity: 0.5;
+  --circle-box-size: 300px;
+  --circle-box-color: var(--primary);
+  --offset: -150px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  z-index: 0;
+
+  .circleBoxLeft {
+    position: absolute;
+    top: var(--offset);
+    left: 0;
+    width: var(--circle-box-size);
+    height: var(--circle-box-size);
+    background-color: var(--circle-box-color);
+    border-radius: 50%;
+    opacity: 0.5;
+
+  }
+
+  .circleBoxTopRight {
+    position: absolute;
+    top: 0;
+    left: var(--offset);
+    width: var(--circle-box-size);
+    height: var(--circle-box-size);
+    background-color: var(--circle-box-color);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+}
