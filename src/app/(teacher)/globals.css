@@ -24,8 +24,11 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
+    --white: #ffffff;
+
     /* #FFF9D2 */
-    --bg-primary: oklch(0.98 0.0509 100.04);
+    /* --bg-primary: oklch(0.98 0.0509 100.04); */
+    --bg-primary: oklch(0.91 0.0239 125.21);
 
     /* #8eaccd */
     --primary: oklch(0.73 0.0584 251.06);
@@ -102,6 +105,7 @@
 
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    background-color: var(--bg-primary);
   }
 }
 

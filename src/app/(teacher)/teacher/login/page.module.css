@@ -1,6 +1,6 @@
 .loginSection {
-  min-height: 100vh;
   display: flex;
+  margin: auto;
   justify-content: center;
   align-items: center;
   background-color: oklch(0.98 0.0509 100.04 / 50.58%);
@@ -15,5 +15,6 @@
   width: 400px;
   height: 400px;
   border-radius: 12px;
-  background-color: var(--tertiary);
+  background-color: var(--white);
+  z-index: 1;
 }

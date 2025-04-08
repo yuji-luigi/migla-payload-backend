@@ -1,35 +1,72 @@
-.container {
+.root {
   --circle-box-opacity: 0.5;
   --circle-box-size: 300px;
   --circle-box-color: var(--primary);
   --offset: -150px;
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 400px;
-  height: 400px;
-  z-index: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 
-  .circleBoxLeft {
+  .circleDecoration {
     position: absolute;
+    width: var(--circle-box-size);
+    height: var(--circle-box-size);
+    background-color: var(--circle-box-color);
+    border-radius: 50%;
+    opacity: 0.5;
+    z-index: 0;
+  }
+
+
+
+  .topLeftAbove {
     top: var(--offset);
     left: 0;
-    width: var(--circle-box-size);
-    height: var(--circle-box-size);
-    background-color: var(--circle-box-color);
-    border-radius: 50%;
-    opacity: 0.5;
-
   }
 
-  .circleBoxTopRight {
-    position: absolute;
+  .topLeftBelow {
     top: 0;
     left: var(--offset);
-    width: var(--circle-box-size);
-    height: var(--circle-box-size);
-    background-color: var(--circle-box-color);
-    border-radius: 50%;
-    opacity: 0.5;
   }
+
+  .topRightAbove {
+    top: var(--offset);
+    right: 0;
+  }
+
+  .topRightBelow {
+    top: 0;
+    right: var(--offset);
+  }
+
+  .bottomLeftAbove {
+    bottom: var(--offset);
+    left: 0;
+  }
+
+  .bottomLeftBelow {
+    bottom: 0;
+    left: var(--offset);
+  }
+
+  .bottomRightAbove {
+    bottom: var(--offset);
+    right: 0;
+  }
+
+  .bottomRightBelow {
+    bottom: 0;
+    right: var(--offset);
+  }
+
+  .test {
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
 }
