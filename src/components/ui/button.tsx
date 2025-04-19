@@ -46,7 +46,6 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const Comp = asChild ? Slot : 'button'
-  // return <div>button in ui folder</div>
   return <Comp className={cn(buttonVariants({ className, size, variant }))} ref={ref} {...props} />
 }
 

@@ -1,20 +1,50 @@
 .loginSection {
+  width: 100%;
   display: flex;
   margin: auto;
   justify-content: center;
   align-items: center;
-  background-color: oklch(0.98 0.0509 100.04 / 50.58%);
-  /* background-image: url('/images/migla-logo-square.png'); */
-  /* background-blend-mode: ; */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  container-type: inline-size;
 }
 
 .card {
-  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 600px;
   height: 400px;
+  padding: 4rem 6rem;
   border-radius: 12px;
+  gap: 2rem;
   background-color: var(--white);
   z-index: 1;
+
+  @container (max-width: 800px) {
+    width: 100%;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  & h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-foreground);
+  }
+}
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

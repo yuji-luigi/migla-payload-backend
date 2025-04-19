@@ -25,13 +25,22 @@
     --popover-foreground: 222.2 84% 4.9%;
 
     --white: #ffffff;
-
+    --off-white: #FBFCFA;
     /* #FFF9D2 */
     /* --bg-primary: oklch(0.98 0.0509 100.04); */
     --bg-primary: oklch(0.91 0.0239 125.21);
-
     /* #8eaccd */
+    --primary-100: oklch(0.99 0.0584 251.06);
+    --primary-200: oklch(0.95 0.0584 251.06);
+    --primary-300: oklch(0.89 0.0584 251.06);
+    --primary-400: oklch(0.80 0.0584 251.06);
     --primary: oklch(0.73 0.0584 251.06);
+    --primary-500: var(--primary);
+    --primary-600: oklch(0.65 0.0584 251.06);
+    --primary-700: oklch(0.60 0.0584 251.06);
+    --primary-800: oklch(0.55 0.0584 251.06);
+    --primary-900: oklch(0.45 0.0584 251.06);
+    --bg-side-nav: oklch(0.8 0.0584 251.06 / 60%);
     /* #364252 */
     --primary-foreground: oklch(0.38 0.0318 255.72);
     /* #ebba8d */
@@ -42,6 +51,7 @@
     --tertiary: oklch(0.91 0.0239 125.21);
     /* oklch(0.52 0.0227 126.14) */
     --tertiary-foreground: oklch(0.49 0.0457 63.96);
+
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
