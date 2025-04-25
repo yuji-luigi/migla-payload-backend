@@ -21,8 +21,6 @@ const LoginTeacher = () => {
           <img src="/images/migla-logo-square.png" height={100} width={100} alt="logo" />
         </div>
         <div className={styles.inputSection}>
-          <Input placeholder="メールアドレス" />
-          <Input placeholder="パスワード" />
           <Email
             blockType="email"
             name="email"
@@ -42,7 +40,9 @@ const LoginTeacher = () => {
             errors={errors}
           />
         </div>
-        <Button className={styles.loginButton}>ログイン</Button>
+        <Button className={styles.loginButton} variant="default">
+          ログイン
+        </Button>
       </div>
     </section>
   )

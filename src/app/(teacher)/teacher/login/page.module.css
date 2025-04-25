@@ -19,7 +19,7 @@
   padding: 4rem 6rem;
   border-radius: 12px;
   gap: 2rem;
-  background-color: var(--white);
+  background-color: hsl(var(--white));
   z-index: 1;
 
   @container (max-width: 800px) {
@@ -37,7 +37,7 @@
   & h2 {
     font-size: 24px;
     font-weight: 600;
-    color: var(--primary-foreground);
+    color: hsl(var(--primary-foreground));
   }
 }
 

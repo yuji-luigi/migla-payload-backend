@@ -1,11 +1,11 @@
 .header {
-  background-color: var(--primary);
+  background-color: hsl(var(--primary));
   padding-inline: 16px;
   z-index: 100;
 }
 
 .logo {
-  background-color: #ffffff;
+  background-color: hsl(var(--white));
   padding: 8px;
   border-radius: 8px;
 }
