@@ -1,7 +1,7 @@
 .root {
   --circle-box-opacity: 0.5;
   --circle-box-size: 300px;
-  --circle-box-color: var(--primary);
+  --circle-box-color: hsl(var(--primary));
   --offset: -150px;
   position: absolute;
   overflow: hidden;

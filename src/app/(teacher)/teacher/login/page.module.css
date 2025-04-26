@@ -8,6 +8,7 @@
   background-position: center;
   background-repeat: no-repeat;
   container-type: inline-size;
+  z-index: 1;
 }
 
 .card {
@@ -15,8 +16,7 @@
   flex-direction: column;
   align-items: center;
   width: 600px;
-  height: 400px;
-  padding: 4rem 6rem;
+  padding: 2rem 6rem;
   border-radius: 12px;
   gap: 2rem;
   background-color: hsl(var(--white));
@@ -47,4 +47,11 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  width: 100%;
+
+  & div {
+    width: 100%;
+    margin: auto;
+
+  }
 }
