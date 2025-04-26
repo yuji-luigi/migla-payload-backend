@@ -1,6 +1,7 @@
 import {
   APIError,
   AuthenticationError,
+  logError,
   withNullableJSONSchemaType,
   type AuthStrategyResult,
   type CollectionConfig,
@@ -57,30 +58,34 @@ export const Users: CollectionConfig = {
     beforeLogin: [
       async ({ req, user, collection }) => {
         try {
+          let roleId = null
+
           const referer = req.headers.get('referer')
           if (referer && referer.startsWith('http')) {
             const url = new URL(referer)
-            const roleId = Number(url.searchParams.get('role'))
-            if (!roleId) {
-              throw new APIError('Role not found', 500, null, true)
-            }
-
-            if (user.roles.includes(roleId)) {
-              user.currentRole = roleId
-              // Correct way to update user document
-              await req.payload.update({
-                collection: collection.slug, // Use the collection name dynamically
-                id: user.id, // User ID to update
-                data: {
-                  currentRole: roleId, // Update the current role
-                },
-              })
-            } else {
-              throw new APIError("You don't have access to this role", 403, null, true)
-            }
-            return
+            roleId = Number(url.searchParams.get('role'))
           }
-          throw new Error('test')
+          if (req.query.role) {
+            roleId = Number(req.query.role)
+          }
+
+          if (!roleId) {
+            logError({ err: 'Please provide a role in the query or referer', payload: req.payload })
+            throw new APIError('Role not found', 500, null, true)
+          }
+          if (user.roles.includes(roleId)) {
+            user.currentRole = roleId
+            // set the user role in the DB level. to authorize in dashboard.
+            await req.payload.update({
+              collection: collection.slug, // Use the collection name dynamically
+              id: user.id, // User ID to update
+              data: {
+                currentRole: roleId, // Update the current role
+              },
+            })
+            return user
+          }
+          throw new APIError("You don't have access to this role", 403, null, true)
         } catch (error) {
           console.error('Error in beforeLogin hook:', error)
           throw error

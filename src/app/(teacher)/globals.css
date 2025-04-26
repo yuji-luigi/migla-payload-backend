@@ -129,3 +129,8 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+main {
+  @apply min-h-[100vh] flex flex-col;
+  z-index: 1;
+}

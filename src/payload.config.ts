@@ -25,9 +25,10 @@ import { Notifications } from './collections/Notifications'
 import { Reports } from './collections/Reports'
 import { Settings } from './collections/Settings'
 import { LogoGlobal } from './LogoGlobal/config'
-
+import { ApolloClient, InMemoryCache } from '@apollo/client'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
 export default buildConfig({
   auth: {
     jwtOrder: ['Bearer', 'cookie'],

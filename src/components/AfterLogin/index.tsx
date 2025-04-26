@@ -47,7 +47,7 @@ const AfterLogin = (props: {
         className={`${styles.container} ${styles.roleLinks}`}
       >
         <Link href="/admin/login?role=2">If you are an admin</Link>
-        <Link href="/teacher/login">If you are an teacher</Link>
+        <Link href="/teacher/login?role=3">If you are an teacher</Link>
       </div>{' '}
     </>
   )

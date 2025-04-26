@@ -1,56 +1,54 @@
 'use client'
-import { FormProvider, useForm } from 'react-hook-form'
-import { Email } from '../../../../blocks/Form/Email'
-import { Text } from '../../../../blocks/Form/Text'
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 import { Button } from '../../../../components/ui/button'
+import { InputGeneral } from '../../_components/input/input_general/InputGeneral'
+import Error from './error'
 import styles from './page.module.css'
-const LoginTeacher = () => {
-  const methods = useForm()
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = methods
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
+import { loginTeacher } from './login.actions'
+import { useActionState } from 'react'
+
+const TeacherLoginPage = () => {
+  const [state, formAction, pending] = useActionState(loginTeacher, {
+    error: '',
+    values: { email: '', password: '' },
+  })
+
   return (
     <section className={styles.loginSection}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormProvider {...methods}>
-          <div className={styles.card}>
+      <form method="POST" action={formAction}>
+        <div className={styles.card}>
+          <ErrorBoundary errorComponent={Error}>
             <div className={styles.cardHeader}>
               <h2>先生方のログイン</h2>
               <img src="/images/migla-logo-square.png" height={100} width={100} alt="logo" />
             </div>
+            {state.error && <p className="text-red-500 text-center">{state.error}</p>}
             <div className={styles.inputSection}>
-              <Email
-                blockType="email"
+              <InputGeneral
                 name="email"
                 label="メールアドレス"
                 required
-                register={register}
-                errors={errors}
+                blockType="text"
+                defaultValue={state.values.email}
                 width={80}
               />
-              <Text
-                blockType="text"
+              <InputGeneral
                 name="password"
                 label="パスワード"
                 required
-                register={register}
-                errors={errors}
+                blockType="text"
                 width={80}
+                defaultValue={state.values.password}
               />
             </div>
-            <Button className={styles.loginButton} variant="default" type="submit">
-              ログイン
-            </Button>
-          </div>
-        </FormProvider>
+          </ErrorBoundary>
+          <Button disabled={pending} className={styles.loginButton} variant="default" type="submit">
+            ログイン
+          </Button>
+        </div>
       </form>
     </section>
   )
 }
 
-export default LoginTeacher
+export default TeacherLoginPage
