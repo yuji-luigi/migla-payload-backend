@@ -6,6 +6,7 @@ import Error from './error'
 import styles from './page.module.css'
 import { loginTeacher } from './login.actions'
 import { useActionState } from 'react'
+import { PasswordInput } from '../../_components/input/input_general/PasswordInput'
 
 const TeacherLoginPage = () => {
   const [state, formAction, pending] = useActionState(loginTeacher, {
@@ -28,15 +29,14 @@ const TeacherLoginPage = () => {
                 name="email"
                 label="メールアドレス"
                 required
-                blockType="text"
                 defaultValue={state.values.email}
                 width={80}
+                type="email"
               />
-              <InputGeneral
+              <PasswordInput
                 name="password"
                 label="パスワード"
                 required
-                blockType="text"
                 width={80}
                 defaultValue={state.values.password}
               />

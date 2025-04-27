@@ -19,10 +19,8 @@ export async function loginTeacher(prevState: any, formData: FormData) {
   const data = await response.json()
 
   if (!response.ok) {
-    // throw new Error(data.message || 'Login failed')
-    console.log('data', data)
     return {
-      error: data.message || 'ログインに失敗しました。ログイン情報を確認してください',
+      error: data.errors[0].message || 'ログインに失敗しました。ログイン情報を確認してください',
       values: { email, password },
     }
   }
