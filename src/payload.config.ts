@@ -26,10 +26,12 @@ import { Reports } from './collections/Reports'
 import { Settings } from './collections/Settings'
 import { LogoGlobal } from './LogoGlobal/config'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { i18nConfigs } from './lib/i18n/i18n_configs'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  i18n: i18nConfigs,
   auth: {
     jwtOrder: ['Bearer', 'cookie'],
   },

@@ -9,6 +9,7 @@ import {
 import { authenticated } from '../../access/authenticated'
 import { Role, User } from '../../payload-types'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { errorMessages } from '../../lib/error_messages'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -85,7 +86,7 @@ export const Users: CollectionConfig = {
             })
             return user
           }
-          throw new APIError("You don't have access to this role", 403, null, true)
+          throw new APIError(req.i18n.t('authentication.ERROR_NO_ROLE'), 403, null, true)
         } catch (error) {
           console.error('Error in beforeLogin hook:', error)
           throw error
