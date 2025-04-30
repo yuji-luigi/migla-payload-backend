@@ -1,28 +1,28 @@
 'use client'
-import { Button, Link } from '@payloadcms/ui'
+import { I18n } from '@payloadcms/translations'
+import { Button, Link, useTranslation } from '@payloadcms/ui'
 import { User } from 'lucide-react'
-import { I18NConfig } from 'next/dist/server/config-shared'
+import { useSearchParams } from 'next/navigation'
 import { Payload } from 'payload'
+
 import CardIconAction from '../Card/CardIconAction'
 import styles from './AfterLogin.module.css'
-import { useSearchParams } from 'next/navigation'
+import type { CustomTranslations, CustomTranslationsKeys } from '../../lib/i18n/i18n_configs'
 
 // const styles = {}
-const AfterLogin = (props: {
-  payload: Payload
-  i18n: I18NConfig
-  searchParams: Record<string, string>
-}) => {
+const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
   const searchParams = useSearchParams()
+  const { t } = useTranslation<CustomTranslations, CustomTranslationsKeys>()
   const hasRoleInUrl = !!searchParams.get('role')
   const isTeacher = searchParams.get('role') === '3'
+  console.log(t)
   return (
     <>
       <div
         data-login-role-present={hasRoleInUrl}
         className={`${styles.container} ${styles.selectRoleSection}`}
       >
-        <h2>Login as</h2>
+        <h2>{t('authentication:Login as')}</h2>
         <div className={styles.roleCards}>
           <CardIconAction title="Admin" href="/admin/login?role=2" Icon={<User size={16} />} />
           <CardIconAction title="Teacher" href="/teacher/login" Icon={<User size={16} />} />

@@ -10,7 +10,11 @@ import { authenticated } from '../../access/authenticated'
 import { Role, User } from '../../payload-types'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
-
+import {
+  JaCustomTranslations,
+  JaCustomTranslationsKeys,
+} from '../../lib/i18n/ja/jaCustomTranslations'
+import { TFunction } from '@payloadcms/translations'
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
@@ -58,6 +62,8 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeLogin: [
       async ({ req, user, collection }) => {
+        const t = req.i18n.t as any // <-- Cast to your custom keys
+
         try {
           let roleId = null
 
@@ -86,7 +92,7 @@ export const Users: CollectionConfig = {
             })
             return user
           }
-          throw new APIError(req.i18n.t('authentication.ERROR_NO_ROLE'), 403, null, true)
+          throw new APIError(t(errorMessages.ERROR_NO_ROLE), 403, null, true)
         } catch (error) {
           console.error('Error in beforeLogin hook:', error)
           throw error

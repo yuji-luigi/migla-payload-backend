@@ -38,7 +38,13 @@ export const InputGeneral: React.FC<InputGeneralProps> = ({
       </Label>
       <div className="relative w-full h-full">
         {trailingComponent && <span className={styles.trailingComponent}>{trailingComponent}</span>}
-        <Input defaultValue={defaultValue} id={name} type={type || 'text'} name={name} />
+        <Input
+          defaultValue={defaultValue}
+          id={name}
+          type={type || 'text'}
+          name={name}
+          autoComplete="current-password"
+        />
 
         {/* {errors[name] && <InputError />} */}
       </div>

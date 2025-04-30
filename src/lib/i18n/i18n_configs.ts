@@ -1,21 +1,23 @@
 import { Config } from 'payload'
 import { jaSupportedLanguage } from './ja/supportedLanguage'
-
+import { jaCustomTranslations } from './ja/jaCustomTranslations'
+import type { NestedKeysStripped } from '@payloadcms/translations'
+import { enCustomTranslations } from './en/enCustomTranslations'
 export const i18nConfigs: Config['i18n'] = {
   fallbackLanguage: 'ja',
   supportedLanguages: {
     ja: jaSupportedLanguage,
   },
   translations: {
-    ja: {
-      authentication: {
-        ERROR_NO_ROLE: 'このユーザーは権限がありません',
-      },
-    },
-    en: {
-      authentication: {
-        ERROR_NO_ROLE: 'This user does not have access',
-      },
-    },
+    ja: jaCustomTranslations,
+    en: enCustomTranslations,
   },
-}
+} as const
+
+type JaCustomTranslations = typeof jaCustomTranslations & typeof jaSupportedLanguage
+
+type EnCustomTranslations = typeof enCustomTranslations
+
+export type CustomTranslations = JaCustomTranslations & EnCustomTranslations
+
+export type CustomTranslationsKeys = NestedKeysStripped<CustomTranslations>

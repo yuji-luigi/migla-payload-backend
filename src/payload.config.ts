@@ -1,37 +1,40 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 
-import sharp from 'sharp' // sharp-import
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
+import sharp from 'sharp' // sharp-import
 import { fileURLToPath } from 'url'
 
+import { defaultLexical } from '@/fields/defaultLexical'
 import { Categories } from './collections/Categories'
+import { Classrooms } from './collections/Classrooms'
+import { Homeworks } from './collections/Homeworks'
 import { Media } from './collections/Media'
+import { Notifications } from './collections/Notifications'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Reports } from './collections/Reports'
+import { Roles } from './collections/Roles'
+import { Settings } from './collections/Settings'
+import { Students } from './collections/Students'
+import { Teachers } from './collections/Teachers'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
-import { plugins } from './plugins'
-import { defaultLexical } from '@/fields/defaultLexical'
-import { getServerSideURL } from './utilities/getURL'
-import { Roles } from './collections/Roles'
-import { Students } from './collections/Students'
-import { Classrooms } from './collections/Classrooms'
-import { Teachers } from './collections/Teachers'
-import { Homeworks } from './collections/Homeworks'
-import { Notifications } from './collections/Notifications'
-import { Reports } from './collections/Reports'
-import { Settings } from './collections/Settings'
-import { LogoGlobal } from './LogoGlobal/config'
-import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { i18nConfigs } from './lib/i18n/i18n_configs'
+import { LogoGlobal } from './LogoGlobal/config'
+import { plugins } from './plugins'
+import { getServerSideURL } from './utilities/getURL'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   i18n: i18nConfigs,
+  // localization: {
+  //   defaultLocale: 'ja',
+  //   locales: ['ja', 'en', 'it'],
+  // },
   auth: {
     jwtOrder: ['Bearer', 'cookie'],
   },
