@@ -12,7 +12,6 @@ export const Logo = (props: Props) => {
 
   const loading = loadingFromProps || 'lazy'
   const priority = priorityFromProps || 'low'
-
   return (
     /* eslint-disable @next/next/no-img-element */
     <img

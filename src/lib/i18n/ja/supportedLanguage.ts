@@ -1,8 +1,11 @@
 import { Config } from 'payload'
+import { ja } from '@payloadcms/translations/languages/ja'
 const getType: Config['i18n'] = {
   supportedLanguages: {
     ja: {
+      ...ja,
       dateFNSKey: 'ja',
+
       translations: {
         authentication: {
           account: 'アカウント',
@@ -314,7 +317,7 @@ const getType: Config['i18n'] = {
           successfullyDuplicated: '正常に複製されました',
           successfullyReindexed: '正常に再インデックス化されました',
           takeOver: '取り上げる',
-          thisLanguage: 'この言語',
+          thisLanguage: '日本語',
           time: '時間',
           timezone: 'タイムゾーン',
           titleDeleted: 'タイトルが削除されました',

@@ -8,6 +8,16 @@ import { isAdmin } from '../../hooks/showOnlyAdmin'
 
 export const Roles: CollectionConfig<'roles'> = {
   slug: 'roles',
+  labels: {
+    singular: {
+      ja: 'ロール',
+      en: 'Role',
+    },
+    plural: {
+      ja: 'ロール',
+      en: 'Roles',
+    },
+  },
   access: {
     create: authenticated,
     delete: authenticated,

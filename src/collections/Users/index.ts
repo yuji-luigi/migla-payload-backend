@@ -1,22 +1,20 @@
-import {
-  APIError,
-  AuthenticationError,
-  logError,
-  withNullableJSONSchemaType,
-  type AuthStrategyResult,
-  type CollectionConfig,
-} from 'payload'
+import { APIError, logError, type CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { Role, User } from '../../payload-types'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
-import {
-  JaCustomTranslations,
-  JaCustomTranslationsKeys,
-} from '../../lib/i18n/ja/jaCustomTranslations'
-import { TFunction } from '@payloadcms/translations'
+import { User } from '../../payload-types'
 export const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: {
+      ja: 'ユーザー',
+      en: 'User',
+    },
+    plural: {
+      ja: 'ユーザー',
+      en: 'Users',
+    },
+  },
   access: {
     admin: authenticated,
 

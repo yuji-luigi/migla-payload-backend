@@ -1,5 +1,6 @@
 'use client'
 import { Button, Card } from '@payloadcms/ui'
+import Link from 'next/link'
 import React, { ReactNode } from 'react'
 
 const CardIconAction = ({
@@ -16,7 +17,9 @@ const CardIconAction = ({
       title={title}
       href={href}
       actions={
-        <Button el="a" url={href} buttonStyle="icon-label" iconStyle="with-border" icon={Icon} />
+        <Link href={href}>
+          <Button el="a" to={href} buttonStyle="icon-label" iconStyle="with-border" icon={Icon} />
+        </Link>
       }
     ></Card>
   )

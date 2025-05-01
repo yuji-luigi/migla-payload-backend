@@ -1,21 +1,21 @@
 'use client'
 import { I18n } from '@payloadcms/translations'
-import { Button, Link, useTranslation } from '@payloadcms/ui'
+import { Button, Card } from '@payloadcms/ui'
+
+import { Link, useTranslation } from '@payloadcms/ui'
 import { User } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { Payload } from 'payload'
 
+import type { CustomTranslations, CustomTranslationsKeys } from '../../lib/i18n/i18n_configs'
 import CardIconAction from '../Card/CardIconAction'
 import styles from './AfterLogin.module.css'
-import type { CustomTranslations, CustomTranslationsKeys } from '../../lib/i18n/i18n_configs'
 
-// const styles = {}
 const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
   const searchParams = useSearchParams()
   const { t } = useTranslation<CustomTranslations, CustomTranslationsKeys>()
   const hasRoleInUrl = !!searchParams.get('role')
   const isTeacher = searchParams.get('role') === '3'
-  console.log(t)
   return (
     <>
       <div
@@ -32,7 +32,11 @@ const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
           <CardIconAction
             title={t('authentication:Teacher')}
             href="/teacher/login"
-            Icon={<User size={16} />}
+            Icon={
+              <Link className={styles.iconLink} href="/teacher/login">
+                <User size={16} />
+              </Link>
+            }
           />
         </div>
       </div>

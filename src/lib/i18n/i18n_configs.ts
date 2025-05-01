@@ -1,12 +1,14 @@
 import { Config } from 'payload'
 import { jaSupportedLanguage } from './ja/supportedLanguage'
 import { jaCustomTranslations } from './ja/jaCustomTranslations'
+import { en } from '@payloadcms/translations/languages/en'
 import type { NestedKeysStripped } from '@payloadcms/translations'
 import { enCustomTranslations } from './en/enCustomTranslations'
 export const i18nConfigs: Config['i18n'] = {
-  fallbackLanguage: 'ja',
+  fallbackLanguage: 'en',
   supportedLanguages: {
     ja: jaSupportedLanguage,
+    en: en as any,
   },
   translations: {
     ja: jaCustomTranslations,

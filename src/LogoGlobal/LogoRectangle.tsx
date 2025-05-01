@@ -1,12 +1,7 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import Link from 'next/link'
-import React from 'react'
 
 import type { LogoGlobal } from '@/payload-types'
 
-import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
-import { CMSLink } from '@/components/Link'
-import { Logo } from '@/components/Logo/Logo'
 import Image from 'next/image'
 
 export async function LogoRectangle() {
