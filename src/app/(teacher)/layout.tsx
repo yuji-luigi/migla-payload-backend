@@ -2,7 +2,7 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import { cn } from '../../utilities/ui'
 import CircleBoxDecoration from './_components/decorations/CircleBoxDecoration'
-import './globals.css'
+import './globals-teacher.css'
 import './layout-global.css'
 
 // export const metadata = {
