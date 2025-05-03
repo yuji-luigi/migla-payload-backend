@@ -32,11 +32,7 @@ const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
           <CardIconAction
             title={t('authentication:Teacher')}
             href="/teacher/login"
-            Icon={
-              <Link className={styles.iconLink} href="/teacher/login">
-                <User size={16} />
-              </Link>
-            }
+            Icon={<User size={16} />}
           />
         </div>
       </div>

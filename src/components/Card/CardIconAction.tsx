@@ -18,7 +18,7 @@ const CardIconAction = ({
       href={href}
       actions={
         <Link href={href}>
-          <Button el="a" to={href} buttonStyle="icon-label" iconStyle="with-border" icon={Icon} />
+          <Button buttonStyle="icon-label" iconStyle="with-border" icon={Icon} />
         </Link>
       }
     ></Card>
