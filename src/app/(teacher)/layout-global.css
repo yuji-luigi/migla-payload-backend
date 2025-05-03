@@ -1,0 +1,5 @@
+.header {
+  background-color: hsl(var(--primary));
+  padding-inline: var(--padding-header-nav);
+  z-index: 100;
+}

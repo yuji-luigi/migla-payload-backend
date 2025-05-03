@@ -1,16 +1,10 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import styles from './layout.module.css'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import './globals.css'
-import CircleBoxDecoration from './_components/decorations/CircleBoxDecoration'
 import { cn } from '../../utilities/ui'
+import CircleBoxDecoration from './_components/decorations/CircleBoxDecoration'
+import './globals.css'
+import './layout-global.css'
 
-import { env } from 'process'
-import { ApolloProvider } from '@apollo/client'
-import { client } from '../../utilities/apolloClient'
-import { MetaTitleComponent } from '@payloadcms/plugin-seo/client'
 // export const metadata = {
 //   title: '先生 ログイン| MIGLA',
 //   description: 'MIGLA 先生方のログインページです',
@@ -25,29 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body>
-        <header className={styles.header}>
-          <div className="flex flex-row justify-between items-center">
-            <Link href="/">
-              <Image
-                className={styles.logo}
-                src="/images/migla-logo-rectangle.png"
-                alt="logo"
-                width={170}
-                height={50}
-              />
-            </Link>
-            <nav>
-              <ul>
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-                <li>
-                  <Link href="/">Home</Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </header>
         {children}
         <div
           style={{

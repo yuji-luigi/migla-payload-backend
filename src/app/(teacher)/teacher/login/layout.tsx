@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import React from 'react'
-import { ApolloClientProvider } from '../../_components/apolloProvider/ApolloClientProvider'
+import LoginHeaderBar from './LoginHeaderBar'
 
 export const metadata: Metadata = {
   title: '先生 ログイン| MIGLA',
@@ -8,7 +8,12 @@ export const metadata: Metadata = {
 }
 
 const LoginLayout = ({ children }: { children: React.ReactNode }) => {
-  return children
+  return (
+    <>
+      <LoginHeaderBar />
+      {children}
+    </>
+  )
 }
 
 export default LoginLayout

@@ -70,6 +70,8 @@
 
     --radius: 0.2rem;
 
+    --padding-header-nav: 0 16px;
+
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
@@ -107,6 +109,8 @@
     --success: 196 100% 14%;
     --warning: 34 51% 25%;
     --error: 10 39% 43%;
+
+
   }
 }
 
