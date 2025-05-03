@@ -1,14 +1,11 @@
 'use client'
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
-import { Button } from '../../../../components/ui/button'
-import { InputGeneral } from '../../_components/input/input_general/InputGeneral'
-import Error from './error'
-import styles from './page.module.css'
-import { loginTeacher } from './login.actions'
 import { useActionState } from 'react'
-import { PasswordInput } from '../../_components/input/input_general/PasswordInput'
-import { useTranslation } from '@payloadcms/ui'
+import { Button } from '../../../../components/ui/button'
 import { useCustomTranslations } from '../../../../lib/i18n/useCustomTranslations'
+import { InputGeneral } from '../../_components/input/input_general/InputGeneral'
+import { PasswordInput } from '../../_components/input/input_general/PasswordInput'
+import { loginTeacher } from './login.actions'
+import styles from './page.module.css'
 
 const TeacherLoginPage = () => {
   const [state, formAction, pending] = useActionState(loginTeacher, {

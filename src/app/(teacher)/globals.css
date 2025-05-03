@@ -68,13 +68,16 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.2rem;
-
-    --padding-header-nav: 0 16px;
 
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
     --error: 10 100% 86%;
+
+    --radius: 0.2rem;
+
+    --radius-card: 0.75rem;
+
+    --padding-header-nav: 0 16px;
   }
 
   [data-theme='dark'] {
