@@ -10,6 +10,7 @@ import { Payload } from 'payload'
 import type { CustomTranslations, CustomTranslationsKeys } from '../../lib/i18n/i18n_configs'
 import CardIconAction from '../Card/CardIconAction'
 import styles from './AfterLogin.module.css'
+import CircleBoxDecorationBG from '../decorations'
 
 const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
   const searchParams = useSearchParams()
@@ -30,13 +31,18 @@ const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
             Icon={<User size={16} />}
           />
           <CardIconAction
+            title={t('authentication:Admin')}
+            href="/admin/login?role=3"
+            Icon={<User size={16} />}
+          />
+          <CardIconAction
             title={t('authentication:Teacher')}
             href="/teacher/login"
             Icon={<User size={16} />}
           />
         </div>
       </div>
-      {isTeacher && (
+      {/* {isTeacher && (
         <Button
           onClick={() => {
             fetch('/api/users/login', {
@@ -48,7 +54,7 @@ const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
         >
           Login
         </Button>
-      )}
+      )} */}
       <div
         data-login-role-present={hasRoleInUrl}
         data-login-role-id={searchParams.get('role')}
@@ -56,7 +62,7 @@ const AfterLogin = (props: { payload: Payload; i18n: I18n }) => {
       >
         <Link href="/admin/login?role=2">{t('authentication:If you are an admin')}</Link>
         <Link href="/teacher/login?role=3">{t('authentication:If you are an teacher')}</Link>
-      </div>{' '}
+      </div>
     </>
   )
 }

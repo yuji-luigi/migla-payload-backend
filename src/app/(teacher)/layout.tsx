@@ -15,7 +15,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       data-theme="light"
       className={cn(GeistSans.variable, GeistMono.variable)}
-      lang="en"
       suppressHydrationWarning
     >
       <body>

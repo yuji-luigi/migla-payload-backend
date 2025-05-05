@@ -6,21 +6,22 @@ import { InputGeneral } from '../../_components/input/input_general/InputGeneral
 import { PasswordInput } from '../../_components/input/input_general/PasswordInput'
 import { loginTeacher } from './login.actions'
 import styles from './page.module.css'
+import { useTFunc } from '../../i18n/useTFunc'
+import Image from 'next/image'
 
 const TeacherLoginPage = () => {
   const [state, formAction, pending] = useActionState(loginTeacher, {
     error: '',
     values: { email: '', password: '' },
   })
-  const { t } = useCustomTranslations()
-  console.log(t('j'))
+  const { t } = useTFunc()
   return (
     <section className={styles.loginSection}>
       <form method="POST" action={formAction}>
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <h2>先生方のログイン</h2>
-            <img src="/images/migla-logo-square.png" height={100} width={100} alt="logo" />
+            <h2>{t('先生方のログイン')}</h2>
+            <Image src="/images/migla-logo-square.png" height={100} width={100} alt="logo" />
           </div>
           {state.error && <p className="text-red-500 text-center">{state.error}</p>}
           <div className={styles.inputSection}>

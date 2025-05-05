@@ -1,10 +1,10 @@
 import React from 'react'
-import { DashbardHeaderNavBar } from '../../_components/header/dashboard_header_nav_bar/DashbardHeaderNavBar'
+import { DashboardHeaderNavBar } from '../../_components/header/dashboard_header_nav_bar/DashboardHeaderNavBar'
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <DashbardHeaderNavBar />
+      <DashboardHeaderNavBar />
       {children}
     </>
   )
