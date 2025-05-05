@@ -68,23 +68,24 @@
 
   --c: hsl(var(--primary)); /* semi-opaque circle color */
   --r: 300px; /* circle radius */
+
+  --bg-pattern: url('/images/bg_pattern/shape_top.svg'), url('/images/bg_pattern/shape_bottom.svg');
 }
 
 [data-theme='dark'] {
-  --background: 0 0% 0%;
-  --foreground: 210 40% 98%;
-
   --card: 0 0% 4%;
   --card-foreground: 210 40% 98%;
 
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
   /* #4a6684 */
-  --primary: 211 28% 40%;
+  --primary: 211 19% 43%;
+
   --primary-foreground: 0.93 0.0584 251.06;
   /* #8a4f01 */
   --secondary: 34 99% 27%;
   --secondary-foreground: 210 40% 98%;
+  --tertiary: 85 5% 52%;
 
   --muted: 217.2 32.6% 17.5%;
   --muted-foreground: 215 20.2% 65.1%;
@@ -102,6 +103,12 @@
   --success: 196 100% 14%;
   --warning: 34 51% 25%;
   --error: 10 39% 43%;
+
+  --bg-primary: var(--tertiary);
+  --background: var(--tertiary);
+  --foreground: 210 40% 98%;
+  --bg-pattern:
+    url('/images/bg_pattern/shape_top_dark.svg'), url('/images/bg_pattern/shape_bottom_dark.svg');
 }
 
 @layer payload-default {
@@ -111,17 +118,19 @@
     background-color: hsl(var(--bg-primary));
     min-height: var(--min-height);
     background-repeat: no-repeat;
-    background-image:
-      url('/images/bg_pattern/shape_top.svg'), url('/images/bg_pattern/shape_bottom.svg');
+    background-image: var(--bg-pattern);
     background-position:
       top left,
       bottom right;
     z-index: 0;
     & .table {
-      background: white;
+      background: var(--theme-bg);
     }
     & .app-header {
       background-color: hsl(var(--primary));
+    }
+    & [data-theme='dark'] {
+      background-image: none;
     }
   }
 

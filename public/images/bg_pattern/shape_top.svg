@@ -1,4 +1,11 @@
-<svg width="353" height="396" viewBox="0 0 353 396" fill="none" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="-19" cy="202.667" rx="186" ry="193.333" fill="#8EACCD" fill-opacity="0.5"/>
-<ellipse cx="167" cy="67.3333" rx="186" ry="193.333" fill="#8EACCD" fill-opacity="0.5"/>
+<svg
+  class="bg-circle"
+  width="353"
+  height="396"
+  viewBox="0 0 353 396"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+<ellipse cx="-19" cy="202.667" rx="186" ry="193.333" fill="#8EACCD" fill-opacity="0.5" />
+<ellipse cx="167" cy="67.3333" rx="186" ry="193.333" fill="#8EACCD" fill-opacity="0.5" />
 </svg>
