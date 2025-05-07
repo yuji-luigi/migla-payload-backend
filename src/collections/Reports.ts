@@ -37,6 +37,7 @@ export const Reports: CollectionConfig = {
           throw new Error('User not authenticated')
         }
 
+        console.log(userId)
         // Step 1: Get the teacher document for this user
         const teacherQuery = await payload.find({
           collection: 'teachers',
@@ -47,6 +48,7 @@ export const Reports: CollectionConfig = {
           },
           limit: 1,
         })
+        console.log(teacherQuery)
         const teacher = teacherQuery.docs[0]
         if (!teacher) {
           throw new Error('Teacher not found')
@@ -104,6 +106,7 @@ export const Reports: CollectionConfig = {
       type: 'relationship',
       relationTo: 'students',
       hasMany: true,
+      hidden: true,
       // hidden: true,
     },
     {

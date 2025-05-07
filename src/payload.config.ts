@@ -42,6 +42,10 @@ export default buildConfig({
   admin: {
     components: {
       views: {},
+      graphics: {
+        Logo: '@/components/Logo/LogoServer',
+        Icon: '@/components/Icon',
+      },
       logout: {
         // Button: '@/components/LogoutButton',
       },

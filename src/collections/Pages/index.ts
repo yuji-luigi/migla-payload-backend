@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { ClientUser, CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
@@ -20,15 +20,16 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { isAdmin } from '../../hooks/showOnlyAdmin'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
 
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
+    create: async ({ req }) => isAdmin(req.user),
+    delete: async ({ req }) => isAdmin(req.user),
+    read: async ({ req }) => true,
+    update: async ({ req }) => isAdmin(req.user),
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -37,9 +38,11 @@ export const Pages: CollectionConfig<'pages'> = {
     title: true,
     slug: true,
   },
+
   admin: {
-    // hidden: true,
+    hidden: ({ user }) => !isAdmin(user),
     defaultColumns: ['title', 'slug', 'updatedAt'],
+
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({
@@ -59,6 +62,7 @@ export const Pages: CollectionConfig<'pages'> = {
       }),
     useAsTitle: 'title',
   },
+
   fields: [
     {
       name: 'title',

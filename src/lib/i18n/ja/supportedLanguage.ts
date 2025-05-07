@@ -123,6 +123,7 @@ const getType: Config['i18n'] = {
           usernameOrPasswordIncorrect: 'ユーザー名またはパスワードが間違っています',
           valueMustBeUnique: '値は一意である必要があります',
           verificationTokenInvalid: '検証トークンが無効です',
+          unverifiedEmail: '',
         },
         fields: {
           addLabel: 'ラベルを追加する',
@@ -339,6 +340,9 @@ const getType: Config['i18n'] = {
           value: '値',
           viewReadOnly: '読み取り専用',
           welcome: 'ようこそ',
+          selectLabel: 'ラベルを選択する',
+          updatedLabelSuccessfully: 'ラベルが正常に更新されました',
+          updateForEveryone: 'すべての人に更新する',
         },
         localization: {
           cannotCopySameLocale: '同じロケールをコピーすることはできません',
@@ -393,6 +397,7 @@ const getType: Config['i18n'] = {
           sizes: 'サイズ',
           sizesFor: 'サイズ',
           width: '幅',
+          noFile: 'ファイルがありません',
         },
         validation: {
           emailAddress: 'メールアドレス',

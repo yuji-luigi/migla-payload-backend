@@ -114,8 +114,7 @@
 
 @layer payload-default {
   body,
-  .dashboard,
-  .collection-list {
+  .template-default__wrap {
     background-color: hsl(var(--bg-primary));
     min-height: var(--min-height);
     background-repeat: no-repeat;
@@ -134,11 +133,22 @@
       background-image: none;
     }
   }
+  aside.nav {
+    background-color: hsl(var(--bg-primary) / 0.7);
+    border-right: 1px solid hsl(var(--tertiary));
+  }
 
   body:has(div[data-login-role-present='false']) {
     .login__form {
       display: none;
     }
+  }
+  img.logo-rectangle {
+    background-color: hsl(var(--white));
+    border-radius: 8px;
+    padding: 8px;
+    height: 100px;
+    object-fit: cover;
   }
   // my styles within the Payload specificity
 }
