@@ -2,12 +2,8 @@
 import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
-  console.log('login')
-  console.log(request.formData)
   const formData = await request.formData()
-  console.log(formData.get('email'))
   const data = Object.fromEntries(formData.entries())
-  console.log(data)
   const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login?role=3`, {
     method: 'POST',
     headers: {

@@ -1,29 +1,26 @@
 import clsx from 'clsx'
+import Image from 'next/image'
 import React from 'react'
+import { getCachedGlobal } from '../../utilities/getGlobals'
+import { LogoGlobal } from '../../payload-types'
 
-interface Props {
-  className?: string
-  loading?: 'lazy' | 'eager'
-  priority?: 'auto' | 'high' | 'low'
-}
+export default async function Icon() {
+  const logoGlobalData: LogoGlobal = await getCachedGlobal('logoGlobal', 2)()
 
-export default function Icon(props: Props) {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
-
-  const loading = loadingFromProps || 'lazy'
-  const priority = priorityFromProps || 'low'
-  return <div>Icon</div>
+  const { logo_square } = logoGlobalData
+  if (
+    !logo_square ||
+    typeof logo_square !== 'object' ||
+    !('url' in logo_square) ||
+    !logo_square.url
+  )
+    return null
   return (
-    /* eslint-disable @next/next/no-img-element */
-    <img
-      alt="Payload Icon"
-      width={193}
-      height={34}
-      loading={loading}
-      fetchPriority={priority}
-      decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/ui/src/assets/payload-logo-light.svg"
+    <Image
+      src="/images/rainbow_icon.png"
+      alt={logo_square.alt || 'Logo'}
+      width={logo_square.width || 200}
+      height={logo_square.height || 200}
     />
   )
 }

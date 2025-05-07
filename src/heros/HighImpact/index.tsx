@@ -20,7 +20,6 @@ export const HighImpactHero: React.FC<Page['hero']> = ({
   useEffect(() => {
     setHeaderTheme('dark')
   })
-  console.log(mediaClassNames)
   return (
     <div
       className="relative -mt-[10.4rem] flex items-center justify-center text-white"

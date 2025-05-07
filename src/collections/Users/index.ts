@@ -66,7 +66,6 @@ export const Users: CollectionConfig = {
           let roleId = null
 
           const referer = req.headers.get('referer')
-          console.log({ referer })
           if (referer && referer.startsWith('http')) {
             const url = new URL(referer)
             roleId = Number(url.searchParams.get('role'))

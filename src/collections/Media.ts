@@ -22,12 +22,32 @@ export const Media: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  admin: {
+    baseListFilter: ({ req }) => {
+      if (req.user?.currentRole === 3) {
+        return {
+          name: {
+            contains: req.user?.id,
+          },
+        }
+      }
+      return null
+    },
+  },
+  hooks: {
+    beforeRead: [
+      ({ doc, req }) => {
+        doc = null
+      },
+    ],
+  },
   fields: [
     {
       name: 'alt',
       type: 'text',
       //required: true,
     },
+
     {
       name: 'caption',
       type: 'richText',
@@ -38,6 +58,7 @@ export const Media: CollectionConfig = {
       }),
     },
   ],
+
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     staticDir: path.resolve(dirname, '../../public/media'),

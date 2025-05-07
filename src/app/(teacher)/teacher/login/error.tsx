@@ -15,7 +15,6 @@ export default function Error({
     // Optionally log the error to an error reporting service
     console.error(error)
   }, [error])
-  console.log(t)
   return (
     <main className="flex h-full flex-col items-center justify-center">
       <h2 className="text-center">{t(error.message)}</h2>
