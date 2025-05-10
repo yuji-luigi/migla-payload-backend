@@ -5,9 +5,11 @@ import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { User } from '../../payload-types'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { anyone } from '../../access/anyone'
 
 export const Roles: CollectionConfig<'roles'> = {
   slug: 'roles',
+
   labels: {
     singular: {
       ja: 'ロール',
@@ -21,7 +23,7 @@ export const Roles: CollectionConfig<'roles'> = {
   access: {
     create: authenticated,
     delete: authenticated,
-    read: authenticatedOrPublished,
+    read: anyone,
     update: authenticated,
   },
 
@@ -31,7 +33,7 @@ export const Roles: CollectionConfig<'roles'> = {
   },
   admin: {
     defaultColumns: ['slug', 'updatedAt'],
-    useAsTitle: 'slug',
+    useAsTitle: 'label',
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)
     },
@@ -41,7 +43,17 @@ export const Roles: CollectionConfig<'roles'> = {
       name: 'name',
       type: 'text',
       required: true,
+      unique: true,
     },
+    {
+      name: 'label',
+      type: 'text',
+      required: true,
+      localized: true,
+      unique: true,
+    },
+
+    // TODO: set access control flags for section level to dynamically set access control flags for section level
 
     ...slugField('name'),
   ],
