@@ -280,6 +280,7 @@ export interface Post {
 export interface Media {
   id: number;
   alt?: string | null;
+  createdBy: number | User;
   caption?: {
     root: {
       type: string;
@@ -367,27 +368,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -396,6 +376,7 @@ export interface User {
   surname?: string | null;
   currentRole?: (number | null) | Role;
   roles?: (number | Role)[] | null;
+  fullname?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -416,6 +397,27 @@ export interface Role {
   name: string;
   slug?: string | null;
   slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  parent?: (number | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1342,6 +1344,7 @@ export interface UsersSelect<T extends boolean = true> {
   surname?: T;
   currentRole?: T;
   roles?: T;
+  fullname?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1440,6 +1443,7 @@ export interface HomeworksSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  createdBy?: T;
   caption?: T;
   updatedAt?: T;
   createdAt?: T;
