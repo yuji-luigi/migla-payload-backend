@@ -60,12 +60,18 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeLogin: [
       async ({ req, user, collection }) => {
+        // return user
         const t = req.i18n.t as any // <-- Cast to your custom keys
 
         try {
           let roleId = null
 
           const referer = req.headers.get('referer')
+          console.log(referer)
+          if (referer && referer.includes('/admin/create-first-user')) {
+            return user
+          }
+
           if (referer && referer.startsWith('http')) {
             const url = new URL(referer)
             roleId = Number(url.searchParams.get('role'))
@@ -118,39 +124,21 @@ export const Users: CollectionConfig = {
       type: 'email',
     },
     {
-      saveToJWT: true,
       name: 'currentRole',
-      type: 'relationship',
-      relationTo: 'roles',
-      hidden: true,
+      type: 'number',
+      saveToJWT: true,
+      admin: {
+        hidden: true,
+      },
     },
     {
       name: 'roles',
       type: 'relationship',
       relationTo: 'roles',
-
+      maxDepth: 2,
       hasMany: true,
     },
-    // {
-    //   name: 'fullname',
-    //   type: 'text',
-    //   admin: {
-    //     hidden: true, // hides the field from the admin panel
-    //   },
-    //   hooks: {
-    //     beforeChange: [
-    //       ({ siblingData }) => {
-    //         delete siblingData['fullname']
-    //       },
-    //     ],
 
-    //     afterRead: [
-    //       (params) => {
-    //         return `${params?.originalDoc?.name} ${params?.originalDoc?.surname}`
-    //       },
-    //     ],
-    //   },
-    // },
     {
       name: 'fullname',
       type: 'text',
@@ -159,6 +147,7 @@ export const Users: CollectionConfig = {
       hooks: {
         afterRead: [
           async ({ siblingData, req }) => {
+            // return `${siblingData.name} ${siblingData.surname}`
             if (!('name' in siblingData)) {
               const user = await req.payload.findByID({
                 collection: 'users',

@@ -13,7 +13,7 @@ async function getGlobal(slug: Global, depth = 0) {
     slug,
     depth,
   })
-
+  console.log({ global })
   return global
 }
 
@@ -22,5 +22,6 @@ async function getGlobal(slug: Global, depth = 0) {
  */
 export const getCachedGlobal = (slug: Global, depth = 0) =>
   unstable_cache(async () => getGlobal(slug, depth), [slug], {
+    // revalidate: 1,
     tags: [`global_${slug}`],
   })

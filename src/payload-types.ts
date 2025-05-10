@@ -126,7 +126,7 @@ export interface Config {
     footer: FooterSelect<false> | FooterSelect<true>;
     logoGlobal: LogoGlobalSelect<false> | LogoGlobalSelect<true>;
   };
-  locale: null;
+  locale: 'ja' | 'en' | 'it';
   user: User & {
     collection: 'users';
   };
@@ -374,7 +374,7 @@ export interface User {
   id: number;
   name?: string | null;
   surname?: string | null;
-  currentRole?: (number | null) | Role;
+  currentRole?: number | null;
   roles?: (number | Role)[] | null;
   fullname?: string | null;
   updatedAt: string;
@@ -395,6 +395,7 @@ export interface User {
 export interface Role {
   id: number;
   name: string;
+  label: string;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1537,6 +1538,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface RolesSelect<T extends boolean = true> {
   name?: T;
+  label?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1872,6 +1874,7 @@ export interface LogoGlobal {
   id: number;
   logo_square?: (number | null) | Media;
   logo_rectangle?: (number | null) | Media;
+  logo_icon?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1928,6 +1931,7 @@ export interface FooterSelect<T extends boolean = true> {
 export interface LogoGlobalSelect<T extends boolean = true> {
   logo_square?: T;
   logo_rectangle?: T;
+  logo_icon?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

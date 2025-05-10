@@ -6,21 +6,16 @@ import { LogoGlobal } from '../../payload-types'
 
 export default async function Icon() {
   const logoGlobalData: LogoGlobal = await getCachedGlobal('logoGlobal', 2)()
-
-  const { logo_square } = logoGlobalData
-  if (
-    !logo_square ||
-    typeof logo_square !== 'object' ||
-    !('url' in logo_square) ||
-    !logo_square.url
-  )
+  console.log(logoGlobalData)
+  const { logo_square, logo_icon } = logoGlobalData
+  if (!logo_icon || typeof logo_icon !== 'object' || !('url' in logo_icon) || !logo_icon.url)
     return null
   return (
     <Image
-      src="/images/rainbow_icon.png"
-      alt={logo_square.alt || 'Logo'}
-      width={logo_square.width || 200}
-      height={logo_square.height || 200}
+      src={logo_icon?.url}
+      alt={logo_icon?.alt || 'Logo'}
+      width={logo_icon?.width || 200}
+      height={logo_icon?.height || 200}
     />
   )
 }

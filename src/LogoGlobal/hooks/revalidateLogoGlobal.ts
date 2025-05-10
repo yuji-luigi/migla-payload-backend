@@ -6,7 +6,7 @@ export const revalidateLogoGlobal: GlobalAfterChangeHook = ({ doc, req: { payloa
   if (!context.disableRevalidate) {
     payload.logger.info(`Revalidating logo`)
 
-    revalidateTag('global_logo')
+    revalidateTag('global_logoGlobal')
   }
 
   return doc

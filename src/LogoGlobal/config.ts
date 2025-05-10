@@ -5,11 +5,9 @@ import { isAdmin } from '../hooks/showOnlyAdmin'
 
 export const LogoGlobal: GlobalConfig = {
   slug: 'logoGlobal',
-  access: {
-    read: ({ req }) => {
-      return isAdmin(req.user)
-    },
-  },
+  // admin: {
+  //   hidden: ({ user }) => !isAdmin(user),
+  // },
   fields: [
     {
       name: 'logo_square',
@@ -21,6 +19,12 @@ export const LogoGlobal: GlobalConfig = {
       name: 'logo_rectangle',
       type: 'upload',
       label: 'Logo Rectangle',
+      relationTo: 'media',
+    },
+    {
+      name: 'logo_icon',
+      type: 'upload',
+      label: 'Logo Icon',
       relationTo: 'media',
     },
   ],

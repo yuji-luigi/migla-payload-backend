@@ -31,10 +31,10 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   i18n: i18nConfigs,
-  // localization: {
-  //   defaultLocale: 'ja',
-  //   locales: ['ja', 'en', 'it'],
-  // },
+  localization: {
+    defaultLocale: 'ja',
+    locales: ['ja', 'en', 'it'],
+  },
   auth: {
     jwtOrder: ['Bearer', 'cookie'],
   },

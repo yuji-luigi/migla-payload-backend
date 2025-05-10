@@ -149,11 +149,12 @@
     }
   }
   img.logo-rectangle {
-    background-color: hsl(var(--card-color));
+    background-color: white;
+    // background-color: hsl(var(--card-color));
     border-radius: 8px;
     padding: 8px;
-    height: 100px;
-    object-fit: cover;
+    // height: 100px;
+    object-fit: contain;
   }
   .card {
     border-radius: var(--radius-card);
