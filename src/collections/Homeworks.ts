@@ -6,6 +6,16 @@ import { slugField } from '@/fields/slug'
 
 export const Homeworks: CollectionConfig = {
   slug: 'homeworks',
+  labels: {
+    singular: {
+      ja: '宿題',
+      en: 'Homework',
+    },
+    plural: {
+      ja: '宿題',
+      en: 'Homeworks',
+    },
+  },
   // only admins
   access: {
     create: authenticated,

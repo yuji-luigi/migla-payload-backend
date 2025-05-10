@@ -9,6 +9,16 @@ import { Classrooms } from './Classrooms'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
+  labels: {
+    singular: {
+      ja: 'レポート',
+      en: 'Report',
+    },
+    plural: {
+      ja: 'レポート',
+      en: 'Reports',
+    },
+  },
   // only admins
   access: {
     create: authenticated,

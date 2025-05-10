@@ -8,6 +8,17 @@ import payloadConfig from '../payload.config'
 
 export const Students: CollectionConfig = {
   slug: 'students',
+  labels: {
+    singular: {
+      ja: '生徒',
+      en: 'Student',
+    },
+    plural: {
+      ja: '生徒',
+      en: 'Students',
+    },
+  },
+
   // upload: {
   //   adminThumbnail: 'thumbnail',
   //   imageSizes: [

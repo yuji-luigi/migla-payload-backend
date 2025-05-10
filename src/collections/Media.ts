@@ -22,11 +22,21 @@ export const Media: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  labels: {
+    singular: {
+      ja: 'メディア',
+      en: 'Media',
+    },
+    plural: {
+      ja: 'メディア',
+      en: 'Media',
+    },
+  },
   admin: {
     baseListFilter: ({ req }) => {
       if (req.user?.currentRole === 3) {
         return {
-          name: {
+          createdBy: {
             contains: req.user?.id,
           },
         }
@@ -46,6 +56,21 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       //required: true,
+    },
+    {
+      name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: false,
+
+      required: true,
+      admin: {
+        components: {
+          // Label: '@/components/forms/label/UserFullnameSelect',
+          // Field: '@/components/crud/user/UserSelectFullname',
+          // Cell: '@/components/forms/label/UserFullnameSelect',
+        },
+      },
     },
 
     {
