@@ -50,7 +50,7 @@ export const Users: CollectionConfig = {
   auth: true,
   admin: {
     defaultColumns: ['name', 'surname', 'email'],
-    useAsTitle: 'name',
+    useAsTitle: 'fullname',
     components: {},
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)
@@ -130,6 +130,47 @@ export const Users: CollectionConfig = {
       relationTo: 'roles',
 
       hasMany: true,
+    },
+    // {
+    //   name: 'fullname',
+    //   type: 'text',
+    //   admin: {
+    //     hidden: true, // hides the field from the admin panel
+    //   },
+    //   hooks: {
+    //     beforeChange: [
+    //       ({ siblingData }) => {
+    //         delete siblingData['fullname']
+    //       },
+    //     ],
+
+    //     afterRead: [
+    //       (params) => {
+    //         return `${params?.originalDoc?.name} ${params?.originalDoc?.surname}`
+    //       },
+    //     ],
+    //   },
+    // },
+    {
+      name: 'fullname',
+      type: 'text',
+      virtual: true, // <— mark as virtual
+      admin: { hidden: true },
+      hooks: {
+        afterRead: [
+          async ({ siblingData, req }) => {
+            if (!('name' in siblingData)) {
+              const user = await req.payload.findByID({
+                collection: 'users',
+                id: siblingData.id,
+              })
+              return `${user.name} ${user.surname}`
+            } else {
+              return `${siblingData.name} ${siblingData.surname}`
+            }
+          },
+        ],
+      },
     },
   ],
   timestamps: true,
