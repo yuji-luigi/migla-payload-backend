@@ -10,6 +10,9 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { ApiError } from 'next/dist/server/api-utils'
+import { STATUS_CODES } from 'http'
+import { equal } from 'assert'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -33,21 +36,40 @@ export const Media: CollectionConfig = {
     },
   },
   admin: {
-    baseListFilter: ({ req }) => {
-      if (req.user?.currentRole === 3) {
-        return {
-          createdBy: {
-            contains: req.user?.id,
-          },
-        }
+    baseListFilter: async ({ req }) => {
+      if (!req.user) {
+        throw new ApiError(403, 'You must be logged in to access this page')
       }
-      return null
+      const query = {
+        createdBy: {
+          equals: req.user?.id,
+        },
+      }
+      console.log(req.user.currentRole)
+      if (req.user.currentRole == undefined || req.user.currentRole == null) {
+        return query
+      }
+      console.log(req.user.currentRole)
+      const role = await req.payload.findByID({ collection: 'roles', id: req.user!.currentRole! })
+      if (role?.name == 'admin' || role?.name == 'super_admin') {
+        return null
+      }
+      return query
     },
   },
   hooks: {
-    beforeRead: [
-      ({ doc, req }) => {
-        doc = null
+    beforeChange: [
+      async ({ req, operation, data }) => {
+        console.log(req.user?.id)
+        if (operation === 'create') {
+          console.log('create')
+          console.log(req.user?.id)
+          data.createdBy = req.user?.id
+        }
+        if (operation === 'update') {
+          console.log('update')
+          data.createdBy = req.user?.id
+        }
       },
     ],
   },
@@ -55,12 +77,14 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
+
       //required: true,
     },
     {
       name: 'createdBy',
       type: 'relationship',
       relationTo: 'users',
+      maxDepth: 1,
       hasMany: false,
 
       required: true,
