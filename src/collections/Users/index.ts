@@ -93,6 +93,7 @@ export const Users: CollectionConfig = {
               name: currentRole.name,
               id: roleId,
               isAdminLevel: currentRole.isAdminLevel,
+              isTeacher: currentRole.isTeacher,
             }
             // set the user role in the DB level. to authorize in dashboard.
             await req.payload.update({
@@ -156,6 +157,10 @@ export const Users: CollectionConfig = {
         },
         {
           name: 'isAdminLevel',
+          type: 'checkbox',
+        },
+        {
+          name: 'isTeacher',
           type: 'checkbox',
         },
       ],

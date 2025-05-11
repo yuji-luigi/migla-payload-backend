@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { APIError, type CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
@@ -31,7 +31,20 @@ export const Classrooms: CollectionConfig = {
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)
     },
+    baseListFilter: ({ req: { user } }) => {
+      if (!user) {
+        throw new APIError('Please login for the list of classrooms', 401, null, true)
+      }
+      if (user?.currentRole?.isTeacher) {
+        return {
+          teacher: {
+            equals: user.id,
+          },
+        }
+      }
+    },
   },
+
   fields: [
     {
       name: 'name',

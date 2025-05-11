@@ -378,6 +378,7 @@ export interface User {
     name?: string | null;
     id?: number | null;
     isAdminLevel?: boolean | null;
+    isTeacher?: boolean | null;
   };
   roles?: (number | Role)[] | null;
   fullname?: string | null;
@@ -403,6 +404,7 @@ export interface Role {
   label: string;
   canLoginAdmin?: boolean | null;
   isAdminLevel?: boolean | null;
+  isTeacher?: boolean | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1356,6 +1358,7 @@ export interface UsersSelect<T extends boolean = true> {
         name?: T;
         id?: T;
         isAdminLevel?: T;
+        isTeacher?: T;
       };
   roles?: T;
   fullname?: T;
@@ -1555,6 +1558,7 @@ export interface RolesSelect<T extends boolean = true> {
   label?: T;
   canLoginAdmin?: T;
   isAdminLevel?: T;
+  isTeacher?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

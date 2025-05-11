@@ -91,6 +91,15 @@ export const Roles: CollectionConfig<'roles'> = {
       },
       type: 'checkbox',
     },
+    {
+      name: 'isTeacher',
+      label: {
+        ja: '先生',
+        en: 'Teacher',
+        it: 'Docente',
+      },
+      type: 'checkbox',
+    },
 
     // TODO: set access control flags for section level to dynamically set access control flags for section level
 
