@@ -32,6 +32,7 @@ export const Classrooms: CollectionConfig = {
       return !isAdmin(user as unknown as User)
     },
     baseListFilter: ({ req: { user } }) => {
+      return null
       if (!user) {
         throw new APIError('Please login for the list of classrooms', 401, null, true)
       }
