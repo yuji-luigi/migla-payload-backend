@@ -82,6 +82,15 @@ export const Roles: CollectionConfig<'roles'> = {
       type: 'checkbox',
       defaultValue: false,
     },
+    {
+      name: 'isAdminLevel',
+      label: {
+        ja: '管理者レベル',
+        en: 'Admin Level',
+        it: 'Livello amministratore',
+      },
+      type: 'checkbox',
+    },
 
     // TODO: set access control flags for section level to dynamically set access control flags for section level
 

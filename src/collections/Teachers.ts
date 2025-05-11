@@ -25,6 +25,7 @@ export const Teachers: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'user',

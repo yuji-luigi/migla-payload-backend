@@ -2,7 +2,7 @@ import { APIError, logError, type CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
-import { User } from '../../payload-types'
+import { Role, User } from '../../payload-types'
 export const Users: CollectionConfig = {
   slug: 'users',
   labels: {
@@ -84,13 +84,25 @@ export const Users: CollectionConfig = {
             throw new APIError('Role not found', 500, null, true)
           }
           if (user.roles.includes(roleId)) {
+            const currentRole = await req.payload.findByID({
+              collection: 'roles',
+              id: roleId,
+            })
             user.currentRole = roleId
+            user.currentRoleObject = {
+              name: currentRole.name,
+              id: roleId,
+              isAdminLevel: currentRole.isAdminLevel,
+            }
             // set the user role in the DB level. to authorize in dashboard.
             await req.payload.update({
               collection: collection.slug, // Use the collection name dynamically
               id: user.id, // User ID to update
               data: {
-                currentRole: roleId, // Update the current role
+                currentRole: {
+                  name: currentRole.name,
+                  id: roleId,
+                }, // Update the current role
               },
             })
             return user
@@ -107,6 +119,7 @@ export const Users: CollectionConfig = {
   fields: [
     {
       type: 'row',
+
       fields: [
         {
           name: 'name',
@@ -122,14 +135,30 @@ export const Users: CollectionConfig = {
     {
       name: 'email',
       type: 'email',
+      unique: true,
     },
+
     {
       name: 'currentRole',
-      type: 'number',
-      saveToJWT: true,
+      type: 'group',
       admin: {
         hidden: true,
       },
+
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+        },
+        {
+          name: 'id',
+          type: 'number',
+        },
+        {
+          name: 'isAdminLevel',
+          type: 'checkbox',
+        },
+      ],
     },
     {
       name: 'roles',

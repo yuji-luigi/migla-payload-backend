@@ -10,6 +10,12 @@ export function isAdmin(user: User | ClientUser | null): boolean {
   }
   return false
 }
+export function isSuperAdmin(user: User | ClientUser | null): boolean {
+  if (user?.roles && user.currentRole('super_admin')) {
+    return true
+  }
+  return false
+}
 
 function getIsAdmin(hydratedRoles: (Role | number)[]) {
   return hydratedRoles

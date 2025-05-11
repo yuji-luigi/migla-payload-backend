@@ -9,15 +9,15 @@ export const currentUserFilterNonAdmin: BaseListFilter = async ({ req }) => {
       equals: req.user?.id,
     },
   }
-  if (req.user.currentRole == undefined || req.user.currentRole == null) {
+  if (req.user.currentRole?.id == undefined || req.user.currentRole?.id == null) {
     return query
   }
-  const role = await req.payload.findByID({ collection: 'roles', id: req.user!.currentRole! })
-  if (role?.name == 'admin' || role?.name == 'super_admin') {
+  if (req.user.currentRole?.isAdminLevel) {
     return null
   }
   return query
 }
+
 export const currentUserFilter =
   ({
     userKey,
@@ -30,14 +30,16 @@ export const currentUserFilter =
     if (!req.user) {
       throw new APIError('You must be logged in to access this page', 403, null, true)
     }
+    if (req.user.currentRole?.id == undefined || req.user.currentRole?.id == null) {
+      return null
+    }
     const query = {
       [userKey]: {
         equals: req.user?.id,
       },
     }
-    const role = await req.payload.findByID({ collection: 'roles', id: req.user!.currentRole! })
     if (shouldSkipAdmin) {
-      if (role?.name == 'admin' || role?.name == 'super_admin') {
+      if (req.user.currentRole?.isAdminLevel) {
         return null
       }
     }
