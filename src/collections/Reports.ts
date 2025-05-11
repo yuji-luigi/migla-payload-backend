@@ -90,16 +90,20 @@ export const Reports: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'subtitle',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'body',
       type: 'textarea',
+
       required: true,
+      localized: true,
     },
 
     {
@@ -107,6 +111,7 @@ export const Reports: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
+      localized: true,
     },
     // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN in Form
     {

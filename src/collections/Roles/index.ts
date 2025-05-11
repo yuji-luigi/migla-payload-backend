@@ -41,16 +41,46 @@ export const Roles: CollectionConfig<'roles'> = {
   fields: [
     {
       name: 'name',
+      label: {
+        ja: 'フィールド名(ENUM)',
+        en: 'Value Field Name(ENUM)',
+        it: 'Nome del campo di valore(ENUM)',
+      },
       type: 'text',
       required: true,
       unique: true,
     },
     {
+      name: 'description',
+      type: 'text',
+      label: {
+        ja: '説明',
+        en: 'Description',
+        it: 'Descrizione',
+      },
+    },
+    {
       name: 'label',
+      label: {
+        ja: '表示名',
+        en: 'Label',
+        it: 'Etichetta',
+      },
       type: 'text',
       required: true,
       localized: true,
       unique: true,
+    },
+
+    {
+      name: 'canLoginAdmin',
+      label: {
+        ja: 'ダッシュボードにログイン可能',
+        en: 'Can Login to Dashboard',
+        it: 'Può accedere al dashboard',
+      },
+      type: 'checkbox',
+      defaultValue: false,
     },
 
     // TODO: set access control flags for section level to dynamically set access control flags for section level

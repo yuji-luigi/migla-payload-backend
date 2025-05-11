@@ -35,8 +35,8 @@ export const currentUserFilter =
         equals: req.user?.id,
       },
     }
+    const role = await req.payload.findByID({ collection: 'roles', id: req.user!.currentRole! })
     if (shouldSkipAdmin) {
-      const role = await req.payload.findByID({ collection: 'roles', id: req.user!.currentRole! })
       if (role?.name == 'admin' || role?.name == 'super_admin') {
         return null
       }

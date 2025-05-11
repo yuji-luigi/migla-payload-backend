@@ -42,9 +42,7 @@ export const Media: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, operation, data }) => {
-        console.log(req.user?.id)
         if (operation === 'create') {
-          console.log(req.user?.id)
           data.createdBy = req.user?.id
         }
         if (operation === 'update') {

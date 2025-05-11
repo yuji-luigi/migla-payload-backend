@@ -82,6 +82,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
+              localized: true,
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
               required: true,
               admin: {

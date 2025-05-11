@@ -33,9 +33,18 @@ const AfterLogin = async ({
   const roleDocs = await payload.find({
     collection: 'roles',
     where: {
-      name: {
-        not_equals: 'super_admin',
-      },
+      and: [
+        {
+          name: {
+            not_equals: 'super_admin',
+          },
+        },
+        {
+          canLoginAdmin: {
+            equals: true,
+          },
+        },
+      ],
     },
   })
   const hasRoleInUrl = !!searchParams.role

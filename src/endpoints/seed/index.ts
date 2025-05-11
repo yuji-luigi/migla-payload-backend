@@ -1,4 +1,11 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import {
+  type CollectionSlug,
+  type GlobalSlug,
+  type Payload,
+  type PayloadRequest,
+  type File,
+  APIError,
+} from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -39,14 +46,43 @@ export const seed = async ({
   // this is because while `yarn seed` drops the database
   // the custom `/api/seed` endpoint does not
   payload.logger.info(`— Clearing collections and globals...`)
+  const superAdminRole = await payload.find({
+    collection: 'roles',
+    where: {
+      name: {
+        equals: 'super_admin',
+      },
+    },
+  })
+  if (!superAdminRole.docs[0]) {
+    throw new APIError(
+      'Super admin role not found. Create a super admin role first.',
+      400,
+      null,
+      true,
+    )
+  }
+  const superAdminPDocs = await payload.find({
+    collection: 'users',
+    where: {
+      roles: {
+        contains: superAdminRole.docs[0].id,
+      },
+    },
+  })
+  const superAdmin = superAdminPDocs.docs[0]
 
+  if (!superAdmin) {
+    throw new APIError('Super admin not found. Create a super admin first.', 400, null, true)
+  }
+  console.log(superAdmin)
   // clear the database
   await Promise.all(
     globals.map((global) =>
       payload.updateGlobal({
         slug: global,
         data: {
-          navItems: [],
+          // navItems: [],
         },
         depth: 0,
         context: {
@@ -106,22 +142,22 @@ export const seed = async ({
     }),
     payload.create({
       collection: 'media',
-      data: image1,
+      data: { ...image1, createdBy: superAdmin.id },
       file: image1Buffer,
     }),
     payload.create({
       collection: 'media',
-      data: image2,
+      data: { ...image2, createdBy: superAdmin.id },
       file: image2Buffer,
     }),
     payload.create({
       collection: 'media',
-      data: image2,
+      data: { ...image2, createdBy: superAdmin.id },
       file: image3Buffer,
     }),
     payload.create({
       collection: 'media',
-      data: imageHero1,
+      data: { ...imageHero1, createdBy: superAdmin.id },
       file: hero1Buffer,
     }),
 
@@ -202,7 +238,6 @@ export const seed = async ({
       },
     }),
   ])
-
   payload.logger.info(`— Seeding posts...`)
 
   // Do not create posts with `Promise.all` because we want the posts to be created in order

@@ -34,6 +34,7 @@ export default buildConfig({
   localization: {
     defaultLocale: 'ja',
     locales: ['ja', 'en', 'it'],
+    fallback: true,
   },
   auth: {
     jwtOrder: ['Bearer', 'cookie'],

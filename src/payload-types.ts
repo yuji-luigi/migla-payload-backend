@@ -395,7 +395,9 @@ export interface User {
 export interface Role {
   id: number;
   name: string;
+  description?: string | null;
   label: string;
+  canLoginAdmin?: boolean | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1538,7 +1540,9 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface RolesSelect<T extends boolean = true> {
   name?: T;
+  description?: T;
   label?: T;
+  canLoginAdmin?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
