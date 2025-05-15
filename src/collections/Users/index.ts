@@ -83,27 +83,18 @@ export const Users: CollectionConfig = {
             logError({ err: 'Please provide a role in the query or referer', payload: req.payload })
             throw new APIError('Role not found', 500, null, true)
           }
+
           if (user.roles.includes(roleId)) {
             const currentRole = await req.payload.findByID({
               collection: 'roles',
               id: roleId,
             })
-            user.currentRole = roleId
-            user.currentRoleObject = {
-              name: currentRole.name,
-              id: roleId,
-              isAdminLevel: currentRole.isAdminLevel,
-              isTeacher: currentRole.isTeacher,
-            }
             // set the user role in the DB level. to authorize in dashboard.
             await req.payload.update({
               collection: collection.slug, // Use the collection name dynamically
               id: user.id, // User ID to update
               data: {
-                currentRole: {
-                  name: currentRole.name,
-                  id: roleId,
-                }, // Update the current role
+                currentRole, // Update the current role
               },
             })
             return user
@@ -140,6 +131,7 @@ export const Users: CollectionConfig = {
     },
 
     {
+      saveToJWT: true,
       name: 'currentRole',
       type: 'group',
       admin: {

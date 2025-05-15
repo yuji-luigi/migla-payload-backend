@@ -31,6 +31,7 @@ export const Teachers: CollectionConfig = {
       name: 'user',
       type: 'relationship',
       relationTo: 'users',
+      // maxDepth: 0,
       hasMany: false,
     },
     {

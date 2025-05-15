@@ -65,8 +65,10 @@ export const Media: CollectionConfig = {
       maxDepth: 1,
       hasMany: false,
       required: true,
+
       admin: {
-        disabled: true,
+        // disabled: true,
+
         components: {
           // Label: '@/components/forms/label/UserFullnameSelect',
           // Field: '@/components/crud/user/UserSelectFullname',
