@@ -856,6 +856,7 @@ export interface Homework {
   title: string;
   body: string;
   teacher?: (number | null) | Teacher;
+  students?: (number | Student)[] | null;
   dueDate?: string | null;
   issuedAt?: string | null;
   files?: (number | Media)[] | null;
@@ -1449,6 +1450,7 @@ export interface HomeworksSelect<T extends boolean = true> {
   title?: T;
   body?: T;
   teacher?: T;
+  students?: T;
   dueDate?: T;
   issuedAt?: T;
   files?: T;

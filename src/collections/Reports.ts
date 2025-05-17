@@ -6,6 +6,7 @@ import { slugField } from '@/fields/slug'
 import { Role } from '../payload-types'
 import internal from 'stream'
 import { Classrooms } from './Classrooms'
+import { getStudents } from '../beforeChangeHooks/getStudents'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
@@ -41,10 +42,13 @@ export const Reports: CollectionConfig = {
     beforeChange: [
       async ({ req, operation, originalDoc, data }) => {
         const payload = await getPayload({ config: payloadConfig })
-        const userId = req.user?.id
 
+        const userId = req.user?.id
         if (!userId) {
           throw new Error('User not authenticated')
+        }
+        if (operation === 'update') {
+          // return
         }
 
         // Step 1: Get the teacher document for this user
@@ -65,21 +69,12 @@ export const Reports: CollectionConfig = {
         if (!teacher || !teacher.classroom) {
           throw new Error('Teacher or classroom not found')
         }
-        let classroomId = teacher.classroom
-        if (typeof teacher.classroom !== 'number') {
-          classroomId = teacher.classroom.id
-        }
-        // Step 2: Get all students in that classroom
-        const studentsQuery = await payload.find({
-          collection: 'students',
-          where: {
-            classroom: {
-              equals: classroomId,
-            },
-          },
-        })
+        let classroomId =
+          typeof teacher.classroom == 'number' ? teacher.classroom : teacher.classroom.id
 
-        const students = studentsQuery.docs
+        // Step 2: Get all students in that classroom
+        const students = await getStudents({ payload, classroomId })
+
         data.students = students.map((student) => student.id)
       },
     ],
@@ -120,6 +115,7 @@ export const Reports: CollectionConfig = {
       relationTo: 'students',
       hasMany: true,
       hidden: false, // TODO: hide after
+      admin: {},
       // hidden: true,
     },
     {

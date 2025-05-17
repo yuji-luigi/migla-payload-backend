@@ -44,6 +44,12 @@ export const Homeworks: CollectionConfig = {
       hasMany: false,
     },
     {
+      name: 'students',
+      type: 'relationship',
+      relationTo: 'students',
+      hasMany: true,
+    },
+    {
       name: 'dueDate',
       type: 'date',
       required: false,
