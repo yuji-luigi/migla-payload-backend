@@ -3,6 +3,9 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
+import { getStudents } from '../beforeChangeHooks/getStudents'
+import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
+import { teacherOperationBeforeChange } from '../beforeChangeHooks/teacheRecordsBeforeChange'
 
 export const Homeworks: CollectionConfig = {
   slug: 'homeworks',
@@ -15,6 +18,9 @@ export const Homeworks: CollectionConfig = {
       ja: '宿題',
       en: 'Homeworks',
     },
+  },
+  hooks: {
+    beforeChange: [teacherOperationBeforeChange],
   },
   // only admins
   access: {
@@ -41,6 +47,12 @@ export const Homeworks: CollectionConfig = {
       name: 'teacher',
       type: 'relationship',
       relationTo: 'teachers',
+      hasMany: false,
+    },
+    {
+      name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'users',
       hasMany: false,
     },
     {

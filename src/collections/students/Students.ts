@@ -1,12 +1,12 @@
 import { APIError, FilterOptionsProps, getPayload, User, type CollectionConfig } from 'payload'
 
 import { slugField } from '@/fields/slug'
-import { authenticated } from '../access/authenticated'
-import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
-import { generatePreviewPath } from '../utilities/generatePreviewPath'
-import payloadConfig from '../payload.config'
-import { Classroom } from '../payload-types'
-import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
+import { authenticated } from '../../access/authenticated'
+import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
+import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import payloadConfig from '../../payload.config'
+import { Classroom } from '../../payload-types'
+import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
 
 export const Students: CollectionConfig = {
   slug: 'students',
@@ -60,6 +60,9 @@ export const Students: CollectionConfig = {
   admin: {
     defaultColumns: ['name', 'surname', 'slug', 'updatedAt'],
     useAsTitle: 'name',
+    components: {
+      beforeListTable: ['@/collections/students/ui/BeforeListTableStudents.tsx'],
+    },
     baseListFilter: async ({ req }) => {
       if (!req.user) {
         throw new APIError('You must logged in to complete the operation', 403, null, true)

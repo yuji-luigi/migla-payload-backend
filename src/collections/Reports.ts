@@ -1,4 +1,4 @@
-import { getPayload, type CollectionConfig, type User } from 'payload'
+import { APIError, getPayload, type CollectionConfig, type User } from 'payload'
 import payloadConfig from '../payload.config'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
@@ -7,6 +7,8 @@ import { Role } from '../payload-types'
 import internal from 'stream'
 import { Classrooms } from './Classrooms'
 import { getStudents } from '../beforeChangeHooks/getStudents'
+import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
+import { teacherOperationBeforeChange } from '../beforeChangeHooks/teacheRecordsBeforeChange'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
@@ -21,63 +23,25 @@ export const Reports: CollectionConfig = {
     },
   },
   // only admins
-  access: {
-    create: authenticated,
-    delete: authenticated,
-    read: anyone,
-    update: authenticated,
-  },
-  admin: {
-    useAsTitle: 'title',
-    hidden: ({ user }: { user: User }) => {
-      const hidden = !user?.roles.some(
-        (role: Role) =>
-          role.slug === 'teacher' || role.slug === 'super_admin' || role.slug === 'admin',
-      )
-      return hidden
-    },
-  },
+  // access: {
+  //   create: authenticated,
+  //   delete: authenticated,
+  //   read: anyone,
+  //   update: authenticated,
+  // },
+  // admin: {
+  //   useAsTitle: 'title',
+  //   hidden: ({ user }: { user: User }) => {
+  //     const hidden = !user?.roles.some(
+  //       (role: Role) =>
+  //         role.slug === 'teacher' || role.slug === 'super_admin' || role.slug === 'admin',
+  //     )
+  //     return hidden
+  //   },
+  // },
 
   hooks: {
-    beforeChange: [
-      async ({ req, operation, originalDoc, data }) => {
-        const payload = await getPayload({ config: payloadConfig })
-
-        const userId = req.user?.id
-        if (!userId) {
-          throw new Error('User not authenticated')
-        }
-        if (operation === 'update') {
-          // return
-        }
-
-        // Step 1: Get the teacher document for this user
-        const teacherQuery = await payload.find({
-          collection: 'teachers',
-          where: {
-            user: {
-              equals: userId,
-            },
-          },
-          limit: 1,
-        })
-        const teacher = teacherQuery.docs[0]
-        if (!teacher) {
-          throw new Error('Teacher not found')
-        }
-        data.createdBy = teacher.id
-        if (!teacher || !teacher.classroom) {
-          throw new Error('Teacher or classroom not found')
-        }
-        let classroomId =
-          typeof teacher.classroom == 'number' ? teacher.classroom : teacher.classroom.id
-
-        // Step 2: Get all students in that classroom
-        const students = await getStudents({ payload, classroomId })
-
-        data.students = students.map((student) => student.id)
-      },
-    ],
+    beforeChange: [teacherOperationBeforeChange],
     beforeRead: [async ({ req, query }) => {}],
   },
   fields: [
@@ -118,8 +82,16 @@ export const Reports: CollectionConfig = {
       admin: {},
       // hidden: true,
     },
+
     {
       name: 'createdBy',
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: false,
+      // hidden: true,
+    },
+    {
+      name: 'teacher',
       type: 'relationship',
       relationTo: 'teachers',
       hasMany: false,

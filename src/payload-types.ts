@@ -376,9 +376,9 @@ export interface User {
   surname?: string | null;
   currentRole?: {
     name?: string | null;
-    id?: number | null;
     isAdminLevel?: boolean | null;
     isTeacher?: boolean | null;
+    isParent?: boolean | null;
   };
   roles?: (number | Role)[] | null;
   fullname?: string | null;
@@ -827,7 +827,8 @@ export interface Report {
   body: string;
   attachments?: (number | Media)[] | null;
   students?: (number | Student)[] | null;
-  createdBy?: (number | null) | Teacher;
+  createdBy?: (number | null) | User;
+  teacher?: (number | null) | Teacher;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -856,6 +857,7 @@ export interface Homework {
   title: string;
   body: string;
   teacher?: (number | null) | Teacher;
+  createdBy?: (number | null) | User;
   students?: (number | Student)[] | null;
   dueDate?: string | null;
   issuedAt?: string | null;
@@ -1358,9 +1360,9 @@ export interface UsersSelect<T extends boolean = true> {
     | T
     | {
         name?: T;
-        id?: T;
         isAdminLevel?: T;
         isTeacher?: T;
+        isParent?: T;
       };
   roles?: T;
   fullname?: T;
@@ -1412,6 +1414,7 @@ export interface ReportsSelect<T extends boolean = true> {
   attachments?: T;
   students?: T;
   createdBy?: T;
+  teacher?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1450,6 +1453,7 @@ export interface HomeworksSelect<T extends boolean = true> {
   title?: T;
   body?: T;
   teacher?: T;
+  createdBy?: T;
   students?: T;
   dueDate?: T;
   issuedAt?: T;

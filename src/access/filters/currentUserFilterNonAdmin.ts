@@ -9,7 +9,7 @@ export const currentUserFilterNonAdmin: BaseListFilter = async ({ req }) => {
       equals: req.user?.id,
     },
   }
-  if (req.user.currentRole?.id == undefined || req.user.currentRole?.id == null) {
+  if (req.user.currentRole == undefined || req.user.currentRole == null) {
     return query
   }
   if (req.user.currentRole?.isAdminLevel) {
@@ -30,7 +30,12 @@ export const currentUserFilter =
     if (!req.user) {
       throw new APIError('You must be logged in to access this page', 403, null, true)
     }
-    if (req.user.currentRole?.id == undefined || req.user.currentRole?.id == null) {
+    console.log('req.user.currentRole', req.user.currentRole)
+
+    if (!req.user.currentRole) {
+      req.payload.logger.warn('User has no current role', {
+        userId: req.user.id,
+      })
       return null
     }
     const query = {

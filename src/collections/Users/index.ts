@@ -89,6 +89,7 @@ export const Users: CollectionConfig = {
               collection: 'roles',
               id: roleId,
             })
+            console.log('currentRole', currentRole)
             // set the user role in the DB level. to authorize in dashboard.
             await req.payload.update({
               collection: collection.slug, // Use the collection name dynamically
@@ -139,13 +140,14 @@ export const Users: CollectionConfig = {
       },
 
       fields: [
+        // NOTE: tried to se the id under the group but it was always undefined/null
+        // {
+        //   name: 'id',
+        //   type: 'number',
+        // },
         {
           name: 'name',
           type: 'text',
-        },
-        {
-          name: 'id',
-          type: 'number',
         },
         {
           name: 'isAdminLevel',
@@ -153,6 +155,10 @@ export const Users: CollectionConfig = {
         },
         {
           name: 'isTeacher',
+          type: 'checkbox',
+        },
+        {
+          name: 'isParent',
           type: 'checkbox',
         },
       ],
