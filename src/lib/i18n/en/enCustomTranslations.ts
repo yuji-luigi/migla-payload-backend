@@ -5,5 +5,6 @@ export const enCustomTranslations = {
     Admin: 'Admin',
     Teacher: 'Teacher',
     'If you are an': 'If you are an {{role}}',
+    Import: 'Import',
   },
 }

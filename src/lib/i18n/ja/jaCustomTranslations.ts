@@ -7,5 +7,6 @@ export const jaCustomTranslations = {
     'If you are an admin': '管理者の場合はこちら',
     'If you are an teacher': '先生の場合はこちら',
     'If you are an': '{{role}}の場合はこちら',
+    Import: 'インポート',
   },
 }
