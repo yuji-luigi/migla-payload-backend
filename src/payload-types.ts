@@ -405,6 +405,7 @@ export interface Role {
   canLoginAdmin?: boolean | null;
   isAdminLevel?: boolean | null;
   isTeacher?: boolean | null;
+  isParent?: boolean | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -808,7 +809,7 @@ export interface Student {
   id: number;
   name: string;
   surname: string;
-  parent?: (number | User)[] | null;
+  parent: (number | User)[];
   classroom?: (number | null) | Classroom;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1559,6 +1560,7 @@ export interface RolesSelect<T extends boolean = true> {
   canLoginAdmin?: T;
   isAdminLevel?: T;
   isTeacher?: T;
+  isParent?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

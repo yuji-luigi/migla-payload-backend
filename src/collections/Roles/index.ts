@@ -14,10 +14,12 @@ export const Roles: CollectionConfig<'roles'> = {
     singular: {
       ja: 'ロール',
       en: 'Role',
+      it: 'Ruolo',
     },
     plural: {
       ja: 'ロール',
       en: 'Roles',
+      it: 'Ruoli',
     },
   },
   access: {
@@ -97,6 +99,15 @@ export const Roles: CollectionConfig<'roles'> = {
         ja: '先生',
         en: 'Teacher',
         it: 'Docente',
+      },
+      type: 'checkbox',
+    },
+    {
+      name: 'isParent',
+      label: {
+        ja: '保護者',
+        en: 'Parent',
+        it: 'Genitore',
       },
       type: 'checkbox',
     },

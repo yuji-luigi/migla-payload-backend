@@ -6,6 +6,7 @@ import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 import { generatePreviewPath } from '../utilities/generatePreviewPath'
 import payloadConfig from '../payload.config'
 import { Classroom } from '../payload-types'
+import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
 
 export const Students: CollectionConfig = {
   slug: 'students',
@@ -45,22 +46,39 @@ export const Students: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, operation, originalDoc, data }) => {
-        console.log('beforeChange', req, operation, originalDoc)
         if (!req.user?.currentRole) {
           throw new APIError('You must logged in to complete the operation', 403, null, true)
         }
-        const teacherDoc = await req.payload.find({
-          collection: 'teachers',
-          user: req.user.id,
-        })
-        console.log('teacher', teacherDoc.docs[0])
-        data.classroom = (teacherDoc.docs[0]?.classroom as Classroom)?.id
+        const foundTeacher = await findTeacherRoleOfUser({ user: req.user, payload: req.payload })
+        data.classroom =
+          typeof foundTeacher?.classroom === 'object'
+            ? foundTeacher?.classroom?.id
+            : foundTeacher?.classroom
       },
     ],
   },
   admin: {
     defaultColumns: ['name', 'surname', 'slug', 'updatedAt'],
     useAsTitle: 'name',
+    baseListFilter: async ({ req }) => {
+      if (!req.user) {
+        throw new APIError('You must logged in to complete the operation', 403, null, true)
+      }
+      if (!req.user.currentRole?.isAdminLevel) {
+        const foundTeacher = await findTeacherRoleOfUser({ user: req.user, payload: req.payload })
+        if (foundTeacher?.classroom) {
+          return {
+            classroom: {
+              equals:
+                typeof foundTeacher?.classroom === 'object'
+                  ? foundTeacher?.classroom?.id
+                  : foundTeacher?.classroom,
+            },
+          }
+        }
+      }
+      return null
+    },
   },
   fields: [
     {
@@ -77,7 +95,42 @@ export const Students: CollectionConfig = {
       name: 'parent',
       type: 'relationship',
       relationTo: 'users',
+      required: true,
       hasMany: true,
+      filterOptions: async ({ user, req }) => {
+        if (!user) {
+          throw new APIError(
+            'filterOptions error: user is not logged in. collection: students',
+            403,
+            null,
+            true,
+          )
+        }
+        if (user.currentRole?.isAdminLevel) {
+          return true
+        }
+        if (user.currentRole?.isTeacher) {
+          console.log('user.currentRole?.isTeacher')
+          const isParentRoles = await req.payload.find({
+            collection: 'roles',
+            where: {
+              isParent: {
+                equals: true,
+              },
+            },
+          })
+          console.log('isParentRoles', isParentRoles)
+          if (isParentRoles.docs.length > 0) {
+            return {
+              roles: {
+                in: isParentRoles.docs.map<number>((teacher) => teacher.id),
+              },
+            }
+          }
+          return false
+        }
+        throw new APIError('userCurrentRole is not defined or saved in DB.', 403, null, true)
+      },
     },
     {
       name: 'classroom',
@@ -86,20 +139,12 @@ export const Students: CollectionConfig = {
       hasMany: false,
       filterOptions: async ({ user, req }: FilterOptionsProps<Classroom>) => {
         if (user?.currentRole) {
-          console.log(user)
           if (user.currentRole.isTeacher) {
-            const teacher = await req.payload.find({
-              collection: 'teachers',
-              user: user.id,
-            })
-            const teacherDoc = teacher.docs[0]
-            if (!teacherDoc) {
-              throw new APIError('Teacher not found', 404, null, true)
-            }
+            const foundTeacher = await findTeacherRoleOfUser({ user, payload: req.payload })
             const classroomId =
-              typeof teacherDoc.classroom === 'object'
-                ? teacherDoc.classroom?.id
-                : teacherDoc.classroom
+              typeof foundTeacher?.classroom === 'object'
+                ? foundTeacher?.classroom?.id
+                : foundTeacher?.classroom
             return {
               id: {
                 equals: classroomId,

@@ -119,7 +119,7 @@ export const Reports: CollectionConfig = {
       type: 'relationship',
       relationTo: 'students',
       hasMany: true,
-      hidden: true,
+      hidden: false, // TODO: hide after
       // hidden: true,
     },
     {
