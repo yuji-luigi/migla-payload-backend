@@ -1,7 +1,6 @@
 import React from 'react'
 
-const BeforeListTableStudents = (props) => {
-  console.log('props', props)
+const BeforeListTableStudents = () => {
   return <div>BeforeListTableStudents</div>
 }
 

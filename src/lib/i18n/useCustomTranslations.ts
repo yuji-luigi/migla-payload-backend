@@ -1,6 +1,7 @@
 'use client'
 import { useTranslation } from '@payloadcms/ui'
-import { JaCustomTranslations, JaCustomTranslationsKeys } from './ja/jaCustomTranslations'
+import { CustomTranslations, CustomTranslationsKeys } from './i18n_configs'
+
 export const useCustomTranslations = () => {
-  return useTranslation<JaCustomTranslations, JaCustomTranslationsKeys>()
+  return useTranslation<CustomTranslations, CustomTranslationsKeys>()
 }

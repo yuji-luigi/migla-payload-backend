@@ -1,13 +1,20 @@
-import { APIError, FilterOptionsProps, getPayload, User, type CollectionConfig } from 'payload'
+import { APIError, FilterOptionsProps, type CollectionConfig } from 'payload'
 
 import { slugField } from '@/fields/slug'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { generatePreviewPath } from '../../utilities/generatePreviewPath'
-import payloadConfig from '../../payload.config'
-import { Classroom } from '../../payload-types'
 import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
-
+import { Classroom } from '../../payload-types'
+import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
+export const studentsModal = {
+  slug: 'students',
+  labels: {
+    singular: {
+      ja: '生徒',
+      en: 'Student',
+    },
+  },
+}
 export const Students: CollectionConfig = {
   slug: 'students',
   labels: {
@@ -20,7 +27,32 @@ export const Students: CollectionConfig = {
       en: 'Students',
     },
   },
-
+  endpoints: [
+    {
+      path: '/import',
+      method: 'post',
+      handler: async (req) => {
+        if (false) {
+          return Response.json({ error: 'not found' }, { status: 404 })
+        }
+        const file = await req.blob?.()
+        parseExcelToJson(file as File)
+        console.log({ file })
+        return Response.json({
+          message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
+        })
+      },
+    },
+    {
+      path: '/import/:name/:group',
+      method: 'get',
+      handler: async (req) => {
+        return Response.json({
+          message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
+        })
+      },
+    },
+  ],
   // upload: {
   //   adminThumbnail: 'thumbnail',
   //   imageSizes: [
@@ -61,6 +93,7 @@ export const Students: CollectionConfig = {
     defaultColumns: ['name', 'surname', 'slug', 'updatedAt'],
     useAsTitle: 'name',
     components: {
+      afterList: [{ path: '@/components/Modal/ModalCustom', clientProps: { slug: 'students' } }],
       beforeListTable: ['@/collections/students/ui/BeforeListTableStudents.tsx'],
     },
     baseListFilter: async ({ req }) => {

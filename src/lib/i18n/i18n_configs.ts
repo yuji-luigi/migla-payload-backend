@@ -18,7 +18,7 @@ export const i18nConfigs: Config['i18n'] = {
 
 type JaCustomTranslations = typeof jaCustomTranslations & typeof jaSupportedLanguage
 
-type EnCustomTranslations = typeof enCustomTranslations
+type EnCustomTranslations = typeof enCustomTranslations & typeof en
 
 export type CustomTranslations = JaCustomTranslations & EnCustomTranslations
 

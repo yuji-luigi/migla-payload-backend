@@ -1,25 +1,48 @@
 'use client'
 
-import React from 'react'
+import { useModal, usePayloadAPI } from '@payloadcms/ui'
+import React, { useRef } from 'react'
+import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import styles from './DescriptionStudents.module.css'
-import { Payload } from 'payload'
-import { I18n } from '@payloadcms/translations'
-import { useTranslation } from '@payloadcms/ui'
-import { CustomTranslations, CustomTranslationsKeys } from '../../../lib/i18n/i18n_configs'
-const DescriptionStudents = (/* { i18n, payload }: { i18n: I18n; payload: Payload } */) => {
-  const { t } = useTranslation<CustomTranslations, CustomTranslationsKeys>()
+import { http } from '../../../lib/fetch/http'
+const DescriptionStudents = () => {
+  const { t } = useCustomTranslations()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const x = useModal()
+
+  async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    try {
+      console.log(e.target.files)
+      const file = e.target.files?.[0]
+      if (!file) return
+      const formData = new FormData()
+      formData.append('file', file)
+      await http.post('/api/students/import', {
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
-    <div className={styles.container}>
-      <button
-        className={`btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup ${styles.button}`}
-        onClick={() => {
-          console.log('clicked')
-        }}
-      >
-        {t('Import')}
-        {/* {i18n.t('エクセル')} */}
-      </button>
-    </div>
+    <>
+      <div className={styles.container}>
+        <input onChange={handleChange} type="file" className="display-none" ref={inputRef} />
+        <button
+          className={`btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup ${styles.button}`}
+          onClick={() => {
+            // x.children = <div>Hello</div>
+            // x.openModal('students')
+            inputRef.current?.click()
+          }}
+        >
+          {t('Import')}
+        </button>
+      </div>
+    </>
   )
 }
 

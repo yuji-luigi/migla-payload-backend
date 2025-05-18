@@ -1,7 +1,6 @@
 import React from 'react'
 
-const BeforeListStudents = (props) => {
-  console.log('props', props)
+const BeforeListStudents = () => {
   return <div>BeforeListStudents</div>
 }
 
