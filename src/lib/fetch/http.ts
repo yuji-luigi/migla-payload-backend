@@ -15,11 +15,11 @@ export const http = {
       otherOptions?: any // specify all other params from fetchx
     },
   ) => {
-    console.log({ body })
     const response = await fetch(url, {
       method: 'POST',
-      body: body && JSON.stringify(body),
+      body: body && body instanceof FormData ? body : body && JSON.stringify(body),
       headers,
+      credentials: 'include',
       ...otherOptions,
     })
     return response.json()

@@ -31,13 +31,13 @@ export const Students: CollectionConfig = {
     {
       path: '/import',
       method: 'post',
+
       handler: async (req) => {
-        if (false) {
-          return Response.json({ error: 'not found' }, { status: 404 })
+        const formData = await req.formData?.()
+
+        if (formData?.get('file') instanceof File) {
+          parseExcelToJson(formData.get('file') as File)
         }
-        const file = await req.blob?.()
-        parseExcelToJson(file as File)
-        console.log({ file })
         return Response.json({
           message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
         })
@@ -53,15 +53,17 @@ export const Students: CollectionConfig = {
       },
     },
   ],
-  // upload: {
-  //   adminThumbnail: 'thumbnail',
-  //   imageSizes: [
-  //     {
-  //       name: 'thumbnail',
-  //       width: 100,
-  //     },
-  //   ],
-  // },
+  upload: {
+    bulkUpload: true,
+    handlers: [
+      async (req) => {
+        console.log({ req })
+        return Response.json({
+          message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
+        })
+      },
+    ],
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -75,9 +77,12 @@ export const Students: CollectionConfig = {
     title: true,
     slug: true,
   },
+
   hooks: {
     beforeChange: [
       async ({ req, operation, originalDoc, data }) => {
+        // console.log({ files: req.file })
+        // throw new Error('test')
         if (!req.user?.currentRole) {
           throw new APIError('You must logged in to complete the operation', 403, null, true)
         }

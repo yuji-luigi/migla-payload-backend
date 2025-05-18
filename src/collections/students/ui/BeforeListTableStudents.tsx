@@ -19,9 +19,6 @@ const DescriptionStudents = () => {
       formData.append('file', file)
       await http.post('/api/students/import', {
         body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       })
     } catch (error) {
       console.error(error)

@@ -5,9 +5,9 @@ import { isAdmin } from '../hooks/showOnlyAdmin'
 
 export const LogoGlobal: GlobalConfig = {
   slug: 'logoGlobal',
-  // admin: {
-  //   hidden: ({ user }) => !isAdmin(user),
-  // },
+  admin: {
+    hidden: ({ user }) => !isAdmin(user),
+  },
   fields: [
     {
       name: 'logo_square',
