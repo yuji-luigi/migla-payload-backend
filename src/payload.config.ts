@@ -42,7 +42,13 @@ export default buildConfig({
 
   admin: {
     components: {
-      views: {},
+      views: {
+        importPage: {
+          path: '/import',
+
+          Component: '@/components/views/ImportPage',
+        },
+      },
 
       graphics: {
         Logo: '@/components/Logo/LogoServer',

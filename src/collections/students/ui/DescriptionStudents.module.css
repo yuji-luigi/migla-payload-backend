@@ -7,4 +7,7 @@
 
 .button {
   padding: 0.5rem 1rem;
+  background-color: hsl(var(--primary));
+  text-transform: uppercase;
+  font-weight: 600;
 }

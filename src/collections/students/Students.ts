@@ -6,6 +6,7 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
 import { Classroom } from '../../payload-types'
 import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
+import { importStudents } from './studentEndpoints/importStudents'
 export const studentsModal = {
   slug: 'students',
   labels: {
@@ -27,32 +28,7 @@ export const Students: CollectionConfig = {
       en: 'Students',
     },
   },
-  endpoints: [
-    {
-      path: '/import',
-      method: 'post',
-
-      handler: async (req) => {
-        const formData = await req.formData?.()
-
-        if (formData?.get('file') instanceof File) {
-          parseExcelToJson(formData.get('file') as File)
-        }
-        return Response.json({
-          message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
-        })
-      },
-    },
-    {
-      path: '/import/:name/:group',
-      method: 'get',
-      handler: async (req) => {
-        return Response.json({
-          message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
-        })
-      },
-    },
-  ],
+  endpoints: [importStudents],
   upload: {
     bulkUpload: true,
     handlers: [
@@ -99,7 +75,16 @@ export const Students: CollectionConfig = {
     useAsTitle: 'name',
     components: {
       afterList: [{ path: '@/components/Modal/ModalCustom', clientProps: { slug: 'students' } }],
-      beforeListTable: ['@/collections/students/ui/BeforeListTableStudents.tsx'],
+      Description: '@/collections/students/ui/DescriptionStudents.tsx',
+      views: {
+        list: {
+          // actions: ['@/collections/students/ui/UploadStudents.tsx'],
+          // Component: '@/collections/students/ui/UploadStudents.tsx',
+        },
+      },
+      edit: {
+        // Upload: '@/collections/students/ui/UploadStudents.tsx',
+      },
     },
     baseListFilter: async ({ req }) => {
       if (!req.user) {

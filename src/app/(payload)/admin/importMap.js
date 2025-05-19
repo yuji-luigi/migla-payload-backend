@@ -18,7 +18,7 @@ import { SlugComponent as SlugComponent_92cc057d0a2abb4f6cf0307edf59f986 } from 
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { default as default_b22ed9d2c885f105912da1d6cd2d0060 } from '@/components/Modal/ModalCustom'
-import { default as default_8f41cffc6a519897eb2abcce4c723f49 } from '@/collections/students/ui/BeforeListTableStudents.tsx'
+import { default as default_b20ec1ff5f090478282d8dd824fa2ff6 } from '@/collections/students/ui/DescriptionStudents.tsx'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
@@ -27,6 +27,7 @@ import { default as default_fe9ca0c9b67829fe284b73bb77968447 } from '@/component
 import { default as default_a72917c3259d218de48ad4de2331eaac } from '@/components/Logo/LogoServer'
 import { default as default_380afaeea2d45f396e81f036010b9e99 } from '@/components/AfterLogin'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
+import { default as default_4b35a212bf0d5837971e07720d983e6d } from '@/components/views/ImportPage'
 
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
@@ -49,7 +50,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/components/Modal/ModalCustom#default": default_b22ed9d2c885f105912da1d6cd2d0060,
-  "@/collections/students/ui/BeforeListTableStudents.tsx#default": default_8f41cffc6a519897eb2abcce4c723f49,
+  "@/collections/students/ui/DescriptionStudents.tsx#default": default_b20ec1ff5f090478282d8dd824fa2ff6,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
@@ -57,5 +58,6 @@ export const importMap = {
   "@/components/Icon#default": default_fe9ca0c9b67829fe284b73bb77968447,
   "@/components/Logo/LogoServer#default": default_a72917c3259d218de48ad4de2331eaac,
   "@/components/AfterLogin#default": default_380afaeea2d45f396e81f036010b9e99,
-  "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6
+  "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
+  "@/components/views/ImportPage#default": default_4b35a212bf0d5837971e07720d983e6d
 }

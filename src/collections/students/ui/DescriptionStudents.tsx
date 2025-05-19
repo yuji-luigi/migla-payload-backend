@@ -12,14 +12,16 @@ const DescriptionStudents = () => {
 
   async function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     try {
-      console.log(e.target.files)
-      const file = e.target.files?.[0]
-      if (!file) return
-      const formData = new FormData()
-      formData.append('file', file)
-      await http.post('/api/students/import', {
-        body: formData,
-      })
+      if (inputRef.current) {
+        const file = e.target.files?.[0]
+        if (!file) return
+        const formData = new FormData()
+        formData.append('file', file)
+        await http.post('/api/students/import', {
+          body: formData,
+        })
+        inputRef.current.value = ''
+      }
     } catch (error) {
       console.error(error)
     }

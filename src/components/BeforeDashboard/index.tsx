@@ -1,13 +1,14 @@
-// 'use client'
-import { Banner } from '@payloadcms/ui/elements/Banner'
-import React from 'react'
-import { SeedButton } from './SeedButton'
-import './index.scss'
-import { Button, Card, MoreIcon, LinkIcon } from '@payloadcms/ui'
-import { Icon, PiIcon, Plus, PlusIcon } from 'lucide-react' // If using lucide-react
-import { Payload } from 'payload'
 import { I18n } from '@payloadcms/translations'
-import { Classroom, Teacher, TeachersSelect, User } from '../../payload-types'
+import { Button, Card } from '@payloadcms/ui'
+import { Banner } from '@payloadcms/ui/elements/Banner'
+import { Plus } from 'lucide-react' // If using lucide-react
+import { Payload } from 'payload'
+import React from 'react'
+import { User } from '../../payload-types'
+import { AdminBeforeDashboard } from './AdminBeforeDashboard'
+import { SeedButton } from './SeedButton'
+import { TeacherBeforeDashboard } from './TeacherBeforeDashboard'
+import './index.scss'
 
 const baseClass = 'before-dashboard'
 
@@ -23,35 +24,20 @@ const BeforeDashboard = async ({
   i18n: I18n
   [key: string]: any
 }) => {
+  let components: React.ReactNode[] = []
+
   if (user.currentRole?.isTeacher) {
-    const teacherPages = await payload.find({
-      collection: 'teachers',
-      where: { user: { equals: user.id } },
-      select: {
-        name: true,
-        classroom: true,
-        // user: true,
-      },
-      populate: {
-        classrooms: { name: true },
-      },
-    })
-    const teacher = teacherPages.docs[0]
-    console.log(teacher)
-    if (teacher && typeof teacher.classroom === 'object') {
-      const classroomName =
-        teacher.classroom?.name || "Admin must provide a classroom to your account's teacher"
-      return (
-        <>
-          <h3 className="font-bold text-4xl pt-4">
-            {teacher.name} {classroomName}
-          </h3>
-          {/* <pre>{JSON.stringify(teacher, null, 4)}</pre> */}
-        </>
-      )
-    }
+    components.push(
+      <TeacherBeforeDashboard key="teacher-dashboard" payload={payload} user={user} />,
+    )
   }
-  return null
+  if (user.currentRole?.isAdminLevel) {
+    components.push(
+      <AdminBeforeDashboard key="admin-dashboard" payload={payload} user={user} i18n={i18} />,
+    )
+  }
+
+  return <>{components.map((component) => component)}</>
   return (
     // <Card title="Welcome to your dashboard!"></Card>
     <div className={baseClass}>
