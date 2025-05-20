@@ -74,7 +74,12 @@ export const Students: CollectionConfig = {
     defaultColumns: ['name', 'surname', 'slug', 'updatedAt'],
     useAsTitle: 'name',
     components: {
-      afterList: [{ path: '@/components/Modal/ModalCustom', clientProps: { slug: 'students' } }],
+      afterList: [
+        {
+          path: '@/components/Modal/students/StudentsImportModal',
+          clientProps: { slug: 'students' },
+        },
+      ],
       Description: '@/collections/students/ui/DescriptionStudents.tsx',
       views: {
         list: {

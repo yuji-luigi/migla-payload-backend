@@ -2,7 +2,7 @@ import { I18n } from '@payloadcms/translations'
 import { Button, Card } from '@payloadcms/ui'
 import { Banner } from '@payloadcms/ui/elements/Banner'
 import { Plus } from 'lucide-react' // If using lucide-react
-import { Payload } from 'payload'
+import { AdminViewServerProps, Payload, ServerProps } from 'payload'
 import React from 'react'
 import { User } from '../../payload-types'
 import { AdminBeforeDashboard } from './AdminBeforeDashboard'
@@ -12,28 +12,17 @@ import './index.scss'
 
 const baseClass = 'before-dashboard'
 
-const BeforeDashboard = async ({
-  payload,
-  user,
-  req,
-  i18,
-  ...rest
-}: {
-  payload: Payload
-  user: User
-  i18n: I18n
-  [key: string]: any
-}) => {
+const BeforeDashboard = async ({ payload, user, i18n, ...rest }: ServerProps) => {
   let components: React.ReactNode[] = []
 
-  if (user.currentRole?.isTeacher) {
+  if (user?.currentRole?.isTeacher) {
     components.push(
       <TeacherBeforeDashboard key="teacher-dashboard" payload={payload} user={user} />,
     )
   }
-  if (user.currentRole?.isAdminLevel) {
+  if (user?.currentRole?.isAdminLevel) {
     components.push(
-      <AdminBeforeDashboard key="admin-dashboard" payload={payload} user={user} i18n={i18} />,
+      <AdminBeforeDashboard key="admin-dashboard" payload={payload} user={user} i18n={i18n} />,
     )
   }
 

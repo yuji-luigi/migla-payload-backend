@@ -22,7 +22,7 @@ import { Teachers } from './collections/Teachers'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
-import { i18nConfigs } from './lib/i18n/i18n_configs'
+import { CustomTranslations, CustomTranslationsKeys, i18nConfigs } from './lib/i18n/i18n_configs'
 import { LogoGlobal } from './LogoGlobal/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
@@ -42,6 +42,9 @@ export default buildConfig({
 
   admin: {
     components: {
+      // header: ['@/components/Header'],
+      // afterNavLinks: ['@/components/AfterNavLinks'],
+      actions: ['@/components/Actions'],
       views: {
         importPage: {
           path: '/import',

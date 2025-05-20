@@ -1,8 +1,23 @@
-// @tailwind base;
-// @tailwind components;
-// @tailwind utilities;
-// @default;
+.tailwind-scope {
+  // @tailwind base;
+  // @tailwind components;
+  @tailwind utilities;
 
+  // @apply text-base;
+
+  // Optionally reset only here if needed
+  // @layer base {
+  //   /* Safe resets or typography tweaks */
+  // }
+
+  // @layer components {
+  //   /* Your custom components inside .tailwind-scope */
+  // }
+
+  @layer utilities {
+    /* Utilities are only applied inside .tailwind-scope */
+  }
+}
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;

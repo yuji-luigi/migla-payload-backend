@@ -8,5 +8,16 @@ export const jaCustomTranslations = {
     'If you are an teacher': '先生の場合はこちら',
     'If you are an': '{{role}}の場合はこちら',
   },
-  Import: 'インポート',
+  button: {
+    Import: 'ファイル読み込み',
+    Close: '閉じる',
+  },
+  students: {
+    importModal: {
+      title: '学生データのインポート',
+      dropzone:
+        'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
+      dropzoneButton: 'ファイルを読み込む',
+    },
+  },
 }

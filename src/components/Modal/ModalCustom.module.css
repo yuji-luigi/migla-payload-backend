@@ -1,0 +1,10 @@
+.modal {
+  &::before {
+    opacity: 0.3
+  }
+
+  /* background: hsl(var(--color-background)); */
+
+}
+
+.modalWrapper {}

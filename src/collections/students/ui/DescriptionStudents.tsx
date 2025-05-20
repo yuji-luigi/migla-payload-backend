@@ -1,6 +1,6 @@
 'use client'
 
-import { useModal, usePayloadAPI } from '@payloadcms/ui'
+import { LoadingOverlayToggle, useModal, usePayloadAPI } from '@payloadcms/ui'
 import React, { useRef } from 'react'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import styles from './DescriptionStudents.module.css'
@@ -34,11 +34,11 @@ const DescriptionStudents = () => {
           className={`btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup ${styles.button}`}
           onClick={() => {
             // x.children = <div>Hello</div>
-            // x.openModal('students')
-            inputRef.current?.click()
+            x.openModal('students')
+            // inputRef.current?.click()
           }}
         >
-          {t('Import')}
+          {t('button:Import')}
         </button>
       </div>
     </>

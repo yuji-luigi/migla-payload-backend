@@ -1,18 +1,34 @@
 'use client'
-import { FullscreenModal, Modal, useModal } from '@payloadcms/ui'
+import { MinimalTemplate } from '@payloadcms/next/templates'
+import { Button, FullscreenModal, Gutter, Modal, useModal } from '@payloadcms/ui'
+import { ServerProps } from 'payload'
 import React from 'react'
-
-const ModalCustom = ({ slug }: { slug: string }) => {
+import { useCustomTranslations } from '../../lib/i18n/useCustomTranslations'
+import styles from './ModalCustom.module.css'
+const ModalCustom = ({
+  slug,
+  className,
+  children,
+}: {
+  slug: string
+  className?: string
+  children: React.ReactNode
+}) => {
   console.log({ slug })
   const { closeModal } = useModal()
+  const { t } = useCustomTranslations()
   return (
     <Modal
+      closeOnBlur
       slug={slug}
+      className={`confirmation-modal ${className} ${styles.modal}`}
       onClose={() => {
         closeModal(slug)
       }}
     >
-      <div style={{ backgroundColor: 'red' }}>Hello</div>
+      <MinimalTemplate style={{ zIndex: 10 }} className="confirmation-modal__template">
+        <div className={`confirmation-modal__wrapper ${styles.modalWrapper}`}>{children}</div>
+      </MinimalTemplate>
     </Modal>
   )
 }
