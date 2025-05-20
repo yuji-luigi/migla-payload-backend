@@ -11,10 +11,20 @@ export const jaCustomTranslations = {
   button: {
     Import: 'ファイル読み込み',
     Close: '閉じる',
+    Submit: '送信',
+    Change: '変更',
   },
   students: {
     importModal: {
       title: '学生データのインポート',
+      dropzone:
+        'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
+      dropzoneButton: 'ファイルを読み込む',
+    },
+  },
+  users: {
+    importModal: {
+      title: 'ユーザーのインポート',
       dropzone:
         'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
       dropzoneButton: 'ファイルを読み込む',

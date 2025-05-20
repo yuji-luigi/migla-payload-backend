@@ -14,7 +14,6 @@ const ModalCustom = ({
   className?: string
   children: React.ReactNode
 }) => {
-  console.log({ slug })
   const { closeModal } = useModal()
   const { t } = useCustomTranslations()
   return (

@@ -9,6 +9,8 @@ export const enCustomTranslations = {
   button: {
     Import: 'Import',
     Close: 'Close',
+    Submit: 'Submit',
+    Change: 'Change',
   },
   students: {
     importModal: {
@@ -16,6 +18,13 @@ export const enCustomTranslations = {
       dropzone: 'Drop files here or click to upload',
       import: 'Import',
       close: 'Close',
+      dropzoneButton: 'Import',
+    },
+  },
+  users: {
+    importModal: {
+      title: 'Import Users',
+      dropzone: 'Drop files here or click to upload',
       dropzoneButton: 'Import',
     },
   },

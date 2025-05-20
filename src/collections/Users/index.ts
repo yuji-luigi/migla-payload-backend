@@ -51,7 +51,10 @@ export const Users: CollectionConfig = {
   admin: {
     defaultColumns: ['name', 'surname', 'email'],
     useAsTitle: 'fullname',
-    components: {},
+    components: {
+      // beforeList
+      // Description
+    },
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)
     },

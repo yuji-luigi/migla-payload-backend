@@ -180,3 +180,7 @@
 .display-none {
   display: none;
 }
+
+.color-primary {
+  background-color: hsl(var(--primary));
+}
