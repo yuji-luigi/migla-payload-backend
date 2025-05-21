@@ -76,7 +76,7 @@ export const Students: CollectionConfig = {
     components: {
       afterList: [
         {
-          path: '@/components/Modal/students/StudentsImportModal',
+          path: '@/collections/students/ui/StudentsImportModal',
           clientProps: { slug: 'students' },
         },
       ],

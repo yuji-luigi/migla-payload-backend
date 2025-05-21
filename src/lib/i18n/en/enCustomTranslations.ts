@@ -26,6 +26,13 @@ export const enCustomTranslations = {
       title: 'Import Users',
       dropzone: 'Drop files here or click to upload',
       dropzoneButton: 'Import',
+      
+    },
+    importTeachers: {
+      title: 'Import Teachers',
+      dropzone: 'Drop files here or click to upload',
+      dropzoneButton: 'Import',
     },
   },
+
 }

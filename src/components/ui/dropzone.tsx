@@ -16,7 +16,6 @@ export const DropzoneHandler = ({
 
   async function handleChange(files: FileList | null) {
     try {
-      console.log(files)
       if (files) {
         const file = files?.[0]
         if (!file) return

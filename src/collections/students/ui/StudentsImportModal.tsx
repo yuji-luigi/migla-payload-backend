@@ -1,20 +1,29 @@
 'use client'
 import React, { useRef, useState } from 'react'
-import ModalCustom from '../ModalCustom'
+import ModalCustom from '../../../components/Modal/ModalCustom'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import { Button, Dropzone, useModal } from '@payloadcms/ui'
-import { DropzoneHandler } from '../../ui/dropzone'
+import { DropzoneHandler } from '../../../components/ui/dropzone'
+import RHFFormModal from '../../../components/Modal/form_modal/RHFFormModal'
+import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
 
 export const StudentsImportModal = ({ slug }: { slug: string }) => {
   const { t } = useCustomTranslations()
   const { closeModal } = useModal()
-
+  function handleSubmit(data: any) {
+    console.log({ data })
+  }
   return (
-    <ModalCustom slug={slug} className="tailwind-scope">
-      <h3>{t('students:importModal:title')}</h3>
-      <DropzoneHandler
+    <RHFFormModal
+      submitCallback={handleSubmit}
+      slug={slug}
+      title={t('students:importModal:title')}
+      className="tailwind-scope"
+    >
+      <RHFDropzone
+        name="studentsExcel"
         dropzoneText={t('students:importModal:dropzone')}
-        dropzoneButtonText={t('students:importModal:dropzoneButton')}
+        dropzoneButtonText={t('button:dropzoneImport')}
       />
       {/* <Dropzone onChange={(e) => console.log(e)}>
         <div className="flex flex-col items-center justify-center gap-4 w-full">
@@ -23,7 +32,7 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
             className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
             onClick={() => inputRef.current?.click()}
           >
-            {t('students:importModal:dropzoneButton')}
+            {t('button:dropzoneImport')}
           </button>
         </div>
       </Dropzone>
@@ -43,11 +52,11 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
           {t('button:Close')}
         </Button>
 
-        <Button size="large" onClick={() => closeModal(slug)} className="color-primary">
+        <Button size="large" type="submit" className="color-primary">
           {t('button:Submit')}
         </Button>
       </div>
-    </ModalCustom>
+    </RHFFormModal>
   )
 }
 

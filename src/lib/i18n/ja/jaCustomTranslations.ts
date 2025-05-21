@@ -13,6 +13,7 @@ export const jaCustomTranslations = {
     Close: '閉じる',
     Submit: '送信',
     Change: '変更',
+    dropzoneImport: 'ファイルを読み込む',
   },
   students: {
     importModal: {
@@ -25,6 +26,12 @@ export const jaCustomTranslations = {
   users: {
     importModal: {
       title: 'ユーザーのインポート',
+      dropzone:
+        'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
+      dropzoneButton: 'ファイルを読み込む',
+    },
+    importTeachers: {
+      title: '先生データのインポート',
       dropzone:
         'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
       dropzoneButton: 'ファイルを読み込む',
