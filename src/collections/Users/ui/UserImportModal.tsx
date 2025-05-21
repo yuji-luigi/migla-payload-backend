@@ -4,8 +4,9 @@ import ModalCustom from '@/components/Modal/ModalCustom'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import { Button, Dropzone, useModal } from '@payloadcms/ui'
 import { http } from '../../../lib/fetch/http'
+import ImportModal from '../../../components/Modal/import_modal/ImportModal'
 
-export const StudentsImportModal = ({ slug }: { slug: string }) => {
+export const UserImportModal = ({ slug }: { slug: string }) => {
   const { t } = useCustomTranslations()
   const [file, setFile] = useState<File | null>(null)
   const { closeModal } = useModal()
@@ -30,10 +31,11 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
       console.error(error)
     }
   }
+  return <ImportModal slug={slug} />
   return (
     <ModalCustom slug={slug} className="tailwind-scope">
       <h3>{t('users:importModal:title')}</h3>
-      {file && file.name}
+      {/* {file && file.name} */}
       <Dropzone onChange={(e) => handleChange(e)}>
         <div className="flex flex-col items-center justify-center gap-4 w-full">
           <p>{t('users:importModal:dropzone')}</p>
@@ -65,4 +67,4 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
   )
 }
 
-export default StudentsImportModal
+export default UserImportModal

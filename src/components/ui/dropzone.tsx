@@ -1,5 +1,5 @@
-import { Dropzone } from '@payloadcms/ui'
-import React, { useRef, useState } from 'react'
+import { Dropzone, useModal } from '@payloadcms/ui'
+import React, { useEffect, useRef, useState } from 'react'
 import { useCustomTranslations } from '../../lib/i18n/useCustomTranslations'
 import { FilePreview } from './file_preview/FilePreview'
 
@@ -13,6 +13,7 @@ export const DropzoneHandler = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null)
   const { t } = useCustomTranslations()
+
   async function handleChange(files: FileList | null) {
     try {
       console.log(files)
@@ -31,6 +32,7 @@ export const DropzoneHandler = ({
       console.error(error)
     }
   }
+
   return (
     <>
       <Dropzone onChange={(e) => console.log(e)}>

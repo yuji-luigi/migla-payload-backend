@@ -53,7 +53,18 @@ export const Users: CollectionConfig = {
     useAsTitle: 'fullname',
     components: {
       // beforeList
-      // Description
+      beforeList: [
+        {
+          path: '@/collections/Users/ui/UserImportModal.tsx',
+          clientProps: { slug: 'users' },
+          serverProps: { slug: 'users' },
+        },
+      ],
+      Description: {
+        path: '@/collections/Users/ui/DescriptionUsers.tsx',
+        serverProps: { slug: 'users' },
+        clientProps: { slug: 'users' },
+      },
     },
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)

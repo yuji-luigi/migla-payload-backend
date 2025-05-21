@@ -8,26 +8,7 @@ import { DropzoneHandler } from '../../ui/dropzone'
 export const StudentsImportModal = ({ slug }: { slug: string }) => {
   const { t } = useCustomTranslations()
   const { closeModal } = useModal()
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [file, setFile] = useState<File | null>(null)
-  async function handleChange(files: FileList | null) {
-    try {
-      console.log(files)
-      if (files) {
-        const file = files?.[0]
-        if (!file) return
-        setFile(file)
-        // const formData = new FormData()
-        // formData.append('file', file)
-        // await http.post('/api/students/import', {
-        //   body: formData,
-        // })
-        // inputRef.current.value = ''
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
+
   return (
     <ModalCustom slug={slug} className="tailwind-scope">
       <h3>{t('students:importModal:title')}</h3>
