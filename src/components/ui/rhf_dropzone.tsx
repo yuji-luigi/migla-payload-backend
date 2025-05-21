@@ -9,11 +9,13 @@ export const RHFDropzone = ({
   dropzoneButtonText,
   name,
   isMultiple = false,
+  // actions,
 }: {
   dropzoneText: string
   dropzoneButtonText: string
   name: string
   isMultiple?: boolean
+  // actions?: React.ReactNode
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const { control, watch } = useFormContext()
@@ -46,12 +48,16 @@ export const RHFDropzone = ({
           <Dropzone onChange={(files) => files && handleChange(files, onChange)}>
             <div className="flex flex-col items-center justify-center gap-4 w-full">
               {file ? <FilePreview file={file} /> : <p>{dropzoneText}</p>}
-              <button
-                className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
-                onClick={() => inputRef.current?.click()}
-              >
-                {file ? t('button:Change') : dropzoneButtonText}
-              </button>
+              <div className="flex flex-row gap-2">
+                <button
+                  className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  {file ? t('button:Change') : dropzoneButtonText}
+                </button>
+
+                {/* {actions && actions} */}
+              </div>
             </div>
           </Dropzone>
 

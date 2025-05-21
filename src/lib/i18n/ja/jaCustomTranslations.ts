@@ -26,9 +26,14 @@ export const jaCustomTranslations = {
   users: {
     importModal: {
       title: 'ユーザーのインポート',
+      subtitle: '任意の種類のユーザーをインポートしてください。',
       dropzone:
         'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
       dropzoneButton: 'ファイルを読み込む',
+      importTeachers: '先生データのインポート',
+      importTeachersExampleExcel: '先生データの例',
+      importParents: '保護者データのインポート',
+      importParentsExampleExcel: '保護者データの例',
     },
     importTeachers: {
       title: '先生データのインポート',

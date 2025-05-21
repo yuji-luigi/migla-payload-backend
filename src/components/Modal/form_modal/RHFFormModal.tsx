@@ -9,13 +9,15 @@ export const RHFFormModal = ({
   children,
   title,
   submitCallback,
+  subtitle,
 }: {
   /** used also for form id */
   slug: string
   children: React.ReactNode
-  title: string
+  title?: string
   className?: string
   submitCallback: (data: any) => void
+  subtitle?: string
 }) => {
   const methods = useForm()
 
@@ -27,7 +29,8 @@ export const RHFFormModal = ({
           className="flex flex-col gap-4"
           id={slug}
         >
-          <h2>{title}</h2>
+          {title && <h2>{title}</h2>}
+          {subtitle && <h3>{subtitle}</h3>}
           {children}
           {/* <RHFDropzone
             name="excel"
