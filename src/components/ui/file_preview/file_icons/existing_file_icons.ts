@@ -1,0 +1,2 @@
+// you can generate this file uncommenting the payload.config.ts file. Search for "generate the icon files"
+  export const existingFileIcons = ['excel_color.svg', 'image_light.svg', 'json_dark.svg', 'json_light.svg', 'mov_color.svg', 'mov_dark.svg', 'mov_light.svg', 'movie_dark.svg', 'movie_light.svg', 'mp3_color.svg', 'mp4_color.svg', 'pdf_dark.svg', 'pdf_light.svg'] as const

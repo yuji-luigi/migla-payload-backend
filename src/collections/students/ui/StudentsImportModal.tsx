@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef, useState } from 'react'
+import React, { ReactNode, useRef, useState } from 'react'
 import ModalCustom from '../../../components/Modal/ModalCustom'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import { Button, Dropzone, useModal } from '@payloadcms/ui'
@@ -47,15 +47,6 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
         aria-hidden="true"
         className="display-none"
       /> */}
-      <div className="confirmation-modal__controls justify-end">
-        <Button size="large" onClick={() => closeModal(slug)} className="">
-          {t('button:Close')}
-        </Button>
-
-        <Button size="large" type="submit" className="color-primary">
-          {t('button:Submit')}
-        </Button>
-      </div>
     </RHFFormModal>
   )
 }

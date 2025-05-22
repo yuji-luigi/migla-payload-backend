@@ -23,7 +23,6 @@ export const RHFDropzone = ({
   const file = watch(name)
   async function handleChange(files: FileList | null, onChange: (value: File) => void) {
     try {
-      console.log(files)
       if (files) {
         const file = files?.[0]
         if (!file) return

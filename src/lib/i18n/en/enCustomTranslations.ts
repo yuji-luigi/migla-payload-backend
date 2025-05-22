@@ -11,6 +11,7 @@ export const enCustomTranslations = {
     Close: 'Close',
     Submit: 'Submit',
     Change: 'Change',
+    dropzoneImport: 'Import',
   },
   students: {
     importModal: {
@@ -27,6 +28,8 @@ export const enCustomTranslations = {
       subtitle: 'Import desired type of users.',
       dropzone: 'Drop files here or click to upload',
       dropzoneButton: 'Import',
+      importUsers: 'Import mixed users',
+      importExampleExcel: 'Example Excel file for teachers',
       importTeachers: 'Import Teachers',
       importTeachersExampleExcel: 'Example Excel file for teachers',
       importParents: 'Import Parents',

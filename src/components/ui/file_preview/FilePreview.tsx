@@ -1,44 +1,29 @@
 import React from 'react'
+import { getFileIconPath } from './file_icons/file_icon_map'
+import { useConfig, useTheme } from '@payloadcms/ui'
 
 export const FilePreview = ({ file }: { file: File }) => {
-  console.log(file)
+  const { theme } = useTheme()
   const fileType = file.type.split('/')[0]
   const isImage = fileType === 'image'
   const isVideo = fileType === 'video'
-  const isExcel = fileType === 'application'
+  const extension = file.name.split('.').pop() || ''
   if (isImage) {
     return <img src={URL.createObjectURL(file)} alt={file.name} />
   }
-  if (isExcel) {
-    return <img src={'/icons/excel_color.svg'} alt={file.name} />
+  if (isVideo) {
+    return <img src={'/icons/mov_light.svg'} alt={file.name} />
+  }
+  const iconPath = getFileIconPath(extension, theme)
+  if (!iconPath) {
+    return <div>No icon found</div>
   }
   return (
     <div className="flex items-center gap-2">
-      <img
-        style={{ background: 'white', objectFit: 'cover' }}
-        height={40}
-        width={40}
-        src={'/icons/mov_light.svg'}
-        alt={file.name}
-      />
-      <img
-        style={{ background: 'white' }}
-        height={40}
-        width={40}
-        src={'/icons/mov_dark.svg'}
-        alt={file.name}
-      />
-      <img
-        // style={{ background: 'white' }}
-        height={40}
-        width={40}
-        src={'/icons/excel_color.svg'}
-        alt={file.name}
-      />
+      <img style={{ background: 'white' }} height={40} width={40} src={iconPath} alt={file.name} />
 
       <div>
-        <p>{file.name}</p>
-        <p>{file.type}</p>
+        <p className="text-lg">{file.name}</p>
       </div>
     </div>
   )

@@ -10,7 +10,7 @@ import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
 export const UserImportModal = ({ slug }: { slug: string }) => {
   const { t } = useCustomTranslations()
   function handleSubmit(data: any) {
-    console.log(data)
+    // console.log(data)
   }
   return (
     <RHFFormModal
@@ -21,24 +21,14 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
       submitCallback={handleSubmit}
     >
       <div className="flex flex-col gap-2">
+        <button className="btn btn--icon-style-without-border btn--size-small  btn--style-pill my-0 w-fit mr-auto">
+          {t('users:importModal:importExampleExcel')}
+        </button>
         <RHFDropzone
-          name="teachers"
-          dropzoneText={t('users:importModal:importTeachers')}
+          name="users"
+          dropzoneText={t('users:importModal:importUsers')}
           dropzoneButtonText={t('button:dropzoneImport')}
         />
-        <button className="btn btn--icon-style-without-border btn--size-small  btn--style-pill my-0 w-fit ml-auto">
-          {t('users:importModal:importTeachersExampleExcel')}
-        </button>
-      </div>
-      <div className="flex flex-col gap-2">
-        <RHFDropzone
-          name="parents"
-          dropzoneText={t('users:importModal:importParents')}
-          dropzoneButtonText={t('button:dropzoneImport')}
-        />
-        <button className="btn btn--icon-style-without-border btn--size-small  btn--style-pill my-0 w-fit ml-auto">
-          {t('users:importModal:importParentsExampleExcel')}
-        </button>
       </div>
     </RHFFormModal>
   )

@@ -30,6 +30,8 @@ export const jaCustomTranslations = {
       dropzone:
         'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
       dropzoneButton: 'ファイルを読み込む',
+      importUsers: 'ユーザーのインポート',
+      importExampleExcel: '読み込みエクセルの例',
       importTeachers: '先生データのインポート',
       importTeachersExampleExcel: '先生データの例',
       importParents: '保護者データのインポート',

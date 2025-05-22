@@ -26,8 +26,21 @@ import { CustomTranslations, CustomTranslationsKeys, i18nConfigs } from './lib/i
 import { LogoGlobal } from './LogoGlobal/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
+import fs from 'fs'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+// // 1. Point at your icons folder
+// const iconsDir = path.join(dirname, '../public', 'icons', 'file_icons')
+// // 2. Read all the SVG filenames
+// const svgFiles = fs.readdirSync(iconsDir).filter((f) => f.endsWith('.svg'))
+
+// fs.writeFileSync(
+//   path.join(dirname, 'components', 'ui', 'file_preview', 'file_icons', 'existing_file_icons.ts'),
+//   `// you can generate this file uncommenting the payload.config.ts file. Search for "generate the icon files"
+//   export const existingFileIcons = [${svgFiles.map((f) => `'${f}'`).join(', ')}] as const`,
+// )
 
 export default buildConfig({
   i18n: i18nConfigs,

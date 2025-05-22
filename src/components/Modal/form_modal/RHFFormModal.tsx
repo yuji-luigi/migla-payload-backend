@@ -1,7 +1,9 @@
 'use client'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import ModalCustom from '../ModalCustom'
+import { Button, useModal } from '@payloadcms/ui'
+import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 
 export const RHFFormModal = ({
   slug,
@@ -10,6 +12,8 @@ export const RHFFormModal = ({
   title,
   submitCallback,
   subtitle,
+  customActions,
+  actions,
 }: {
   /** used also for form id */
   slug: string
@@ -18,9 +22,12 @@ export const RHFFormModal = ({
   className?: string
   submitCallback: (data: any) => void
   subtitle?: string
+  customActions?: ReactNode
+  actions?: ReactNode
 }) => {
   const methods = useForm()
-
+  const { closeModal } = useModal()
+  const { t } = useCustomTranslations()
   return (
     <ModalCustom slug={slug} className={`tailwind-scope ${className}`}>
       <FormProvider {...methods}>
@@ -59,6 +66,24 @@ export const RHFFormModal = ({
           aria-hidden="true"
           className="display-none"
           /> */}
+          {!customActions && (
+            <div className="confirmation-modal__controls justify-end">
+              {actions ? (
+                actions
+              ) : (
+                <>
+                  <Button size="large" onClick={() => closeModal(slug)} className="">
+                    {t('button:Close')}
+                  </Button>
+
+                  <Button size="large" type="submit" className="color-primary">
+                    {t('button:Submit')}
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
+          {customActions}
         </form>
       </FormProvider>
     </ModalCustom>
