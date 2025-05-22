@@ -6,7 +6,7 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
 import { Classroom } from '../../payload-types'
 import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
-import { importStudents } from './studentEndpoints/importStudents'
+import { importStudents } from '../Users/usersEndpoints/importUsers'
 export const studentsModal = {
   slug: 'students',
   labels: {

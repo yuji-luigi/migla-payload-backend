@@ -3,6 +3,7 @@ import { authenticated } from '../../access/authenticated'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
 import { Role, User } from '../../payload-types'
+import { importUsers } from './usersEndpoints/importUsers'
 export const Users: CollectionConfig = {
   slug: 'users',
   labels: {
@@ -15,6 +16,7 @@ export const Users: CollectionConfig = {
       en: 'Users',
     },
   },
+  endpoints: [importUsers],
   access: {
     admin: authenticated,
 

@@ -9,12 +9,14 @@ export const RHFDropzone = ({
   dropzoneButtonText,
   name,
   isMultiple = false,
+  accept,
   // actions,
 }: {
   dropzoneText: string
   dropzoneButtonText: string
   name: string
   isMultiple?: boolean
+  accept?: string[]
   // actions?: React.ReactNode
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -61,6 +63,7 @@ export const RHFDropzone = ({
           </Dropzone>
 
           <input
+            accept={accept?.join(',')}
             type="file"
             // onChange={(e) => {
             //   console.log(e.target.files)
