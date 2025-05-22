@@ -1,6 +1,8 @@
 import { Endpoint } from 'payload'
 import { parseExcelToJson } from '../../../lib/excel/parseExcelToJson'
-import { Classroom, Student, User } from '../../../payload-types'
+import { Classroom, Role, Student, User } from '../../../payload-types'
+import { cn } from '../../../utilities/ui'
+import { consolidateHTMLConverters } from '@payloadcms/richtext-lexical'
 
 export const importUsers: Omit<Endpoint, 'root'> = {
   path: '/import',
@@ -9,38 +11,30 @@ export const importUsers: Omit<Endpoint, 'root'> = {
     const formData = await req.formData?.()
 
     if (formData?.get('file') instanceof File) {
-      const json = (await parseExcelToJson(formData.get('file') as File)) as StudentExcel[]
-      console.log(json)
+      const json = (await parseExcelToJson(formData.get('file') as File)) as UserExcel[]
+      const distRoles = [...new Set(json.map((user) => user.役割))]
       const parentRoles = await req.payload.find({
         collection: 'roles',
         where: {
-          isParent: {
-            equals: true,
+          slug: {
+            in: distRoles,
           },
         },
       })
-      const paginatedParents = await req.payload?.find({
-        collection: 'users',
-        where: {
-          roles: {
-            in: parentRoles.docs.map((role) => role.id),
-          },
-        },
-      })
-      const paginatedClassrooms = await req.payload?.find({
-        collection: 'classrooms',
+      const notFoundRoles = distRoles.filter(
+        (role) => !parentRoles.docs.some((r) => r.slug === role),
+      )
+
+      const { dto, errors } = ExcelToUser({
+        excelRows: json,
+        rolesDb: parentRoles.docs,
       })
 
-      const { dto, errors } = ExcelToStudent({
-        json,
-        parents: paginatedParents.docs,
-        classrooms: paginatedClassrooms.docs,
-      })
-      const promises = dto.filter(Boolean).map((student) => {
-        if (!student) return
+      const promises = dto.filter(Boolean).map((user) => {
+        if (!user) return
         return req.payload.create({
           collection: 'students',
-          data: student as unknown as Student,
+          data: user as unknown as Student,
         })
       })
       await Promise.all(promises)
@@ -52,7 +46,7 @@ export const importUsers: Omit<Endpoint, 'root'> = {
   },
 }
 
-type StudentExcel = {
+type UserExcel = {
   メール: string
   名: string
   姓: string
@@ -60,42 +54,41 @@ type StudentExcel = {
   電話番号: number
 }
 
-function ExcelToStudent({
-  json,
-  parents,
-  classrooms,
-}: {
-  json: StudentExcel[]
-  parents: User[]
-  classrooms: Classroom[]
-}) {
-  const errors: string[] = []
-  const studentsDto = json.map((student) => {
-    const parent = parents.find((parent) => parent.email === student.メール)
-    const classroom = classrooms.find((classroom) => classroom.name === student.学年)
-    if (!parent) {
-      errors.push(`Parent not found for student ${student.メール}`)
+function ExcelToUser({ excelRows, rolesDb }: { excelRows: UserExcel[]; rolesDb: Role[] }) {
+  const errors: Record<string, string> = {}
+
+  const dto = excelRows.map((user) => {
+    const role = rolesDb.filter((role) =>
+      user.役割
+        .toLowerCase()
+        .split(',')
+        .some((roleInExcel) => roleInExcel === role.slug?.toLowerCase()),
+    )
+    if (!role) {
+      errors[user.メール] = `役割が見つかりません: ${user.役割}`
       return null
     }
-    if (!classroom) {
-      errors.push(`Classroom not found for student ${student.学年}`)
-      return null
+    if (role.some((r) => r.isParent)) {
+      // errors[user.メール] = `保護者はインポートできません: ${user.役割}`
+      // return null
+    }
+    if (role.some((r) => r.isTeacher)) {
+      // TODO: do this after the user is created
+      console.log(
+        'teacher found need to create the teacher table with this user after creation of the user.',
+      )
     }
     return {
-      surname: student.姓,
-      name: student.名,
-      guardianSurname: student.保護者姓,
-      guardianName: student.保護者名,
-      email: student.メール,
-      phone: student.電話番号,
-      grade: student.学年,
-      parent: parent?.id,
-      classroom: classroom?.id,
+      surname: user.姓,
+      name: user.名,
+      email: user.メール,
+      phone: user.電話番号,
+      roles: role.map((r) => r.id),
     }
   })
 
   return {
-    dto: studentsDto,
+    dto: dto,
     errors,
   }
 }

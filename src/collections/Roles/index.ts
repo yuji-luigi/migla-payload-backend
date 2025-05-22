@@ -114,7 +114,7 @@ export const Roles: CollectionConfig<'roles'> = {
 
     // TODO: set access control flags for section level to dynamically set access control flags for section level
 
-    ...slugField('name'),
+    ...slugField('name', { slugOverrides: { required: true } }),
   ],
 
   timestamps: true,
