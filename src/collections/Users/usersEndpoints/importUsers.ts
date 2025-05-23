@@ -40,8 +40,6 @@ export const importUsers: Omit<Endpoint, 'root'> = {
       })
 
       const promises = dto.filter(Boolean).map((user) => async () => {
-        console.log('user')
-        console.log(user)
         if (!user) return
         const updateUser = sameUsers.docs.find((u) => u.email === user.email)
         let userId = updateUser?.id
