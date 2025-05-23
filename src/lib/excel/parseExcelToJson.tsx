@@ -2,7 +2,6 @@ import * as XLSX from 'xlsx'
 
 export async function parseExcelToJson(file: File) {
   // load the file
-  console.log(file)
   const workbook = XLSX.read(await file.arrayBuffer(), { type: 'binary' })
   const sheetNames = workbook.SheetNames
 
