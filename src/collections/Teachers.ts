@@ -31,6 +31,7 @@ export const Teachers: CollectionConfig = {
       name: 'user',
       type: 'relationship',
       relationTo: 'users',
+      unique: true,
       // maxDepth: 0,
       hasMany: false,
     },
@@ -40,7 +41,7 @@ export const Teachers: CollectionConfig = {
       relationTo: 'classrooms',
       hasMany: false,
     },
-    ...slugField(),
+    ...slugField('name'),
   ],
   timestamps: true,
 }

@@ -10,6 +10,7 @@ export const RHFDropzone = ({
   name,
   isMultiple = false,
   accept,
+  onChangeCallback,
   // actions,
 }: {
   dropzoneText: string
@@ -17,6 +18,7 @@ export const RHFDropzone = ({
   name: string
   isMultiple?: boolean
   accept?: string[]
+  onChangeCallback?: (file: File) => void
   // actions?: React.ReactNode
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -33,12 +35,7 @@ export const RHFDropzone = ({
           console.log
           inputRef.current.value = ''
         }
-        // const formData = new FormData()
-        // formData.append('file', file)
-        // await http.post('/api/students/import', {
-        //   body: formData,
-        // })
-        // inputRef.current.value = ''
+        onChangeCallback?.(file)
       }
     } catch (error) {
       console.error(error)

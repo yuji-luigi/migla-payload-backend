@@ -1,0 +1,6 @@
+.errorText {
+  text-wrap: nowrap;
+  border-radius: 4px;
+  background: hsl(var(--error));
+  /* color: hsl(var(--error)); */
+}

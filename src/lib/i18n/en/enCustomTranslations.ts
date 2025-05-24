@@ -34,7 +34,7 @@ export const enCustomTranslations = {
       importTeachersExampleExcel: 'Example Excel file for teachers',
       importParents: 'Import Parents',
       importParentsExampleExcel: 'Example Excel file for parents',
-      loadingText: 'User data is creating. It can take some minutes...',
+      loadingText: 'User data is being created. It can take some minutes...',
     },
     importTeachers: {
       title: 'Import Teachers',

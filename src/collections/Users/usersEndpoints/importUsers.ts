@@ -1,8 +1,9 @@
-import { APIError, Endpoint, Payload } from 'payload'
+import { APIError, Endpoint, PaginatedDocs, Payload } from 'payload'
 import { parseExcelToJson } from '../../../lib/excel/parseExcelToJson'
 import { Classroom, Role, Student, User } from '../../../payload-types'
 import { cn } from '../../../utilities/ui'
 import { consolidateHTMLConverters } from '@payloadcms/richtext-lexical'
+import { notEmpty } from '../../../lib/notEmpty'
 
 type resultUser = {
   fullname: string
@@ -10,6 +11,12 @@ type resultUser = {
   roles?: string[]
 }
 
+type ImportResult = {
+  updated: resultUser[]
+  created: resultUser[]
+  errors: Record<string, string>[]
+  message?: string
+}
 export const importUsers: Omit<Endpoint, 'root'> = {
   path: '/import',
   method: 'post',
@@ -53,79 +60,11 @@ export const importUsers: Omit<Endpoint, 'root'> = {
         rolesDb: parentRoles.docs,
         payload: req.payload,
       })
-
-      const promises = dto.filter(Boolean).map((user) => async () => {
-        if (!user) return
-        try {
-          const updateUser = sameUsers.docs.find((u) => u.email === user.email)
-          let userId = updateUser?.id
-          if (updateUser) {
-            const updatedUser = await req.payload.update({
-              collection: 'users',
-              id: updateUser.id,
-              data: user,
-            })
-            result.updated.push({
-              fullname: `${updatedUser.name} ${updatedUser.surname}`,
-              email: updatedUser.email,
-              roles: user.roles?.map((role) =>
-                typeof role === 'object' ? role.name : role.toString(),
-              ),
-            })
-          } else {
-            const newUser = await req.payload.create({
-              collection: 'users',
-              data: user,
-            })
-            result.updated.push({
-              fullname: `${newUser.name} ${newUser.surname}`,
-              email: newUser.email,
-              roles: user.roles?.map((role) =>
-                typeof role === 'object' ? role.name : role.toString(),
-              ),
-            })
-            userId = newUser.id
-          }
-          if (
-            user.roles?.some((r) => typeof r === 'object' && 'isTeacher' in r && r.isTeacher) &&
-            user.classroomName
-          ) {
-            const classroom = await req.payload.find({
-              collection: 'classrooms',
-              where: {
-                name: { equals: user.classroomName },
-              },
-            })
-            if (classroom.docs[0]) {
-              await req.payload.create({
-                collection: 'teachers',
-                data: {
-                  user: userId,
-                  name: `${user.surname} ${user.name}`,
-                  classroom: classroom.docs[0].id,
-                },
-              })
-            }
-          }
-        } catch (error: unknown) {
-          if (error instanceof APIError) {
-            const path = error.data.errors?.[0]?.path
-            const fieldKey = user.email || `${user.name} ${user.surname}`
-
-            result.errors.push({
-              [fieldKey]: `${error.message}: ${user[path as keyof UserDto] || ''}`,
-            })
-          }
-        }
-      })
-      await Promise.allSettled(promises.map((run) => run())).then((result) => {
-        if ('reason' in result) {
-        }
-        // console.log(result)
-      })
-      // if (result.errors.length) {
-      //   throw new APIError(JSON.stringify(result.errors), 400, null, true)
-      // }
+      const promises = dto.filter(notEmpty).map(
+        // wrap in promise to make it callable after.
+        (user) => async () => handleCreateUsers({ user, sameUsers, payload: req.payload, result }),
+      )
+      await Promise.all(promises.map((run) => run()))
       return Response.json(result)
     }
 
@@ -137,6 +76,7 @@ type UserExcel = {
   メール: string
   名: string
   姓: string
+  読み: string
   役割: string
   電話番号: number
   クラス: string
@@ -146,6 +86,7 @@ type UserDto = Omit<
   User & {
     classroomName?: string
     roles: Role[] | null
+    slug: string
   },
   'id' | 'updatedAt' | 'createdAt'
 >
@@ -157,6 +98,7 @@ function isUserDto(u: UserDto | null): u is UserDto {
   if (u.name === null) return false
   if (u.email === null) return false
   if (u.password === null) return false
+  if (u.slug === null) return false
   if (u?.roles?.length === 0) return false
   return true
 }
@@ -194,7 +136,10 @@ function ExcelToUser({
         email: user.メール,
         classroomName: user.クラス,
         password: user.パスワード,
-        // phone: user.電話番号,
+        slug: user.読み,
+        /* .replace(/ /g, '-')
+          .replace(/[^\w-]+/g, '')
+          .toLowerCase() */
         roles: roles,
       }
     })
@@ -205,3 +150,108 @@ function ExcelToUser({
   }
 }
 // function ExcelToStudent(json: )
+
+function buildResultUser(user: UserDto) {
+  return {
+    fullname: `${user.name} ${user.surname}`,
+    email: user.email,
+    roles: user.roles?.map((role) => (typeof role === 'object' ? role.name : role.toString())),
+  }
+}
+
+function userHasTeacherRole(user: UserDto) {
+  return user.roles?.some((r) => typeof r === 'object' && 'isTeacher' in r && r.isTeacher)
+}
+
+async function handleCreateTeacher({
+  user,
+  payload,
+  classroomName,
+}: {
+  user: UserDto & { id: number }
+  payload: Payload
+  classroomName: string
+}) {
+  const classroom = await payload.find({
+    collection: 'classrooms',
+    where: {
+      name: { equals: user.classroomName },
+    },
+  })
+  if (classroom.docs[0]) {
+    await payload.create({
+      collection: 'teachers',
+      data: {
+        user: user.id,
+        name: `${user.surname} ${user.name}`,
+        classroom: classroom.docs[0].id,
+        slug: user.slug,
+      },
+    })
+  }
+}
+
+async function handleCreateUsers({
+  user,
+  sameUsers,
+  payload,
+  result,
+}: {
+  user: (UserDto & { roles: Role[] | null }) | null
+  sameUsers: PaginatedDocs<User>
+  payload: Payload
+  result: ImportResult
+}) {
+  if (!user) return
+  try {
+    const foundUser = sameUsers.docs.find((u) => u.email === user.email)
+    let userId = foundUser?.id
+    if (foundUser) {
+      const updatedUser = await payload.update({
+        collection: 'users',
+        id: foundUser.id,
+        data: user,
+      })
+      result.updated.push(buildResultUser(user))
+      //! DELETING ALL THE TEACHERS RECORDS FOR UPDATING USER. SINCE IF THE USER HAS TEACHER ROLE IT WILL BE RE CREATED.
+      await payload.delete({
+        collection: 'teachers',
+        where: {
+          user: {
+            equals: updatedUser.id,
+          },
+        },
+      })
+
+      if (userHasTeacherRole(user) && user.classroomName) {
+        await handleCreateTeacher({
+          user: { ...user, id: updatedUser.id },
+          payload: payload,
+          classroomName: user.classroomName,
+        })
+      }
+    } else {
+      const newUser = await payload.create({
+        collection: 'users',
+        data: user,
+      })
+      result.updated.push(buildResultUser(user))
+      userId = newUser.id
+      if (userHasTeacherRole(user) && user.classroomName) {
+        await handleCreateTeacher({
+          user: { ...user, id: newUser.id },
+          payload: payload,
+          classroomName: user.classroomName,
+        })
+      }
+    }
+  } catch (error: unknown) {
+    if (error instanceof APIError) {
+      const path = error.data.errors?.[0]?.path
+      const fieldKey = user.email || `${user.name} ${user.surname}`
+      result.errors.push({
+        [fieldKey]: `${error.message}: ${user[path as keyof UserDto] || ''}`,
+      })
+    }
+  }
+}

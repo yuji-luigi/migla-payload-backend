@@ -14,14 +14,16 @@ import {
 import { http } from '../../../lib/fetch/http'
 import ImportModal, { RHFFormModal } from '../../../components/Modal/form_modal/RHFFormModal'
 import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
-import { useFormContext } from 'react-hook-form'
-import { ErrorText } from '../../../components/error/ErrorText'
+import { useForm, useFormContext } from 'react-hook-form'
+import { AlertMessage } from '../../../components/error/AlertMessage'
 
 export const UserImportModal = ({ slug }: { slug: string }) => {
   const { handleWhereChange } = useListQuery()
-  const [successfulErrors, setSuccessfulErrors] = useState<any[] | null>(null)
   const { closeModal } = useModal()
   const { t } = useCustomTranslations()
+  const methods = useForm()
+  const [successfulErrors, setSuccessfulErrors] = useState<any[] | null>(null)
+
   async function handleSubmit(data: any) {
     try {
       const formData = new FormData()
@@ -36,20 +38,28 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
       })
       await handleWhereChange?.({})
       console.log(response)
-      toast('success', {
-        duration: 10000,
-        description: (
-          <>
-            <p>created users({response.created.length})</p>
-            <p>updated users({response.updated.length})</p>
-            <p>error users({response.errors.length})</p>
-          </>
-        ),
-      })
+
       if (!response.errors.length) {
         closeModal(slug)
       } else {
+        toast.error('Error while operation', {
+          description: (
+            <>
+              <p>Error users({response.errors.length})</p>
+            </>
+          ),
+        })
         setSuccessfulErrors(response.errors)
+      }
+      if (response.created.length || response.updated.length) {
+        toast.success('Success', {
+          description: (
+            <>
+              <p>created users({response.created.length})</p>
+              <p>updated users({response.updated.length})</p>
+            </>
+          ),
+        })
       }
     } catch (error) {
       console.error(error)
@@ -58,6 +68,7 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
   return (
     <>
       <RHFFormModal
+        methods={methods}
         slug={slug}
         title={t('users:importModal:title')}
         subtitle={t('users:importModal:subtitle')}
@@ -67,15 +78,15 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
       >
         <div className="flex flex-col gap-2">
           {successfulErrors && (
-            <ErrorText>
+            <AlertMessage className="my-4">
               {successfulErrors.map((error) =>
-                Object.entries(error).map(([key, value]: [string, string]) => (
+                Object.entries(error).map(([key, value]: [string, unknown]) => (
                   <p key={key}>
-                    {key} {value}
+                    {key} {value as string}
                   </p>
                 )),
               )}
-            </ErrorText>
+            </AlertMessage>
           )}
           <a
             target="_blank"
@@ -85,6 +96,7 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
             <>{t('users:importModal:importExampleExcel')}</>
           </a>
           <RHFDropzone
+            onChangeCallback={(_: File) => setSuccessfulErrors(null)}
             name="users"
             accept={['.xlsx', '.xls']}
             dropzoneText={t('users:importModal:importUsers')}

@@ -1,6 +1,6 @@
 'use client'
 import React, { ReactNode } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, UseFormReturn } from 'react-hook-form'
 import ModalCustom from '../ModalCustom'
 import { Button, LoadingOverlay, LoadingOverlayToggle, useModal } from '@payloadcms/ui'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
@@ -15,6 +15,7 @@ export const RHFFormModal = ({
   customActions,
   actions,
   loadingText,
+  methods,
 }: {
   /** used also for form id */
   slug: string
@@ -26,8 +27,8 @@ export const RHFFormModal = ({
   customActions?: ReactNode
   actions?: ReactNode
   loadingText?: string
+  methods: UseFormReturn<any>
 }) => {
-  const methods = useForm()
   const { closeModal } = useModal()
   const { t } = useCustomTranslations()
   return (
