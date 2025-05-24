@@ -1,5 +1,5 @@
 .errorText {
-  background: var(--error);
   text-wrap: nowrap;
+  border-radius: 4px;
 
 }

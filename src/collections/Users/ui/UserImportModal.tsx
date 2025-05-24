@@ -6,6 +6,7 @@ import {
   Button,
   Dropzone,
   LoadingOverlayToggle,
+  toast,
   useListQuery,
   useModal,
   usePayloadAPI,
@@ -35,6 +36,16 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
       })
       await handleWhereChange?.({})
       console.log(response)
+      toast('success', {
+        duration: 10000,
+        description: (
+          <>
+            <p>created users({response.created.length})</p>
+            <p>updated users({response.updated.length})</p>
+            <p>error users({response.errors.length})</p>
+          </>
+        ),
+      })
       if (!response.errors.length) {
         closeModal(slug)
       } else {

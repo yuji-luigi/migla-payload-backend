@@ -110,7 +110,6 @@ export const importUsers: Omit<Endpoint, 'root'> = {
         } catch (error: unknown) {
           if (error instanceof APIError) {
             const path = error.data.errors?.[0]?.path
-            console.log('path', error.data.errors[0].path)
             const fieldKey = user.email || `${user.name} ${user.surname}`
 
             result.errors.push({
