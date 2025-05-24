@@ -34,11 +34,17 @@ export const enCustomTranslations = {
       importTeachersExampleExcel: 'Example Excel file for teachers',
       importParents: 'Import Parents',
       importParentsExampleExcel: 'Example Excel file for parents',
+      loadingText: 'User data is creating. It can take some minutes...',
     },
     importTeachers: {
       title: 'Import Teachers',
       dropzone: 'Drop files here or click to upload',
       dropzoneButton: 'Import',
+    },
+  },
+  errors: {
+    excel: {
+      valueNotProvided: 'Value is not provided in the cell',
     },
   },
 }

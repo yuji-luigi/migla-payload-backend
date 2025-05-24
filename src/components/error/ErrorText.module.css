@@ -1,0 +1,5 @@
+.errorText {
+  background: var(--error);
+  text-wrap: nowrap;
+
+}

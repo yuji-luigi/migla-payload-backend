@@ -29,6 +29,10 @@ export const RHFDropzone = ({
         const file = files?.[0]
         if (!file) return
         onChange(file)
+        if (inputRef.current) {
+          console.log
+          inputRef.current.value = ''
+        }
         // const formData = new FormData()
         // formData.append('file', file)
         // await http.post('/api/students/import', {
@@ -51,6 +55,7 @@ export const RHFDropzone = ({
               {file ? <FilePreview file={file} /> : <p>{dropzoneText}</p>}
               <div className="flex flex-row gap-2">
                 <button
+                  type="button"
                   className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
                   onClick={() => inputRef.current?.click()}
                 >

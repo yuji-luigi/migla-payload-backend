@@ -3,7 +3,7 @@ export const http = {
     const response = await fetch(url)
     return response.json()
   },
-  post: async (
+  post: async <ResponseData = unknown>(
     url: string,
     {
       body,
@@ -22,7 +22,21 @@ export const http = {
       credentials: 'include',
       ...otherOptions,
     })
-    return response.json()
+    console.log(response)
+    if (response.ok) {
+      return (await response.json()) as ResponseData
+    }
+    const data = await response.json()
+    console.error(
+      data.errors
+        .map((error: any) => Object.entries(error).map(([key, value]) => `${key}: ${value}`))
+        .split('\n'),
+    )
+    throw new Error(
+      data.errors.map((error: any) =>
+        Object.entries(error).map(([key, value]) => `${key}: ${value}`),
+      ),
+    )
   },
   put: async (url: string, body: any) => {
     const response = await fetch(url, {

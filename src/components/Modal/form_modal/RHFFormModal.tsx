@@ -2,7 +2,7 @@
 import React, { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import ModalCustom from '../ModalCustom'
-import { Button, useModal } from '@payloadcms/ui'
+import { Button, LoadingOverlay, LoadingOverlayToggle, useModal } from '@payloadcms/ui'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 
 export const RHFFormModal = ({
@@ -14,6 +14,7 @@ export const RHFFormModal = ({
   subtitle,
   customActions,
   actions,
+  loadingText,
 }: {
   /** used also for form id */
   slug: string
@@ -24,69 +25,59 @@ export const RHFFormModal = ({
   subtitle?: string
   customActions?: ReactNode
   actions?: ReactNode
+  loadingText?: string
 }) => {
   const methods = useForm()
   const { closeModal } = useModal()
   const { t } = useCustomTranslations()
   return (
-    <ModalCustom slug={slug} className={`tailwind-scope ${className}`}>
-      <FormProvider {...methods}>
-        <form
-          onSubmit={methods.handleSubmit(submitCallback)}
-          className="flex flex-col gap-4"
-          id={slug}
-        >
-          {title && <h2>{title}</h2>}
-          {subtitle && <h3>{subtitle}</h3>}
-          {children}
-          {/* <RHFDropzone
-            name="excel"
-            dropzoneText={t('students:importModal:dropzone')}
-            dropzoneButtonText={t('button:dropzoneImport')}
-          /> */}
-          {/* <Dropzone onChange={(e) => console.log(e)}>
-        <div className="flex flex-col items-center justify-center gap-4 w-full">
-        <p>{t('students:importModal:dropzone')}</p>
-        <button
-        className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
-        onClick={() => inputRef.current?.click()}
-        >
-        {t('button:dropzoneImport')}
-        </button>
-        </div>
-        </Dropzone>
-        
-        <input
-        type="file"
-        ref={inputRef}
-        onChange={(e) => {
-          console.log(e.target.files)
-          handleChange(e.target.files)
-          }}
-          aria-hidden="true"
-          className="display-none"
-          /> */}
-          {!customActions && (
-            <div className="confirmation-modal__controls justify-end">
-              {actions ? (
-                actions
-              ) : (
-                <>
-                  <Button size="large" onClick={() => closeModal(slug)} className="">
-                    {t('button:Close')}
-                  </Button>
+    <>
+      <ModalCustom slug={slug} className={`tailwind-scope ${className}`}>
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(submitCallback)}
+            className="flex flex-col gap-4"
+            id={slug}
+          >
+            {title && <h2>{title}</h2>}
+            {subtitle && <h3>{subtitle}</h3>}
+            {children}
 
-                  <Button size="large" type="submit" className="color-primary">
-                    {t('button:Submit')}
-                  </Button>
-                </>
-              )}
-            </div>
-          )}
-          {customActions}
-        </form>
-      </FormProvider>
-    </ModalCustom>
+            {!customActions && (
+              <div className="confirmation-modal__controls justify-end">
+                {actions ? (
+                  actions
+                ) : (
+                  <>
+                    <Button
+                      size="large"
+                      type="button"
+                      onClick={() => {
+                        closeModal(slug)
+                        methods.reset()
+                      }}
+                      className=""
+                    >
+                      {t('button:Close')}
+                    </Button>
+
+                    <Button size="large" type="submit" className="color-primary">
+                      {t('button:Submit')}
+                    </Button>
+                  </>
+                )}
+              </div>
+            )}
+            {customActions}
+          </form>
+        </FormProvider>
+      </ModalCustom>
+      <LoadingOverlayToggle
+        loadingText={loadingText}
+        name="form-modal"
+        show={methods.formState.isSubmitting}
+      />
+    </>
   )
 }
 

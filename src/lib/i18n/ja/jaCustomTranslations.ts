@@ -36,12 +36,18 @@ export const jaCustomTranslations = {
       importTeachersExampleExcel: '先生データの例',
       importParents: '保護者データのインポート',
       importParentsExampleExcel: '保護者データの例',
+      loadingText: 'ユーザーデータを作成しています。しばらくお待ちください。',
     },
     importTeachers: {
       title: '先生データのインポート',
       dropzone:
         'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
       dropzoneButton: 'ファイルを読み込む',
+    },
+  },
+  errors: {
+    excel: {
+      valueNotProvided: 'セルに値がありません。',
     },
   },
 }
