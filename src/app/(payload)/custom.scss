@@ -148,6 +148,7 @@
     }
     & .app-header {
       background-color: hsl(var(--primary));
+      margin-bottom: 1rem;
     }
     & [data-theme='dark'] {
       background-image: none;
