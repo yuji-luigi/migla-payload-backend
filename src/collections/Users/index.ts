@@ -80,32 +80,43 @@ export const Users: CollectionConfig = {
         const t = req.i18n.t as any // <-- Cast to your custom keys
 
         try {
-          let roleId = null
+          let roleIds: number[] | null = null
 
           const referer = req.headers.get('referer')
-          console.log(referer)
           if (referer && referer.includes('/admin/create-first-user')) {
             return user
           }
 
           if (referer && referer.startsWith('http')) {
             const url = new URL(referer)
-            roleId = Number(url.searchParams.get('role'))
+            roleIds = [Number(url.searchParams.get('role'))]
           } else if (req.query.role) {
-            roleId = Number(req.query.role)
+            roleIds = [Number(req.query.role)]
           }
 
-          if (!roleId) {
+          if (req.query['role-name'] == 'parent') {
+            const paginatedRoles = await req.payload.find({
+              collection: 'roles',
+              where: {
+                isParent: {
+                  equals: true,
+                },
+              },
+            })
+            roleIds = paginatedRoles.docs.map((role) => role.id)
+          }
+
+          if (!roleIds?.length) {
             logError({ err: 'Please provide a role in the query or referer', payload: req.payload })
             throw new APIError('Role not found', 500, null, true)
           }
 
-          if (user.roles.includes(roleId)) {
+          const matchedRole = user.roles.find((userRole: number) => roleIds.includes(userRole))
+          if (matchedRole) {
             const currentRole = await req.payload.findByID({
               collection: 'roles',
-              id: roleId,
+              id: matchedRole,
             })
-            console.log('currentRole', currentRole)
             // set the user role in the DB level. to authorize in dashboard.
             await req.payload.update({
               collection: collection.slug, // Use the collection name dynamically
