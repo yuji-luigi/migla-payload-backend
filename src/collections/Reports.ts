@@ -47,18 +47,34 @@ export const Reports: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: {
+        ja: 'タイトル',
+        en: 'Title',
+        it: 'Titolo',
+      },
+
       type: 'text',
       required: true,
       localized: true,
     },
     {
       name: 'subtitle',
+      label: {
+        ja: 'サブタイトル',
+        en: 'Subtitle',
+        it: 'Sottotitolo',
+      },
       type: 'text',
       required: true,
       localized: true,
     },
     {
       name: 'body',
+      label: {
+        ja: '本文',
+        en: 'Body',
+        it: 'Corpo',
+      },
       type: 'textarea',
 
       required: true,
@@ -67,6 +83,11 @@ export const Reports: CollectionConfig = {
 
     {
       name: 'attachments',
+      label: {
+        ja: '添付ファイル',
+        en: 'Attachments',
+        it: 'Allegati',
+      },
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
@@ -75,6 +96,11 @@ export const Reports: CollectionConfig = {
     // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN in Form
     {
       name: 'students',
+      label: {
+        ja: '学生',
+        en: 'Students',
+        it: 'Studenti',
+      },
       type: 'relationship',
       relationTo: 'students',
       hasMany: true,
@@ -85,6 +111,11 @@ export const Reports: CollectionConfig = {
 
     {
       name: 'createdBy',
+      label: {
+        ja: '作成者',
+        en: 'Created By',
+        it: 'Creato da',
+      },
       type: 'relationship',
       relationTo: 'users',
       hasMany: false,
@@ -92,6 +123,11 @@ export const Reports: CollectionConfig = {
     },
     {
       name: 'teacher',
+      label: {
+        ja: '先生',
+        en: 'Teacher',
+        it: 'Docente',
+      },
       type: 'relationship',
       relationTo: 'teachers',
       hasMany: false,

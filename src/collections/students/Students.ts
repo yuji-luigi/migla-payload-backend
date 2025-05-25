@@ -6,7 +6,6 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
 import { Classroom } from '../../payload-types'
 import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
-import { importStudents } from '../Users/usersEndpoints/importUsers'
 export const studentsModal = {
   slug: 'students',
   labels: {
@@ -28,7 +27,7 @@ export const Students: CollectionConfig = {
       en: 'Students',
     },
   },
-  endpoints: [importStudents],
+  // endpoints: [importStudents],
   upload: {
     bulkUpload: true,
     handlers: [
@@ -74,13 +73,13 @@ export const Students: CollectionConfig = {
     defaultColumns: ['name', 'surname', 'slug', 'updatedAt'],
     useAsTitle: 'name',
     components: {
-      afterList: [
-        {
-          path: '@/collections/students/ui/StudentsImportModal',
-          clientProps: { slug: 'students' },
-        },
-      ],
-      Description: '@/collections/students/ui/DescriptionStudents.tsx',
+      // afterList: [
+      //   {
+      //     path: '@/collections/students/ui/StudentsImportModal',
+      //     clientProps: { slug: 'students' },
+      //   },
+      // ],
+      // Description: '@/collections/students/ui/DescriptionStudents.tsx',
       views: {
         list: {
           // actions: ['@/collections/students/ui/UploadStudents.tsx'],

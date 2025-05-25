@@ -406,7 +406,7 @@ export interface Role {
   isAdminLevel?: boolean | null;
   isTeacher?: boolean | null;
   isParent?: boolean | null;
-  slug?: string | null;
+  slug: string;
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -781,6 +781,7 @@ export interface Form {
 export interface Teacher {
   id: number;
   name: string;
+  isAssistant?: boolean | null;
   user?: (number | null) | User;
   classroom?: (number | null) | Classroom;
   slug?: string | null;
@@ -880,7 +881,7 @@ export interface Homework {
  */
 export interface Setting {
   id: number;
-  locale: 'en' | 'fr' | 'es';
+  locale: 'en' | 'ja' | 'it';
   user?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
@@ -1391,6 +1392,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface TeachersSelect<T extends boolean = true> {
   name?: T;
+  isAssistant?: T;
   user?: T;
   classroom?: T;
   slug?: T;

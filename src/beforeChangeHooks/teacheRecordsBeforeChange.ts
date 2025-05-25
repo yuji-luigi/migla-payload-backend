@@ -24,8 +24,9 @@ export const teacherOperationBeforeChange: CollectionBeforeChangeHook = async ({
       true,
     )
   }
+  //NOTE: in case of update do not set the createdBy, teacher, and students fields. it can be modified by the teacher
   if (operation === 'update') {
-    // return
+    return
   }
   data.createdBy = req.user.id
 
