@@ -24,7 +24,18 @@ import { isAdmin } from '../../hooks/showOnlyAdmin'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
-
+  labels: {
+    singular: {
+      ja: 'ページ',
+      en: 'Page',
+      it: 'Pagina',
+    },
+    plural: {
+      ja: 'ページ',
+      en: 'Pages',
+      it: 'Pagine',
+    },
+  },
   access: {
     create: async ({ req }) => isAdmin(req.user),
     delete: async ({ req }) => isAdmin(req.user),
@@ -66,12 +77,22 @@ export const Pages: CollectionConfig<'pages'> = {
   fields: [
     {
       name: 'title',
+      label: {
+        ja: 'タイトル',
+        en: 'Title',
+        it: 'Titolo',
+      },
       type: 'text',
       localized: true,
       required: true,
     },
     {
       type: 'tabs',
+      label: {
+        ja: 'コンテンツ',
+        en: 'Content',
+        it: 'Contenuto',
+      },
       tabs: [
         {
           fields: [hero],
@@ -81,6 +102,11 @@ export const Pages: CollectionConfig<'pages'> = {
           fields: [
             {
               name: 'layout',
+              label: {
+                ja: 'レイアウト',
+                en: 'Layout',
+                it: 'Layout',
+              },
               type: 'blocks',
               localized: true,
               blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],

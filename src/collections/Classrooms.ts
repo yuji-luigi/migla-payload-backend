@@ -11,12 +11,12 @@ export const Classrooms: CollectionConfig = {
   labels: {
     singular: {
       ja: 'クラス',
-      en: 'Class',
+      en: 'Classroom',
       it: 'Classe',
     },
     plural: {
       ja: 'クラス',
-      en: 'Classes',
+      en: 'Classrooms',
       it: 'Classi',
     },
   },
@@ -52,9 +52,11 @@ export const Classrooms: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      unique: true,
       localized: true,
       required: true,
     },
+
     {
       name: 'description',
       type: 'textarea',

@@ -8,6 +8,19 @@ import { User } from '../payload-types'
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications',
+  labels: {
+    singular: {
+      ja: '通知',
+      en: 'Notification',
+      it: 'Notifica',
+    },
+    plural: {
+      ja: '通知',
+      en: 'Notifications',
+      it: 'Notifiche',
+    },
+  },
+
   // only admins
   access: {
     create: authenticated,
@@ -24,16 +37,33 @@ export const Notifications: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: {
+        ja: 'タイトル',
+        en: 'Title',
+        it: 'Titolo',
+      },
+      localized: true,
+      index: true,
       type: 'text',
       required: true,
     },
     {
       name: 'body',
+      label: {
+        ja: '本文',
+        en: 'Body',
+        it: 'Corpo',
+      },
       type: 'textarea',
       required: true,
     },
     {
       name: 'type',
+      label: {
+        ja: 'タイプ',
+        en: 'Type',
+        it: 'Tipo',
+      },
       type: 'select',
       required: true,
       // options: ['payment', 'general_notification', 'event'],
@@ -45,6 +75,11 @@ export const Notifications: CollectionConfig = {
     },
     {
       name: 'attachments',
+      label: {
+        ja: '添付ファイル',
+        en: 'Attachments',
+        it: 'Allegati',
+      },
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
@@ -52,6 +87,11 @@ export const Notifications: CollectionConfig = {
     // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN
     {
       name: 'students',
+      label: {
+        ja: '通知対象者(学生)',
+        en: 'Notification Target (Students)',
+        it: 'Destinatari Notifiche (Studenti)',
+      },
       type: 'relationship',
       relationTo: 'students',
       hasMany: true,

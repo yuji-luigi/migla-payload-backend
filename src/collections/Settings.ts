@@ -8,6 +8,18 @@ import { isAdmin } from '../hooks/showOnlyAdmin'
 
 export const Settings: CollectionConfig = {
   slug: 'settings',
+  labels: {
+    singular: {
+      ja: '設定',
+      en: 'Setting',
+      it: 'Impostazione',
+    },
+    plural: {
+      ja: '設定',
+      en: 'Settings',
+      it: 'Impostazioni',
+    },
+  },
   access: {
     create: authenticated,
     delete: authenticated,
@@ -24,11 +36,21 @@ export const Settings: CollectionConfig = {
     {
       name: 'locale',
       type: 'select',
+      label: {
+        ja: '言語',
+        en: 'Language',
+        it: 'Lingua',
+      },
       required: true,
-      options: ['en', 'fr', 'es'],
+      options: ['en', 'ja', 'it'],
     },
     {
       name: 'user',
+      label: {
+        ja: 'ユーザー',
+        en: 'User',
+        it: 'Utente',
+      },
       type: 'relationship',
       relationTo: 'users',
       hasMany: false,

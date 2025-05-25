@@ -24,6 +24,12 @@ type LinkType = (options?: {
 export const link: LinkType = ({ appearances, disableLabel = false, overrides = {} } = {}) => {
   const linkResult: GroupField = {
     name: 'link',
+    label: {
+      ja: 'リンク',
+      en: 'Link',
+      it: 'Link',
+    },
+
     type: 'group',
     admin: {
       hideGutter: true,
@@ -42,11 +48,19 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
             defaultValue: 'reference',
             options: [
               {
-                label: 'Internal link',
+                label: {
+                  ja: '内部リンク',
+                  en: 'Internal link',
+                  it: 'Link Interno',
+                },
                 value: 'reference',
               },
               {
-                label: 'Custom URL',
+                label: {
+                  ja: '外部リンク',
+                  en: 'External link',
+                  it: 'Link Esterno',
+                },
                 value: 'custom',
               },
             ],
@@ -60,7 +74,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
               },
               width: '50%',
             },
-            label: 'Open in new tab',
+            label: {
+              ja: '新しいタブで開く',
+              en: 'Open in new tab',
+              it: 'Apri in una nuova scheda',
+            },
           },
         ],
       },
@@ -74,7 +92,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'reference',
       },
-      label: 'Document to link to',
+      label: {
+        ja: 'リンク先ドキュメント',
+        en: 'Document to link to',
+        it: 'Documento da collegare',
+      },
       relationTo: ['pages', 'posts'],
       required: true,
     },
@@ -84,7 +106,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'custom',
       },
-      label: 'Custom URL',
+      label: {
+        ja: 'カスタムURL',
+        en: 'Custom URL',
+        it: 'URL Personalizzato',
+      },
       required: true,
     },
   ]
@@ -108,7 +134,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           admin: {
             width: '50%',
           },
-          label: 'Label',
+          label: {
+            ja: 'ラベル',
+            en: 'Label',
+            it: 'Etichetta',
+          },
           required: true,
         },
       ],
@@ -126,6 +156,11 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
 
     linkResult.fields.push({
       name: 'appearance',
+      label: {
+        ja: '外観',
+        en: 'Appearance',
+        it: 'Aspetto',
+      },
       type: 'select',
       admin: {
         description: 'Choose how the link should be rendered.',

@@ -195,14 +195,19 @@ export const Users: CollectionConfig = {
       hooks: {
         afterRead: [
           async ({ siblingData, req }) => {
-            // return `${siblingData.name} ${siblingData.surname}`
             if (!('name' in siblingData)) {
               const user = await req.payload.findByID({
                 collection: 'users',
                 id: siblingData.id,
               })
+              if (req.locale === 'ja') {
+                return `${user.surname} ${user.name}`
+              }
               return `${user.name} ${user.surname}`
             } else {
+              if (req.locale === 'ja') {
+                return `${siblingData.surname} ${siblingData.name}`
+              }
               return `${siblingData.name} ${siblingData.surname}`
             }
           },

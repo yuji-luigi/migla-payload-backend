@@ -1,3 +1,4 @@
+import { Label } from '@/components/ui/label'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
@@ -28,7 +29,20 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
+
     overrides: {
+      labels: {
+        singular: {
+          ja: 'リダイレクト',
+          en: 'Redirect',
+          it: 'Reindirizzamento',
+        },
+        plural: {
+          ja: 'リダイレクト',
+          en: 'Redirects',
+          it: 'Reindirizzamenti',
+        },
+      },
       admin: {
         hidden: ({ user }) => {
           return !isAdmin(user as unknown as User)
@@ -66,6 +80,18 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formSubmissionOverrides: {
+      labels: {
+        singular: {
+          ja: 'フォーム 送信',
+          en: 'Form Submission',
+          it: 'Invio Form',
+        },
+        plural: {
+          ja: 'フォーム 送信',
+          en: 'Form Submissions',
+          it: 'Invii Form',
+        },
+      },
       admin: {
         hidden: ({ user }) => {
           return !isAdmin(user as unknown as User)
@@ -73,6 +99,18 @@ export const plugins: Plugin[] = [
       },
     },
     formOverrides: {
+      labels: {
+        singular: {
+          ja: 'フォーム',
+          en: 'Form',
+          it: 'Form',
+        },
+        plural: {
+          ja: 'フォーム',
+          en: 'Forms',
+          it: 'Forms',
+        },
+      },
       admin: {
         hidden: ({ user }) => {
           return !isAdmin(user as unknown as User)
@@ -103,6 +141,18 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      labels: {
+        singular: {
+          ja: '検索',
+          en: 'Search',
+          it: 'Ricerca',
+        },
+        plural: {
+          ja: '検索',
+          en: 'Searches',
+          it: 'Ricerca',
+        },
+      },
       admin: {
         hidden: ({ user }) => {
           return !isAdmin(user as unknown as User)

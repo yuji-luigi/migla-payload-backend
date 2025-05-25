@@ -3,9 +3,24 @@ import type { GlobalConfig } from 'payload'
 import { link } from '@/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
 import { isAdmin } from '../hooks/showOnlyAdmin'
+import { LabelsT } from '../types/my_types/labels'
 
-export const Footer: GlobalConfig = {
+export const Footer: GlobalConfig & {
+  labels?: LabelsT
+} = {
   slug: 'footer',
+  labels: {
+    singular: {
+      ja: 'フッター',
+      en: 'Footer',
+      it: 'Footer',
+    },
+    plural: {
+      ja: 'フッター',
+      en: 'Footers',
+      it: 'Footers',
+    },
+  },
   access: {
     read: ({ req }) => {
       return isAdmin(req.user)
@@ -14,6 +29,11 @@ export const Footer: GlobalConfig = {
   fields: [
     {
       name: 'navItems',
+      label: {
+        ja: 'ナビゲーションアイテム',
+        en: 'Navigation Items',
+        it: 'Elementi di Navigazione',
+      },
       type: 'array',
       fields: [
         link({

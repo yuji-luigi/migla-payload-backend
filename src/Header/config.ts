@@ -1,11 +1,26 @@
-import type { GlobalConfig } from 'payload'
+import type { GlobalConfig, LabelFunction, StaticLabel } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
 import { isAdmin } from '../hooks/showOnlyAdmin'
+import { LabelsT } from '../types/my_types/labels'
 
-export const Header: GlobalConfig = {
+export const Header: GlobalConfig & {
+  labels?: LabelsT
+} = {
   slug: 'header',
+  labels: {
+    singular: {
+      ja: 'ヘッダー',
+      en: 'Header',
+      it: 'Header',
+    },
+    plural: {
+      ja: 'ヘッダー',
+      en: 'Headers',
+      it: 'Headers',
+    },
+  },
   access: {
     read: ({ req }) => {
       return isAdmin(req.user)
@@ -14,6 +29,11 @@ export const Header: GlobalConfig = {
   fields: [
     {
       name: 'navItems',
+      label: {
+        ja: 'ナビゲーションアイテム',
+        en: 'Navigation Items',
+        it: 'Elementi di Navigazione',
+      },
       type: 'array',
       fields: [
         link({
