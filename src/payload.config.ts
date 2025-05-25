@@ -61,8 +61,7 @@ export default buildConfig({
       views: {
         importPage: {
           path: '/import',
-
-          Component: '@/components/views/ImportPage',
+          Component: '@/components/views/ImportPage', // just an example of how to create custom routes with payload props passed in to the page
         },
       },
 
@@ -79,7 +78,7 @@ export default buildConfig({
 
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-      beforeDashboard: ['@/components/BeforeDashboard'],
+      // beforeDashboard: ['@/components/BeforeDashboard'],
     },
 
     importMap: {
