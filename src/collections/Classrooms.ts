@@ -27,6 +27,38 @@ export const Classrooms: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  hooks: {
+    // NOTE: too much to test. when necessary set unset readonly the teachers field
+    // afterChange: [
+    //   async ({ req: { user, payload }, doc, operation }) => {
+    //     const paginatedTeachers = await payload.find({
+    //       collection: 'teachers',
+    //       where: { classroom: { equals: doc.id } },
+    //     })
+    //     const opTeachers = paginatedTeachers.docs.filter(
+    //       (opTeacher: Teacher) => !doc.teachers.includes(opTeacher.id),
+    //     )
+    //     setImmediate(() => {
+    //       opTeachers.forEach(async (opTeacher: Teacher) => {
+    //         await payload.update({
+    //           collection: 'teachers',
+    //           id: opTeacher.id,
+    //           data: {
+    //             classroom: null,
+    //           },
+    //         })
+    //       })
+    //     })
+    //     const teachersIds = doc.teachers.map((teacher: number) => teacher)
+    //     const classroom = await payload.findByID({
+    //       collection: 'classrooms',
+    //       id: doc.id,
+    //     })
+    //     console.log('classroom', classroom)
+    //     console.log('teachersIds', teachersIds)
+    //   },
+    // ],
+  },
   admin: {
     useAsTitle: 'name',
     hidden: ({ user }) => {
