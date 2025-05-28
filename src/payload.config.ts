@@ -52,7 +52,7 @@ export default buildConfig({
   auth: {
     jwtOrder: ['Bearer', 'cookie'],
   },
-
+  graphQL: {},
   admin: {
     components: {
       // header: ['@/components/Header'],

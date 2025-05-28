@@ -76,7 +76,7 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeLogin: [
       async ({ req, user, collection }) => {
-        // return user
+        console.log(req)
         const t = req.i18n.t as any // <-- Cast to your custom keys
 
         try {

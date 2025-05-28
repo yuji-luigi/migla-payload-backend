@@ -10,7 +10,7 @@ export async function findTeacherRoleOfUser({
 }: {
   user: Partial<User>
   payload: Payload
-}): Promise<Teacher & { classroom: Classroom }> {
+}): Promise<(Teacher & { classroom: Classroom }) | null> {
   const teacherPag = await payload.find({
     collection: 'teachers',
     where: { user: { equals: user.id } },

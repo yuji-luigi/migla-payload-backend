@@ -19,6 +19,21 @@
         "webRoot": "${workspaceFolder}"
       },
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Next.js: Debug API (Payload-friendly)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "env": {
+        "NODE_OPTIONS": "--inspect"
+      },
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal",
+      "outputCapture": "std",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }

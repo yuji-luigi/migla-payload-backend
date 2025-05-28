@@ -28,21 +28,36 @@ export const Students: CollectionConfig = {
     },
   },
   // endpoints: [importStudents],
-  upload: {
-    bulkUpload: true,
-    handlers: [
-      async (req) => {
-        console.log({ req })
-        return Response.json({
-          message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
-        })
-      },
-    ],
-  },
+  // upload: {
+  //   bulkUpload: true,
+  //   handlers: [
+  //     async (req) => {
+  //       console.log({ req })
+  //       return Response.json({
+  //         message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
+  //       })
+  //     },
+  //   ],
+  // },
+
   access: {
     create: authenticated,
     delete: authenticated,
-    read: authenticatedOrPublished,
+    read: ({ req: { user } }) => {
+      if (!user?.currentRole) {
+        // TODO: it is called in login page find out why
+        return false
+        // throw new APIError('you must login to get this data', 403, null, true)
+      }
+      if (user?.currentRole.isParent) {
+        return {
+          parent: {
+            equals: user.id,
+          },
+        }
+      }
+      return true
+    },
     update: authenticated,
   },
   // This config controls what's populated by default when a page is referenced
@@ -61,11 +76,22 @@ export const Students: CollectionConfig = {
         if (!req.user?.currentRole) {
           throw new APIError('You must logged in to complete the operation', 403, null, true)
         }
-        const foundTeacher = await findTeacherRoleOfUser({ user: req.user, payload: req.payload })
-        data.classroom =
-          typeof foundTeacher?.classroom === 'object'
-            ? foundTeacher?.classroom?.id
-            : foundTeacher?.classroom
+        if (req.user.currentRole.isAdminLevel) {
+          return
+        }
+
+        if (req.user.currentRole.isTeacher) {
+          const foundTeacher = await findTeacherRoleOfUser({ user: req.user, payload: req.payload })
+          data.classroom =
+            typeof foundTeacher?.classroom === 'object'
+              ? foundTeacher?.classroom?.id
+              : foundTeacher?.classroom
+
+          return
+        }
+        throw new APIError(
+          'not implemented for non admin, non teacher role. need to set up the logic',
+        )
       },
     ],
   },
@@ -90,6 +116,7 @@ export const Students: CollectionConfig = {
         // Upload: '@/collections/students/ui/UploadStudents.tsx',
       },
     },
+
     baseListFilter: async ({ req }) => {
       if (!req.user) {
         throw new APIError('You must logged in to complete the operation', 403, null, true)

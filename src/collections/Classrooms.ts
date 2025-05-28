@@ -1,3 +1,4 @@
+import { Teacher } from './../payload-types'
 import { APIError, type CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
@@ -61,6 +62,13 @@ export const Classrooms: CollectionConfig = {
       name: 'description',
       type: 'textarea',
       localized: true,
+    },
+    {
+      name: 'teachers',
+      type: 'relationship',
+      admin: { readOnly: true },
+      relationTo: 'teachers',
+      hasMany: true,
     },
     ...slugField(),
   ],
