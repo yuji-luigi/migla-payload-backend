@@ -1,6 +1,7 @@
 import { APIError, CollectionBeforeChangeHook } from 'payload'
 import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
-import { getStudents } from './getStudents'
+import { getStudentsByClassroomId } from './getStudentsByClassroomId'
+import { ApiError } from 'next/dist/server/api-utils'
 
 /**
  * @description When teacher creates a report or homework, this hook will set the createdBy, teacher, and students fields.
@@ -14,16 +15,31 @@ export const teacherOperationBeforeChange: CollectionBeforeChangeHook = async ({
 }) => {
   const payload = req.payload
   if (!req.user) {
-    throw new Error('User not authenticated')
+    throw new APIError('User not authenticated', 401, null, true)
   }
   if (req.user.currentRole?.isAdminLevel) {
-    throw new APIError(
-      'Now only user with teacher role can execute these operations.',
-      403,
-      null,
-      true,
-    )
+    if (!data.teacher) {
+      throw new APIError('Teacher is required', 400, null, true)
+    }
+    const paginatedClassroom = await payload.find({
+      collection: 'classrooms',
+      where: {
+        teachers: {
+          equals: data.teacher,
+        },
+      },
+    })
+    if (!paginatedClassroom.docs[0]) {
+      throw new APIError('Classroom not found', 400, null, true)
+    }
+    const students = await getStudentsByClassroomId({
+      payload,
+      classroomId: paginatedClassroom.docs[0].id,
+    })
+    data.students = students.map((student) => student.id)
+    return
   }
+
   //NOTE: in case of update do not set the createdBy, teacher, and students fields. it can be modified by the teacher
   if (operation === 'update') {
     return
@@ -31,12 +47,14 @@ export const teacherOperationBeforeChange: CollectionBeforeChangeHook = async ({
   data.createdBy = req.user.id
 
   const teacher = await findTeacherRoleOfUser({ payload, user: req.user })
-
+  if (!teacher) {
+    throw new Error('Teacher not found: teacherOperationBeforeChange')
+  }
   const classroomId =
     typeof teacher.classroom == 'number' ? teacher.classroom : teacher.classroom.id
 
   // Step 2: Get all students in that classroom
-  const students = await getStudents({ payload, classroomId })
+  const students = await getStudentsByClassroomId({ payload, classroomId })
   data.teacher = teacher.id
   data.students = students.map((student) => student.id)
 }

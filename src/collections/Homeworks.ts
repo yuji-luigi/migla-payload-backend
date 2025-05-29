@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { getStudents } from '../beforeChangeHooks/getStudents'
+import { getStudentsByClassroomId } from '../beforeChangeHooks/getStudentsByClassroomId'
 import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
 import { teacherOperationBeforeChange } from '../beforeChangeHooks/teacheRecordsBeforeChange'
 

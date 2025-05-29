@@ -1,6 +1,6 @@
 import { Payload } from 'payload'
 
-export async function getStudents({
+export async function getStudentsByClassroomId({
   payload,
   classroomId,
 }: {

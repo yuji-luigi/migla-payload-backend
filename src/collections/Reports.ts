@@ -6,7 +6,7 @@ import { slugField } from '@/fields/slug'
 import { Role } from '../payload-types'
 import internal from 'stream'
 import { Classrooms } from './Classrooms'
-import { getStudents } from '../beforeChangeHooks/getStudents'
+import { getStudentsByClassroomId } from '../beforeChangeHooks/getStudentsByClassroomId'
 import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
 import { teacherOperationBeforeChange } from '../beforeChangeHooks/teacheRecordsBeforeChange'
 
