@@ -13,7 +13,7 @@ import './index.scss'
 const baseClass = 'before-dashboard'
 
 const BeforeDashboard = async ({ payload, user, i18n, ...rest }: ServerProps) => {
-  let components: React.ReactNode[] = []
+  const components: React.ReactNode[] = []
 
   if (user?.currentRole?.isTeacher) {
     components.push(

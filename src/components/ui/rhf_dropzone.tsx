@@ -32,7 +32,6 @@ export const RHFDropzone = ({
         if (!file) return
         onChange(file)
         if (inputRef.current) {
-          console.log
           inputRef.current.value = ''
         }
         onChangeCallback?.(file)
