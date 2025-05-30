@@ -6,6 +6,7 @@ import { Button, Dropzone, useModal } from '@payloadcms/ui'
 import { DropzoneHandler } from '../../../components/ui/dropzone'
 import RHFFormModal from '../../../components/Modal/form_modal/RHFFormModal'
 import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
+import { useForm } from 'react-hook-form'
 
 export const StudentsImportModal = ({ slug }: { slug: string }) => {
   const { t } = useCustomTranslations()
@@ -13,8 +14,10 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
   function handleSubmit(data: any) {
     console.log({ data })
   }
+  const methods = useForm()
   return (
     <RHFFormModal
+      methods={methods}
       submitCallback={handleSubmit}
       slug={slug}
       title={t('students:importModal:title')}
