@@ -1,7 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-const seed = async () => {
+export const seedRoles = async () => {
   // Get a local copy of Payload by passing your config
   const payload = await getPayload({ config })
 
@@ -49,4 +49,4 @@ const seed = async () => {
 }
 
 // Call the function here to run your seed script
-await seed()
+// await seed()

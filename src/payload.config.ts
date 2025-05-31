@@ -27,6 +27,7 @@ import { LogoGlobal } from './LogoGlobal/config'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 import fs from 'fs'
+import { seedRoles } from './tasks/seed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -116,6 +117,7 @@ export default buildConfig({
     },
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
+  onInit: seedRoles,
   collections: [
     // default collections leave here for demo
     Pages,
