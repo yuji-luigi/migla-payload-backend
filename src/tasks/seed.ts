@@ -1,51 +1,53 @@
-import { getPayload } from 'payload'
+import { getPayload, Payload } from 'payload'
 import config from '@payload-config'
 
-export const seedRoles = async () => {
+export const seedRoles = async (payload: Payload) => {
   // Get a local copy of Payload by passing your config
-  const payload = await getPayload({ config })
+  try {
+    // const superAdmin = await payload.create({
+    //   collection: 'roles',
+    //   // locale: 'ja',
+    //   // fallbackLocale: 'ja',
+    //   data: {
+    //     name: 'super_admin',
+    //     slug: 'super_admin',
+    //     label: 'スーパー管理者',
+    //   },
+    // })
 
-  const superAdmin = await payload.create({
-    collection: 'roles',
-    // locale: 'ja',
-    // fallbackLocale: 'ja',
-    data: {
-      name: 'super_admin',
-      slug: 'super_admin',
-      label: 'スーパー管理者',
-    },
-  })
-
-  await payload.create({
-    collection: 'roles',
-    // locale: 'ja',
-    // fallbackLocale: 'ja',
-    data: {
-      name: 'admin',
-      slug: 'admin',
-      label: '管理者',
-    },
-  })
-  await payload.create({
-    collection: 'roles',
-    // locale: 'ja',
-    // fallbackLocale: 'ja',
-    data: {
-      name: 'teacher',
-      slug: 'teacher',
-      label: '先生',
-    },
-  })
-  await payload.create({
-    collection: 'roles',
-    // locale: 'ja',
-    // fallbackLocale: 'ja',
-    data: {
-      name: 'parent',
-      slug: 'parent',
-      label: '保護者',
-    },
-  })
+    await payload.create({
+      collection: 'roles',
+      // locale: 'ja',
+      // fallbackLocale: 'ja',
+      data: {
+        name: 'admin',
+        slug: 'admin',
+        label: '管理者',
+      },
+    })
+    await payload.create({
+      collection: 'roles',
+      // locale: 'ja',
+      // fallbackLocale: 'ja',
+      data: {
+        name: 'teacher',
+        slug: 'teacher',
+        label: '先生',
+      },
+    })
+    await payload.create({
+      collection: 'roles',
+      // locale: 'ja',
+      // fallbackLocale: 'ja',
+      data: {
+        name: 'parent',
+        slug: 'parent',
+        label: '保護者',
+      },
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 // Call the function here to run your seed script
