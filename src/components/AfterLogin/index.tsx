@@ -39,11 +39,11 @@ const AfterLogin = async ({
             not_equals: 'super_admin',
           },
         },
-        {
-          canLoginAdmin: {
-            equals: true,
-          },
-        },
+        // {
+        //   canLoginAdmin: {
+        //     equals: true,
+        //   },
+        // },
       ],
     },
   })
