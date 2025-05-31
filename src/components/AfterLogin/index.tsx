@@ -36,7 +36,7 @@ const AfterLogin = async ({
       and: [
         {
           name: {
-            not_equals: 'super_admin',
+            not_in: ['super_admin', 'parent'],
           },
         },
         // {
