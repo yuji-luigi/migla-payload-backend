@@ -15,33 +15,45 @@ export const seedRoles = async (payload: Payload) => {
     //   },
     // })
 
-    await payload.create({
+    await payload.update({
       collection: 'roles',
+      where: {
+        name: { equals: 'admin' },
+      },
       // locale: 'ja',
       // fallbackLocale: 'ja',
       data: {
         name: 'admin',
         slug: 'admin',
+        isAdminLevel: true,
         label: '管理者',
       },
     })
-    await payload.create({
+    await payload.update({
       collection: 'roles',
+      where: {
+        name: { equals: 'teacher' },
+      },
       // locale: 'ja',
       // fallbackLocale: 'ja',
       data: {
         name: 'teacher',
         slug: 'teacher',
+        isTeacher: true,
         label: '先生',
       },
     })
-    await payload.create({
+    await payload.update({
       collection: 'roles',
       // locale: 'ja',
       // fallbackLocale: 'ja',
+      where: {
+        name: { equals: 'parent' },
+      },
       data: {
         name: 'parent',
         slug: 'parent',
+        isParent: true,
         label: '保護者',
       },
     })
