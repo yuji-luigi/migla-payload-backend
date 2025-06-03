@@ -177,6 +177,10 @@ export const Users: CollectionConfig = {
           type: 'text',
         },
         {
+          name: 'isSuperAdmin',
+          type: 'checkbox',
+        },
+        {
           name: 'isAdminLevel',
           type: 'checkbox',
         },

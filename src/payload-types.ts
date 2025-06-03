@@ -376,6 +376,7 @@ export interface User {
   surname?: string | null;
   currentRole?: {
     name?: string | null;
+    isSuperAdmin?: boolean | null;
     isAdminLevel?: boolean | null;
     isTeacher?: boolean | null;
     isParent?: boolean | null;
@@ -403,6 +404,7 @@ export interface Role {
   description?: string | null;
   label: string;
   canLoginAdmin?: boolean | null;
+  isSuperAdmin?: boolean | null;
   isAdminLevel?: boolean | null;
   isTeacher?: boolean | null;
   isParent?: boolean | null;
@@ -1362,6 +1364,7 @@ export interface UsersSelect<T extends boolean = true> {
     | T
     | {
         name?: T;
+        isSuperAdmin?: T;
         isAdminLevel?: T;
         isTeacher?: T;
         isParent?: T;
@@ -1568,6 +1571,7 @@ export interface RolesSelect<T extends boolean = true> {
   description?: T;
   label?: T;
   canLoginAdmin?: T;
+  isSuperAdmin?: T;
   isAdminLevel?: T;
   isTeacher?: T;
   isParent?: T;

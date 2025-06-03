@@ -23,6 +23,34 @@ export const seedRoles = async (payload: Payload) => {
       // locale: 'ja',
       // fallbackLocale: 'ja',
       data: {
+        name: 'super_admin',
+        slug: 'super_admin',
+        isSuperAdmin: true,
+        label: 'スーパー管理者',
+      },
+    })
+    await payload.create({
+      collection: 'roles',
+      // where: {
+      //   name: { equals: 'admin' },
+      // },
+      // locale: 'ja',
+      // fallbackLocale: 'ja',
+      data: {
+        name: 'admin',
+        slug: 'admin',
+        isAdminLevel: true,
+        label: '管理者',
+      },
+    })
+    await payload.create({
+      collection: 'roles',
+      // where: {
+      //   name: { equals: 'admin' },
+      // },
+      // locale: 'ja',
+      // fallbackLocale: 'ja',
+      data: {
         name: 'admin',
         slug: 'admin',
         isAdminLevel: true,
