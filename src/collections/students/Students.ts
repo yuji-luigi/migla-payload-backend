@@ -32,7 +32,6 @@ export const Students: CollectionConfig = {
   //   bulkUpload: true,
   //   handlers: [
   //     async (req) => {
-  //       console.log({ req })
   //       return Response.json({
   //         message: `Hello ${req.routeParams?.name as string} @ ${req.routeParams?.group as string}`,
   //       })
@@ -71,7 +70,6 @@ export const Students: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, operation, originalDoc, data }) => {
-        // console.log({ files: req.file })
         // throw new Error('test')
         if (!req.user?.currentRole) {
           throw new APIError('You must logged in to complete the operation', 403, null, true)
@@ -167,7 +165,6 @@ export const Students: CollectionConfig = {
           return true
         }
         if (user.currentRole?.isTeacher) {
-          console.log('user.currentRole?.isTeacher')
           const isParentRoles = await req.payload.find({
             collection: 'roles',
             where: {
@@ -176,7 +173,6 @@ export const Students: CollectionConfig = {
               },
             },
           })
-          console.log('isParentRoles', isParentRoles)
           if (isParentRoles.docs.length > 0) {
             return {
               roles: {

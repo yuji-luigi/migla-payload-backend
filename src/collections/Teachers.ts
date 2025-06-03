@@ -24,9 +24,7 @@ export const Teachers: CollectionConfig = {
     afterChange: [
       async ({ req: { user, payload }, doc, operation }) => {
         setImmediate(async () => {
-          console.log('in the after change condition', doc)
           if (doc.classroom) {
-            console.log('in the after change doc.classroom', doc.classroom)
             const classroom = await payload.findByID({
               collection: 'classrooms',
               id: doc.classroom,
@@ -34,8 +32,6 @@ export const Teachers: CollectionConfig = {
             })
             if (classroom) {
               classroom.teachers = [...new Set([...(classroom.teachers as number[]), doc.id])]
-              console.log('in the classroom condition', doc)
-              console.log('in the classroom condition', classroom.teachers)
               await payload.update({
                 collection: 'classrooms',
                 id: doc.classroom,

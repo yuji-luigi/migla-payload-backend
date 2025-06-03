@@ -829,6 +829,7 @@ export interface Report {
   title: string;
   subtitle: string;
   body: string;
+  coverImage?: (number | null) | Media;
   attachments?: (number | Media)[] | null;
   students?: (number | Student)[] | null;
   createdBy?: (number | null) | User;
@@ -1417,6 +1418,7 @@ export interface ReportsSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   body?: T;
+  coverImage?: T;
   attachments?: T;
   students?: T;
   createdBy?: T;

@@ -22,13 +22,36 @@ export const Reports: CollectionConfig = {
       en: 'Reports',
     },
   },
+
   // only admins
-  // access: {
-  //   create: authenticated,
-  //   delete: authenticated,
-  //   read: anyone,
-  //   update: authenticated,
-  // },
+  access: {
+    create: authenticated,
+    delete: authenticated,
+    read: async ({ req }) => {
+      if (req.url?.includes('/admin/collections/reports') && req.user?.currentRole?.isTeacher) {
+        const userTeacher = await req.payload.find({
+          collection: 'teachers',
+          where: {
+            user: {
+              equals: req.user?.id,
+            },
+          },
+        })
+        if (!userTeacher.docs[0]) {
+          return false
+        }
+        return {
+          teacher: {
+            equals: userTeacher.docs[0].id,
+          },
+        }
+      }
+
+      return true
+    },
+    update: authenticated,
+  },
+
   // admin: {
   //   useAsTitle: 'title',
   //   hidden: ({ user }: { user: User }) => {
@@ -81,6 +104,18 @@ export const Reports: CollectionConfig = {
       localized: true,
     },
 
+    {
+      name: 'coverImage',
+      label: {
+        ja: 'カバー画像',
+        en: 'Cover Image',
+        it: 'Immagine di copertura',
+      },
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: false,
+      localized: true,
+    },
     {
       name: 'attachments',
       label: {

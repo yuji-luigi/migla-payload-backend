@@ -2,6 +2,7 @@ import { getPayload, Payload } from 'payload'
 import config from '@payload-config'
 
 export const seedRoles = async (payload: Payload) => {
+  return
   // Get a local copy of Payload by passing your config
   try {
     // const superAdmin = await payload.create({
