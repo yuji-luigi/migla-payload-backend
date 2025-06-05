@@ -23,6 +23,11 @@ export async function generateStaticParams() {
     limit: 1000,
     overrideAccess: false,
     pagination: false,
+    where: {
+      slug: {
+        exists: true,
+      },
+    },
     select: {
       slug: true,
     },
