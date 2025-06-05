@@ -376,6 +376,7 @@ export interface User {
   surname?: string | null;
   currentRole?: {
     name?: string | null;
+    isSuperAdmin?: boolean | null;
     isAdminLevel?: boolean | null;
     isTeacher?: boolean | null;
     isParent?: boolean | null;
@@ -403,6 +404,7 @@ export interface Role {
   description?: string | null;
   label: string;
   canLoginAdmin?: boolean | null;
+  isSuperAdmin?: boolean | null;
   isAdminLevel?: boolean | null;
   isTeacher?: boolean | null;
   isParent?: boolean | null;
@@ -827,6 +829,7 @@ export interface Report {
   title: string;
   subtitle: string;
   body: string;
+  coverImage?: (number | null) | Media;
   attachments?: (number | Media)[] | null;
   students?: (number | Student)[] | null;
   createdBy?: (number | null) | User;
@@ -846,6 +849,25 @@ export interface Notification {
   body: string;
   type: 'payment' | 'general_notification' | 'event';
   attachments?: (number | Media)[] | null;
+  link: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
   students?: (number | Student)[] | null;
   updatedAt: string;
   createdAt: string;
@@ -1362,6 +1384,7 @@ export interface UsersSelect<T extends boolean = true> {
     | T
     | {
         name?: T;
+        isSuperAdmin?: T;
         isAdminLevel?: T;
         isTeacher?: T;
         isParent?: T;
@@ -1414,6 +1437,7 @@ export interface ReportsSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   body?: T;
+  coverImage?: T;
   attachments?: T;
   students?: T;
   createdBy?: T;
@@ -1445,6 +1469,16 @@ export interface NotificationsSelect<T extends boolean = true> {
   body?: T;
   type?: T;
   attachments?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
   students?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1568,6 +1602,7 @@ export interface RolesSelect<T extends boolean = true> {
   description?: T;
   label?: T;
   canLoginAdmin?: T;
+  isSuperAdmin?: T;
   isAdminLevel?: T;
   isTeacher?: T;
   isParent?: T;

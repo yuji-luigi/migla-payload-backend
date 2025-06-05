@@ -22,7 +22,6 @@ export const http = {
       credentials: 'include',
       ...otherOptions,
     })
-    console.log(response)
     if (response.ok) {
       return (await response.json()) as ResponseData
     }

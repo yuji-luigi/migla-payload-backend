@@ -22,7 +22,6 @@ export const TeacherBeforeDashboard = async ({
     },
   })
   const teacher = teacherPages.docs[0]
-  console.log(teacher)
   if (teacher && typeof teacher.classroom === 'object') {
     const classroomName =
       teacher.classroom?.name || "Admin must provide a classroom to your account's teacher"

@@ -2,6 +2,7 @@ import { getPayload, Payload } from 'payload'
 import config from '@payload-config'
 
 export const seedRoles = async (payload: Payload) => {
+  return
   // Get a local copy of Payload by passing your config
   try {
     // const superAdmin = await payload.create({
@@ -15,6 +16,34 @@ export const seedRoles = async (payload: Payload) => {
     //   },
     // })
 
+    await payload.create({
+      collection: 'roles',
+      // where: {
+      //   name: { equals: 'admin' },
+      // },
+      // locale: 'ja',
+      // fallbackLocale: 'ja',
+      data: {
+        name: 'super_admin',
+        slug: 'super_admin',
+        isSuperAdmin: true,
+        label: 'スーパー管理者',
+      },
+    })
+    await payload.create({
+      collection: 'roles',
+      // where: {
+      //   name: { equals: 'admin' },
+      // },
+      // locale: 'ja',
+      // fallbackLocale: 'ja',
+      data: {
+        name: 'admin',
+        slug: 'admin',
+        isAdminLevel: true,
+        label: '管理者',
+      },
+    })
     await payload.create({
       collection: 'roles',
       // where: {

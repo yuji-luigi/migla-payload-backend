@@ -1,5 +1,7 @@
 import { Label } from '@/components/ui/label'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
+import { s3Storage } from '@payloadcms/storage-s3'
+
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -27,9 +29,24 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
+  s3Storage({
+    collections: {
+      media: true,
+    },
+    bucket: process.env.S3_BUCKET || '',
+    config: {
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+      },
+      endpoint: process.env.S3_ENDPOINT || '',
+
+      region: process.env.S3_REGION || '',
+      // ... Other S3 configuration
+    },
+  }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
-
     overrides: {
       labels: {
         singular: {

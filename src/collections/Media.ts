@@ -43,9 +43,11 @@ export const Media: CollectionConfig = {
     beforeChange: [
       async ({ req, operation, data }) => {
         if (operation === 'create') {
+          console.log('create hook')
           data.createdBy = req.user?.id
         }
         if (operation === 'update') {
+          console.log('update hook')
           data.createdBy = req.user?.id
         }
       },
@@ -91,6 +93,7 @@ export const Media: CollectionConfig = {
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     staticDir: path.resolve(dirname, '../../public/media'),
+
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

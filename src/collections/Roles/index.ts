@@ -85,11 +85,20 @@ export const Roles: CollectionConfig<'roles'> = {
       defaultValue: false,
     },
     {
+      name: 'isSuperAdmin',
+      label: {
+        ja: 'スーパー管理者',
+        en: 'Super Admin',
+        it: 'Amministratore superiore',
+      },
+      type: 'checkbox',
+    },
+    {
       name: 'isAdminLevel',
       label: {
-        ja: '管理者レベル',
-        en: 'Admin Level',
-        it: 'Livello amministratore',
+        ja: '管理者',
+        en: 'Admin',
+        it: 'Amministratore',
       },
       type: 'checkbox',
     },

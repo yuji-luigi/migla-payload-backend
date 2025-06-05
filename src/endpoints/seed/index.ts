@@ -75,7 +75,6 @@ export const seed = async ({
   if (!superAdmin) {
     throw new APIError('Super admin not found. Create a super admin first.', 400, null, true)
   }
-  console.log(superAdmin)
   // clear the database
   await Promise.all(
     globals.map((global) =>

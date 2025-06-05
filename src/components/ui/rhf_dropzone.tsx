@@ -67,7 +67,6 @@ export const RHFDropzone = ({
             accept={accept?.join(',')}
             type="file"
             // onChange={(e) => {
-            //   console.log(e.target.files)
             //   handleChange(e.target.files)
             // }}
             onChange={(e) => {
@@ -103,7 +102,6 @@ export const RHFDropzone = ({
       <input
         type="file"
         // onChange={(e) => {
-        //   console.log(e.target.files)
         //   handleChange(e.target.files)
         // }}
         aria-hidden="true"

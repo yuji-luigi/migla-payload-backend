@@ -34,7 +34,7 @@ export const DropzoneHandler = ({
 
   return (
     <>
-      <Dropzone onChange={(e) => console.log(e)}>
+      <Dropzone onChange={(e) => {}}>
         <div className="flex flex-col items-center justify-center gap-4 w-full">
           {file ? <FilePreview file={file} /> : <p>{dropzoneText}</p>}
           <button
@@ -50,7 +50,6 @@ export const DropzoneHandler = ({
         type="file"
         ref={inputRef}
         onChange={(e) => {
-          console.log(e.target.files)
           handleChange(e.target.files)
         }}
         aria-hidden="true"

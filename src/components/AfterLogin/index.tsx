@@ -29,7 +29,6 @@ const AfterLogin = async ({
   searchParams: Record<string, string>
   i18n: I18n
 }) => {
-  // console.log(payload)
   const roleDocs = await payload.find({
     collection: 'roles',
     where: {

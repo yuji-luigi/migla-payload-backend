@@ -30,7 +30,6 @@ export const currentUserFilter =
     if (!req.user) {
       throw new APIError('You must be logged in to access this page', 403, null, true)
     }
-    console.log('req.user.currentRole', req.user.currentRole)
 
     if (!req.user.currentRole) {
       req.payload.logger.warn('User has no current role', {

@@ -6,7 +6,6 @@ import { getLocalI18n } from 'payload'
 export async function loginTeacher(prevState: any, formData: FormData) {
   const email = formData.get('email') as string | undefined
   const password = formData.get('password') as string | undefined
-  console.log(email, password)
   const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/login?role=3`, {
     // server will impost cookie to the client.
     method: 'POST',
@@ -25,6 +24,5 @@ export async function loginTeacher(prevState: any, formData: FormData) {
       values: { email, password },
     }
   }
-  console.log('login successful')
   redirect('/teacher/dashboard')
 }

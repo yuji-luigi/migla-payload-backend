@@ -37,7 +37,6 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
         body: formData,
       })
       await handleWhereChange?.({})
-      console.log(response)
 
       if (!response.errors.length) {
         closeModal(slug)

@@ -13,7 +13,6 @@ async function getGlobal(slug: Global, depth = 0) {
     slug,
     depth,
   })
-  console.log({ global })
   return global
 }
 

@@ -11,9 +11,7 @@ import { useForm } from 'react-hook-form'
 export const StudentsImportModal = ({ slug }: { slug: string }) => {
   const { t } = useCustomTranslations()
   const { closeModal } = useModal()
-  function handleSubmit(data: any) {
-    console.log({ data })
-  }
+  function handleSubmit(data: any) {}
   const methods = useForm()
   return (
     <RHFFormModal
@@ -28,7 +26,7 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
         dropzoneText={t('students:importModal:dropzone')}
         dropzoneButtonText={t('button:dropzoneImport')}
       />
-      {/* <Dropzone onChange={(e) => console.log(e)}>
+      {/* <Dropzone onChange={(e) => }>
         <div className="flex flex-col items-center justify-center gap-4 w-full">
           <p>{t('students:importModal:dropzone')}</p>
           <button
@@ -44,7 +42,6 @@ export const StudentsImportModal = ({ slug }: { slug: string }) => {
         type="file"
         ref={inputRef}
         onChange={(e) => {
-          console.log(e.target.files)
           handleChange(e.target.files)
         }}
         aria-hidden="true"
