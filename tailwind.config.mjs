@@ -3,7 +3,7 @@ import typography from '@tailwindcss/typography'
 
 /** @type {import('tailwindcss').Config} */
 const config = {
-  purge: [
+  content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
@@ -17,7 +17,7 @@ const config = {
     'lg:col-span-6',
     'lg:col-span-8',
     'lg:col-span-12',
-    // 'border-border',
+    'border-border',
     'bg-card',
     'border-error',
     'bg-error/30',
