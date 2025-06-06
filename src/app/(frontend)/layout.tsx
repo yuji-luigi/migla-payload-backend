@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
 
           <Header />
-          {children}
+          <div className="container mx-auto">{children}</div>
           <Footer />
         </Providers>
       </body>

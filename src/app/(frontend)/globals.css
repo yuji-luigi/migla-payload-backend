@@ -100,21 +100,7 @@
 
 
 
-  .bg-background {
-    background-color: var(--background);
-  }
 
-  .border-border {
-    border-color: var(--border);
-  }
-
-  .text-foreground {
-    color: var(--foreground);
-  }
-
-  .text-foreground {
-    @apply text-foreground;
-  }
 
   * {
     @apply border-border;
