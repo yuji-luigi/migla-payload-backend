@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
 
@@ -85,7 +83,25 @@
   }
 }
 
+@utility bg-background {
+  background-color: var(--background);
+}
+
+
+@utility border-border {
+  border-color: var(--border);
+}
+
+@utility text-foreground {
+  color: var(--foreground);
+}
+
 @layer base {
+
+
+
+
+
   * {
     @apply border-border;
   }

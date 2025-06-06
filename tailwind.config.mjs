@@ -4,10 +4,10 @@ import typography from '@tailwindcss/typography'
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './pages/**/*.{ts,tsx,css,scss}',
+    './components/**/*.{ts,tsx,css,scss}',
+    './app/**/*.{ts,tsx,css,scss}',
+    './src/**/*.{ts,tsx,css,scss}',
   ],
   darkMode: ['selector', '[data-theme="dark"]'],
   plugins: [tailwindcssAnimate, typography],
@@ -18,6 +18,8 @@ const config = {
     'lg:col-span-8',
     'lg:col-span-12',
     'border-border',
+    'text-foreground',
+    'bg-background',
     'bg-card',
     'border-error',
     'bg-error/30',

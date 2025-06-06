@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer base {
 
@@ -119,11 +117,12 @@
 
 @layer base {
   * {
-    @apply border-border;
+    /* @reference border-border; */
   }
 
   body {
-    @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    @reference min-h-[100vh] flex flex-col;
+    /* @reference bg-background text-foreground min-h-[100vh] flex flex-col; */
     background-color: hsl(var(--bg-primary));
   }
 }
@@ -138,6 +137,6 @@ html[data-theme='light'] {
 }
 
 main {
-  @apply min-h-[100vh] flex flex-col;
+  @apply min-h-screen flex flex-col;
   z-index: 1;
 }
