@@ -109,11 +109,11 @@
 
 @layer base {
   * {
-    /* @apply border-border; */
+    @reference border-border;
   }
 
   body {
-    @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    @reference bg-background text-foreground min-h-[100vh] flex flex-col;
     background-color: var(--bg-primary);
   }
 }
