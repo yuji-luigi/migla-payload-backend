@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 @layer base {
 
   h1,
@@ -84,7 +83,23 @@
   }
 }
 
+@utility bg-background {
+  background-color: var(--background);
+}
+
+
+@utility border-border {
+  border-color: var(--border);
+}
+
+@utility text-foreground {
+  color: var(--foreground);
+}
+
 @layer base {
+
+
+
   .bg-background {
     background-color: var(--background);
   }
@@ -102,12 +117,10 @@
   }
 
   * {
-    /* @reference tailwindcss; */
     @apply border-border;
   }
 
   body {
-    /* @reference tailwindcss; */
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
 }

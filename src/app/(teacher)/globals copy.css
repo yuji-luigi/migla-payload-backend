@@ -1,6 +1,4 @@
-@import 'tailwindcss/base.css';
-@import 'tailwindcss/components.css';
-@import 'tailwindcss/utilities.css';
+@import 'tailwindcss';
 
 
 @layer base {
@@ -109,13 +107,17 @@
   }
 }
 
+
+
 @layer base {
   * {
-    @reference border-border;
+    /* @reference border-border; */
   }
 
   body {
-    @reference bg-background text-foreground min-h-[100vh] flex flex-col;
+    @reference
+    /*  bg-background text-foreground */
+    min-h-[100vh] flex flex-col;
     background-color: var(--bg-primary);
   }
 }
