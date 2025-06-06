@@ -1,5 +1,4 @@
-@import "tailwindcss";
-
+@import 'tailwindcss';
 
 @layer base {
 
@@ -137,6 +136,6 @@ html[data-theme='light'] {
 }
 
 main {
-  @apply min-h-[100vh] flex flex-col;
+  @apply min-h-screen flex flex-col;
   z-index: 1;
 }
