@@ -1,23 +1,13 @@
 .tailwind-scope {
-  @import 'tailwindcss/base.css';
+  @import 'tailwindcss';
+
+  /* @import 'tailwindcss/base.css';
   @import 'tailwindcss/components.css';
-  @import 'tailwindcss/utilities.css';
+  @import 'tailwindcss/utilities.css'; */
 
-  // @apply text-base;
-
-  // Optionally reset only here if needed
-  // @layer base {
-  //   /* Safe resets or typography tweaks */
-  // }
-
-  // @layer components {
-  //   /* Your custom components inside .tailwind-scope */
-  // }
-
-  @layer utilities {
-    /* Utilities are only applied inside .tailwind-scope */
-  }
+  @layer utilities {}
 }
+
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;
@@ -81,14 +71,16 @@
   --header-height: 56px;
   --min-height: calc(100vh - var(--header-height));
 
-  --c: hsl(var(--primary)); /* semi-opaque circle color */
-  --r: 300px; /* circle radius */
+  --c: hsl(var(--primary));
+  /* semi-opaque circle color */
+  --r: 300px;
+  /* circle radius */
 
   --bg-pattern: url('/images/bg_pattern/shape_top.svg'), url('/images/bg_pattern/shape_bottom.svg');
 
   --radius-card: 0.75rem;
 
-  // --card-color: 60 22% 96%;
+  /* --card-color: 60 22% 96%; */
 }
 
 [data-theme='dark'] {
@@ -129,10 +121,11 @@
   --foreground: 210 40% 98%;
   --bg-pattern:
     url('/images/bg_pattern/shape_top_dark.svg'), url('/images/bg_pattern/shape_bottom_dark.svg');
-  // --card-color: var(--foreground);
+  /* // --card-color: var(--foreground); */
 }
 
 @layer payload-default {
+
   body,
   .template-default__wrap {
     background-color: hsl(var(--bg-primary));
@@ -143,20 +136,28 @@
       top left,
       bottom right;
     z-index: 0;
+
     & .table {
       background: var(--theme-bg);
     }
+
     & .app-header {
       background-color: hsl(var(--primary));
       margin-bottom: 1rem;
     }
+
     & [data-theme='dark'] {
       background-image: none;
     }
   }
+
   aside.nav {
     background-color: hsl(var(--bg-primary) / 0.7);
     border-right: 1px solid hsl(var(--tertiary));
+  }
+
+  .login__form {
+    background-color: red !important;
   }
 
   body:has(div[data-login-role-present='false']) {
@@ -164,17 +165,19 @@
       display: none;
     }
   }
+
   img.logo-rectangle {
     background-color: white;
-    // background-color: hsl(var(--card-color));
+    /* // background-color: hsl(var(--card-color)); */
     border-radius: 8px;
     padding: 8px;
-    // height: 100px;
+    /* // height: 100px; */
     object-fit: contain;
   }
+
   .card {
     border-radius: var(--radius-card);
-    // background-color: hsl(var(--card-color));
+    /* // background-color: hsl(var(--card-color)); */
   }
 }
 

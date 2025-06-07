@@ -28,7 +28,6 @@ import { default as default_fe9ca0c9b67829fe284b73bb77968447 } from '@/component
 import { default as default_a72917c3259d218de48ad4de2331eaac } from '@/components/Logo/LogoServer'
 import { default as default_2e7a2e2a9e6559d9720f342562dd5a72 } from '@/components/Actions'
 import { default as default_380afaeea2d45f396e81f036010b9e99 } from '@/components/AfterLogin'
-import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { default as default_4b35a212bf0d5837971e07720d983e6d } from '@/components/views/ImportPage'
 
@@ -63,7 +62,6 @@ export const importMap = {
   "@/components/Logo/LogoServer#default": default_a72917c3259d218de48ad4de2331eaac,
   "@/components/Actions#default": default_2e7a2e2a9e6559d9720f342562dd5a72,
   "@/components/AfterLogin#default": default_380afaeea2d45f396e81f036010b9e99,
-  "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@/components/views/ImportPage#default": default_4b35a212bf0d5837971e07720d983e6d
 }
