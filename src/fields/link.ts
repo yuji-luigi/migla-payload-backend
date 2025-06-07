@@ -7,7 +7,7 @@ export type LinkAppearances = 'default' | 'outline'
 export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
   default: {
     label: 'Default',
-    value: 'default',
+    value: 'default', // default is keyword in dart
   },
   outline: {
     label: 'Outline',
@@ -165,7 +165,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       admin: {
         description: 'Choose how the link should be rendered.',
       },
-      defaultValue: 'default',
+      defaultValue: appearanceOptions.default.value,
       options: appearanceOptionsToUse,
     })
   }

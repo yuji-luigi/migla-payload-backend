@@ -6,6 +6,7 @@ import { slugField } from '@/fields/slug'
 import { isAdmin } from '../hooks/showOnlyAdmin'
 import { User } from '../payload-types'
 import { link } from '../fields/link'
+import { linkGroup } from '../fields/linkGroup'
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications',
@@ -85,8 +86,12 @@ export const Notifications: CollectionConfig = {
       relationTo: 'media',
       hasMany: true,
     },
-    link(),
-    // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN
+    linkGroup({
+      overrides: {
+        maxRows: 2,
+        localized: true,
+      },
+    }), // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN
     {
       name: 'students',
       label: {
