@@ -156,9 +156,7 @@
     border-right: 1px solid hsl(var(--tertiary));
   }
 
-  .login__form {
-    background-color: red !important;
-  }
+
 
   body:has(div[data-login-role-present='false']) {
     .login__form {
