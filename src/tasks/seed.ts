@@ -86,7 +86,8 @@ export const seedRoles = async (payload: Payload) => {
       },
     })
   } catch (error) {
-    console.warn('seeding roles catch block', error)
+    console.warn('seed.ts catch block')
+    // console.warn('seeding roles catch block', error)
   }
 }
 

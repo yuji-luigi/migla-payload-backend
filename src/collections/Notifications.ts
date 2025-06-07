@@ -88,7 +88,6 @@ export const Notifications: CollectionConfig = {
     },
     linkGroup({
       overrides: {
-        maxRows: 2,
         localized: true,
       },
     }), // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN
@@ -104,6 +103,70 @@ export const Notifications: CollectionConfig = {
       hasMany: true,
       hidden: true,
     },
+    {
+      name: 'hasAttachments',
+      virtual: true,
+      type: 'checkbox',
+      admin: {
+        hidden: true,
+      },
+      hooks: {
+        afterRead: [
+          ({ originalDoc }) => {
+            return originalDoc.attachments.length > 0
+          },
+        ],
+      },
+    },
+    {
+      // Virtual flag, only in the Admin/GraphQL, never persisted
+      name: 'isRead',
+      type: 'checkbox',
+      virtual: true,
+
+      // graphQL: { read: true },    // ensure it shows up in the schema
+      admin: { hidden: true }, // hide from the UI form
+      hooks: {
+        afterRead: [
+          async ({ originalDoc, req, operation, findMany, context }) => {
+            if (req.user?.currentRole?.isParent && !findMany) {
+              console.log('create read notification')
+              await req.payload
+                .create({
+                  collection: 'read-notifications',
+                  data: {
+                    user: req.user!.id,
+                    notification: originalDoc.id,
+                  },
+                })
+                .catch((error) => {})
+            }
+            console.log({ operation, findMany })
+            // return false
+            // originalDoc.readBy came back populated by the REST find
+
+            if (req.user?.currentRole?.isParent) {
+              context.stop = true
+              const paginatedReadNotifications = await req.payload.find({
+                collection: 'read-notifications',
+                where: {
+                  user: {
+                    equals: req.user!.id,
+                  },
+                  notification: {
+                    equals: originalDoc.id,
+                  },
+                },
+              })
+              const isRead = paginatedReadNotifications.docs.length > 0
+
+              return isRead
+            }
+          },
+        ],
+      },
+    },
   ],
+
   timestamps: true,
 }

@@ -28,6 +28,7 @@ import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 import fs from 'fs'
 import { seedRoles } from './tasks/seed'
+import { ReadNotification } from './collections/ReadNotification'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -119,7 +120,7 @@ export default buildConfig({
   }),
   onInit: seedRoles,
   collections: [
-    // default collections leave here for demo
+    // default collections leave here for d emo
     Pages,
     Posts,
     Categories,
@@ -130,6 +131,7 @@ export default buildConfig({
     Reports,
     Classrooms,
     Notifications,
+    ReadNotification,
     Homeworks,
     Media,
     Roles,

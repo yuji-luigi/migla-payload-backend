@@ -76,6 +76,7 @@ export interface Config {
     reports: Report;
     classrooms: Classroom;
     notifications: Notification;
+    'read-notifications': ReadNotification;
     homeworks: Homework;
     media: Media;
     roles: Role;
@@ -100,6 +101,7 @@ export interface Config {
     reports: ReportsSelect<false> | ReportsSelect<true>;
     classrooms: ClassroomsSelect<false> | ClassroomsSelect<true>;
     notifications: NotificationsSelect<false> | NotificationsSelect<true>;
+    'read-notifications': ReadNotificationsSelect<false> | ReadNotificationsSelect<true>;
     homeworks: HomeworksSelect<false> | HomeworksSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     roles: RolesSelect<false> | RolesSelect<true>;
@@ -874,6 +876,19 @@ export interface Notification {
       }[]
     | null;
   students?: (number | Student)[] | null;
+  hasAttachments?: boolean | null;
+  isRead?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-notifications".
+ */
+export interface ReadNotification {
+  id: number;
+  user: number | User;
+  notification: number | Notification;
   updatedAt: string;
   createdAt: string;
 }
@@ -1112,6 +1127,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notifications';
         value: number | Notification;
+      } | null)
+    | ({
+        relationTo: 'read-notifications';
+        value: number | ReadNotification;
       } | null)
     | ({
         relationTo: 'homeworks';
@@ -1490,6 +1509,18 @@ export interface NotificationsSelect<T extends boolean = true> {
         id?: T;
       };
   students?: T;
+  hasAttachments?: T;
+  isRead?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-notifications_select".
+ */
+export interface ReadNotificationsSelect<T extends boolean = true> {
+  user?: T;
+  notification?: T;
   updatedAt?: T;
   createdAt?: T;
 }
