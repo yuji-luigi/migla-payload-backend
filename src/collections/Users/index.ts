@@ -231,19 +231,22 @@ export const Users: CollectionConfig = {
       maxDepth: 2,
       hasMany: true,
 
-      // filterOptions: async ({ req }) => {
-      //   console.log(req.user)
-      //   console.log(req.user?.currentRole?.isSuperAdmin)
-      //   if (req.user?.currentRole?.isSuperAdmin) {
-      //     return true
-      //   }
-      //   return {
-      //     isAdminLevel: {
-      //       equals: false,
-      //       exists: false,
-      //     },
-      //   }
-      // },
+      filterOptions: async ({ req }) => {
+        console.log(req.user)
+        console.log(req.user?.currentRole?.isSuperAdmin)
+        if (req.user) {
+          if (req.user?.currentRole?.isSuperAdmin) {
+            return true
+          }
+          return {
+            isAdminLevel: {
+              equals: false,
+              exists: false,
+            },
+          }
+        }
+        return true
+      },
     },
 
     {
