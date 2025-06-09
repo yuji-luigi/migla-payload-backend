@@ -23,10 +23,16 @@ export const Roles: CollectionConfig<'roles'> = {
     },
   },
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: ({ req: { user } }) => {
+      return isAdmin(user as unknown as User)
+    },
+    delete: ({ req: { user } }) => {
+      return isAdmin(user as unknown as User)
+    },
     read: anyone,
-    update: authenticated,
+    update: ({ req: { user } }) => {
+      return isAdmin(user as unknown as User)
+    },
   },
 
   defaultPopulate: {
@@ -39,6 +45,20 @@ export const Roles: CollectionConfig<'roles'> = {
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)
     },
+  },
+  hooks: {
+    beforeChange: [
+      ({ data, req: { user, context } }) => {
+        if (context.isSeed) return data
+        if (data.isSuperAdmin && !user?.currentRole?.isSuperAdmin) {
+          data.isSuperAdmin = false
+        }
+        // if (data.isAdminLevel && isAdmin(user)) {
+        //   data.isAdminLevel = false
+        // }
+        return data
+      },
+    ],
   },
   fields: [
     {
@@ -73,7 +93,6 @@ export const Roles: CollectionConfig<'roles'> = {
       localized: true,
       unique: true,
     },
-
     {
       name: 'canLoginAdmin',
       label: {
@@ -91,6 +110,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Super Admin',
         it: 'Amministratore superiore',
       },
+      hidden: true,
       type: 'checkbox',
     },
     {
@@ -100,6 +120,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Admin',
         it: 'Amministratore',
       },
+
       type: 'checkbox',
     },
     {

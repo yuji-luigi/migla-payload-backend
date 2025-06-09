@@ -74,6 +74,35 @@ export const Users: CollectionConfig = {
   },
 
   hooks: {
+    beforeOperation: [
+      async ({ req, operation, context, args }) => {
+        console.log(req.url)
+
+        if (operation === 'create' && req.url?.includes('/api/users/first-register')) {
+          const paginatedSuperAdminRole = await req.payload.find({
+            collection: 'roles',
+            where: {
+              name: {
+                equals: 'super_admin',
+              },
+            },
+          })
+          console.log(req.data)
+          if (req.data) {
+            // const user = await req.payload.findByID({ collection: 'users', id: req.data.id })
+            args.data.roles = [paginatedSuperAdminRole.docs[0]?.id]
+            args.data.currentRole = paginatedSuperAdminRole.docs[0]
+          }
+          console.log(req.data)
+          console.log(args)
+          return args
+          throw new APIError('inside', 500, null, true)
+        }
+
+        return
+        throw new APIError(`outside ${req.url}`, 500, null, true)
+      },
+    ],
     beforeLogin: [
       async ({ req, user, collection }) => {
         const t = req.i18n.t as any // <-- Cast to your custom keys
@@ -83,7 +112,7 @@ export const Users: CollectionConfig = {
 
           const referer = req.headers.get('referer')
           if (referer && referer.includes('/admin/create-first-user')) {
-            return user
+            return
           }
 
           if (referer && referer.startsWith('http')) {
