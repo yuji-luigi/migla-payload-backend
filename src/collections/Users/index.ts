@@ -141,10 +141,12 @@ export const Users: CollectionConfig = {
 
           const matchedRole = user.roles.find((userRole: number) => roleIds.includes(userRole))
           if (matchedRole) {
+            console.log('sfda')
             const currentRole = await req.payload.findByID({
               collection: 'roles',
               id: matchedRole,
             })
+            console.log(currentRole)
             // set the user role in the DB level. to authorize in dashboard.
             await req.payload.update({
               collection: collection.slug, // Use the collection name dynamically
@@ -153,7 +155,7 @@ export const Users: CollectionConfig = {
                 currentRole, // Update the current role
               },
             })
-            return user
+            return
           }
           throw new APIError(t(errorMessages.ERROR_NO_ROLE), 403, null, true)
         } catch (error) {
@@ -228,6 +230,20 @@ export const Users: CollectionConfig = {
       relationTo: 'roles',
       maxDepth: 2,
       hasMany: true,
+
+      // filterOptions: async ({ req }) => {
+      //   console.log(req.user)
+      //   console.log(req.user?.currentRole?.isSuperAdmin)
+      //   if (req.user?.currentRole?.isSuperAdmin) {
+      //     return true
+      //   }
+      //   return {
+      //     isAdminLevel: {
+      //       equals: false,
+      //       exists: false,
+      //     },
+      //   }
+      // },
     },
 
     {

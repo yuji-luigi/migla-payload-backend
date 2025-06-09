@@ -49,6 +49,7 @@ export const Roles: CollectionConfig<'roles'> = {
   hooks: {
     beforeChange: [
       ({ data, req: { user, context } }) => {
+        console.log('jofdasjofda')
         if (context.isSeed) return data
         if (data.isSuperAdmin && !user?.currentRole?.isSuperAdmin) {
           data.isSuperAdmin = false
@@ -110,7 +111,9 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Super Admin',
         it: 'Amministratore superiore',
       },
-      hidden: true,
+      admin: {
+        hidden: true,
+      },
       type: 'checkbox',
     },
     {
