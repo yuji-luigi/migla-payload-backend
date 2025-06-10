@@ -6,6 +6,18 @@ import { slugField } from '@/fields/slug'
 
 export const ReadNotification: CollectionConfig = {
   slug: 'read-notifications',
+  labels: {
+    singular: {
+      ja: '既読通知',
+      en: 'Read Notification',
+      it: 'Notifica letta',
+    },
+    plural: {
+      ja: '既読通知',
+      en: 'Read Notifications',
+      it: 'Notifiche lette',
+    },
+  },
   access: {
     create: authenticated,
     delete: authenticated,

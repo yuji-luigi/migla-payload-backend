@@ -410,6 +410,12 @@ export interface Role {
   isAdminLevel?: boolean | null;
   isTeacher?: boolean | null;
   isParent?: boolean | null;
+  canWriteReports?: boolean | null;
+  canWriteHomeworks?: boolean | null;
+  canWritePages?: boolean | null;
+  canWriteParents?: boolean | null;
+  canWriteStudents?: boolean | null;
+  canWriteNotifications?: boolean | null;
   slug: string;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1647,6 +1653,12 @@ export interface RolesSelect<T extends boolean = true> {
   isAdminLevel?: T;
   isTeacher?: T;
   isParent?: T;
+  canWriteReports?: T;
+  canWriteHomeworks?: T;
+  canWritePages?: T;
+  canWriteParents?: T;
+  canWriteStudents?: T;
+  canWriteNotifications?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;

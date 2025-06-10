@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { APIError, type CollectionConfig } from 'payload'
 
 import { slugField } from '@/fields/slug'
 import { authenticated } from '../../access/authenticated'
@@ -23,14 +23,29 @@ export const Roles: CollectionConfig<'roles'> = {
     },
   },
   access: {
-    create: ({ req: { user } }) => {
+    create: ({ req: { user, data } }) => {
+      if (user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+      if (data?.isSuperAdmin) {
+        throw new APIError('You are not allowed to create this role', 403, null, true)
+      }
       return isAdmin(user as unknown as User)
     },
-    delete: ({ req: { user } }) => {
+    delete: ({ req: { user, data } }) => {
+      if (data?.isSuperAdmin) {
+        throw new APIError('You are not allowed to delete this role', 403, null, true)
+      }
       return isAdmin(user as unknown as User)
     },
     read: anyone,
-    update: ({ req: { user } }) => {
+    update: ({ req: { user, data } }) => {
+      if (user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+      if (data?.isSuperAdmin) {
+        throw new APIError('You are not allowed to update this role', 403, null, true)
+      }
       return isAdmin(user as unknown as User)
     },
   },
@@ -42,14 +57,39 @@ export const Roles: CollectionConfig<'roles'> = {
   admin: {
     defaultColumns: ['slug', 'updatedAt'],
     useAsTitle: 'label',
+    baseListFilter: ({ req }) => {
+      const user = req.user
+      if (user?.currentRole?.isSuperAdmin) {
+        return null
+      }
+      return {
+        or: [
+          {
+            isSuperAdmin: {
+              equals: false,
+            },
+          },
+          {
+            isSuperAdmin: {
+              exists: false,
+            },
+          },
+        ],
+      }
+    },
     hidden: ({ user }) => {
-      return !isAdmin(user as unknown as User)
+      if (user?.currentRole?.isAdminLevel) {
+        return false
+      }
+      if (user?.currentRole?.isSuperAdmin) {
+        return false
+      }
+      return true
     },
   },
   hooks: {
     beforeChange: [
       ({ data, req: { user, context } }) => {
-        console.log('jofdasjofda')
         if (context.isSeed) return data
         if (data.isSuperAdmin && !user?.currentRole?.isSuperAdmin) {
           data.isSuperAdmin = false
@@ -141,6 +181,61 @@ export const Roles: CollectionConfig<'roles'> = {
         ja: '保護者',
         en: 'Parent',
         it: 'Genitore',
+      },
+      type: 'checkbox',
+    },
+    {
+      name: 'canWriteReports',
+      label: {
+        ja: 'レポートを作成できる',
+        en: 'Can write reports',
+        it: 'Può scrivere rapporti',
+      },
+      type: 'checkbox',
+    },
+    {
+      name: 'canWriteHomeworks',
+      label: {
+        ja: '宿題を作成できる',
+        en: 'Can write homeworks',
+        it: 'Può scrivere compiti',
+      },
+      type: 'checkbox',
+    },
+    {
+      name: 'canWritePages',
+      label: {
+        ja: 'ページを作成できる',
+        en: 'Can write pages',
+        it: 'Può scrivere pagine',
+      },
+      type: 'checkbox',
+    },
+
+    {
+      name: 'canWriteParents',
+      label: {
+        ja: '保護者を作成できる',
+        en: 'Can write parents',
+        it: 'Può scrivere genitori',
+      },
+      type: 'checkbox',
+    },
+    {
+      name: 'canWriteStudents',
+      label: {
+        ja: '生徒を作成できる',
+        en: 'Can write students',
+        it: 'Può scrivere studenti',
+      },
+      type: 'checkbox',
+    },
+    {
+      name: 'canWriteNotifications',
+      label: {
+        ja: '通知を作成できる',
+        en: 'Can write notifications',
+        it: 'Può scrivere notifiche',
       },
       type: 'checkbox',
     },

@@ -1,4 +1,5 @@
-import { APIError, logError, type CollectionConfig } from 'payload'
+import { equal } from 'assert'
+import { APIError, logError, Where, type CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
@@ -76,8 +77,6 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeOperation: [
       async ({ req, operation, context, args }) => {
-        console.log(req.url)
-
         if (operation === 'create' && req.url?.includes('/api/users/first-register')) {
           const paginatedSuperAdminRole = await req.payload.find({
             collection: 'roles',
@@ -87,20 +86,15 @@ export const Users: CollectionConfig = {
               },
             },
           })
-          console.log(req.data)
           if (req.data) {
             // const user = await req.payload.findByID({ collection: 'users', id: req.data.id })
             args.data.roles = [paginatedSuperAdminRole.docs[0]?.id]
             args.data.currentRole = paginatedSuperAdminRole.docs[0]
           }
-          console.log(req.data)
-          console.log(args)
           return args
-          throw new APIError('inside', 500, null, true)
         }
 
-        return
-        throw new APIError(`outside ${req.url}`, 500, null, true)
+        return args
       },
     ],
     beforeLogin: [
@@ -239,10 +233,18 @@ export const Users: CollectionConfig = {
             return true
           }
           return {
-            isAdminLevel: {
-              equals: false,
-              exists: false,
-            },
+            or: [
+              {
+                isSuperAdmin: {
+                  equals: false,
+                },
+              },
+              {
+                isSuperAdmin: {
+                  exists: false,
+                },
+              },
+            ] as Where[],
           }
         }
         return true
