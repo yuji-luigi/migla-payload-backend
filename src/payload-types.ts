@@ -374,8 +374,8 @@ export interface Media {
  */
 export interface User {
   id: number;
-  name?: string | null;
-  surname?: string | null;
+  name: string;
+  surname: string;
   currentRole?: {
     name?: string | null;
     isSuperAdmin?: boolean | null;

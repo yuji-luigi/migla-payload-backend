@@ -77,6 +77,9 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeOperation: [
       async ({ req, operation, context, args }) => {
+        if (context.bypassCheck) {
+          return args
+        }
         if (operation === 'create' && req.url?.includes('/api/users/first-register')) {
           const paginatedSuperAdminRole = await req.payload.find({
             collection: 'roles',
@@ -135,7 +138,6 @@ export const Users: CollectionConfig = {
 
           const matchedRole = user.roles.find((userRole: number) => roleIds.includes(userRole))
           if (matchedRole) {
-            console.log('sfda')
             const currentRole = await req.payload.findByID({
               collection: 'roles',
               id: matchedRole,
@@ -161,6 +163,22 @@ export const Users: CollectionConfig = {
   },
 
   fields: [
+    // {
+    //   type: 'row',
+
+    //   fields: [
+    //     {
+    //       name: 'name',
+    //       type: 'text',
+    //       required: true,
+    //     },
+    //     {
+    //       name: 'surname',
+    //       type: 'text',
+    //       required: true,
+    //     },
+    //   ],
+    // },
     {
       type: 'row',
 
@@ -168,10 +186,14 @@ export const Users: CollectionConfig = {
         {
           name: 'name',
           type: 'text',
+          localized: true,
+          required: true,
         },
         {
           name: 'surname',
           type: 'text',
+          localized: true,
+          required: true,
         },
       ],
     },

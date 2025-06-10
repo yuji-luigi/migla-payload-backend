@@ -1,4 +1,7 @@
 export const enCustomTranslations = {
+  dashboard: {
+    setup: 'Setup',
+  },
   authentication: {
     ERROR_NO_ROLE: 'This user does not have access',
     'Login as': 'Select the role to login',

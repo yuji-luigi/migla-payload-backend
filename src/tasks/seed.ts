@@ -1,6 +1,44 @@
 import { Payload } from 'payload'
 
-export const seedRoles = async (payload: Payload) => {
+export const onInit = async (payload: Payload) => {
+  await seed(payload).catch((error) => {
+    console.log('seed error', error)
+  })
+  await localizeUserFullName(payload).catch((error) => {
+    console.log('localizeUserFullName error', error)
+  })
+
+  // const user = await payload.create({
+  //   collection: 'users',
+  //   locale: 'ja',
+  //   data: {
+  //     name: 'テスト',
+  //     surname: 'テスト姓',
+  //     password: 'test777',
+  //     email: 'hey@test.com',
+  //   },
+  // })
+  // await payload.update({
+  //   collection: 'users',
+  //   id: user.id,
+  //   locale: 'en',
+  //   data: {
+  //     name: 'test',
+  //     surname: 'test surname',
+  //   },
+  // })
+  // await payload.update({
+  //   collection: 'users',
+  //   id: user.id,
+  //   locale: 'it',
+  //   data: {
+  //     name: 'prova',
+  //     surname: 'prova cognome',
+  //   },
+  // })
+}
+
+export const seed = async (payload: Payload) => {
   // Get a local copy of Payload by passing your config
   try {
     await payload.create({
@@ -69,6 +107,23 @@ export const seedRoles = async (payload: Payload) => {
   } catch (error) {
     console.warn('seed.ts catch block')
     // console.warn('seeding roles catch block', error)
+  }
+}
+
+const localizeUserFullName = async (payload: Payload) => {
+  const users = await payload.find({
+    collection: 'users',
+  })
+
+  for (const user of users.docs) {
+    await payload.update({
+      collection: 'users',
+      id: user.id,
+      data: {
+        // nameLocalized: user.name,
+        // surnameLocalized: user.surname,
+      },
+    })
   }
 }
 

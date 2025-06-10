@@ -16,17 +16,12 @@ const BeforeDashboard = async ({ payload, user, i18n, ...rest }: ServerProps) =>
   const components: React.ReactNode[] = []
 
   if (user?.currentRole?.isTeacher) {
-    components.push(
-      <TeacherBeforeDashboard key="teacher-dashboard" payload={payload} user={user} />,
-    )
+    return <TeacherBeforeDashboard key="teacher-dashboard" payload={payload} user={user} />
   }
   if (user?.currentRole?.isAdminLevel) {
-    components.push(
-      <AdminBeforeDashboard key="admin-dashboard" payload={payload} user={user} i18n={i18n} />,
-    )
+    return <AdminBeforeDashboard key="admin-dashboard" payload={payload} user={user} i18n={i18n} />
   }
-
-  return <>{components.map((component) => component)}</>
+  return null
   return (
     // <Card title="Welcome to your dashboard!"></Card>
     <div className={baseClass}>
