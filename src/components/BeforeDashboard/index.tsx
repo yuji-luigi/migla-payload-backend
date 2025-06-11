@@ -9,10 +9,11 @@ import { AdminBeforeDashboard } from './AdminBeforeDashboard'
 import { SeedButton } from './SeedButton'
 import { TeacherBeforeDashboard } from './TeacherBeforeDashboard'
 import './index.scss'
+import { ServerPropsWithI18n } from '../../types/serverProps'
 
 const baseClass = 'before-dashboard'
 
-const BeforeDashboard = async ({ payload, user, i18n, ...rest }: ServerProps) => {
+const BeforeDashboard = async ({ payload, user, i18n, ...rest }: ServerPropsWithI18n) => {
   const components: React.ReactNode[] = []
 
   if (user?.currentRole?.isTeacher) {
