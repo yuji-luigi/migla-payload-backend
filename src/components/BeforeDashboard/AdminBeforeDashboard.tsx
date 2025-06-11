@@ -1,9 +1,8 @@
-import { TFunction } from '@payloadcms/translations'
-import { ServerProps } from 'payload'
-import { CustomTranslationsKeys } from '../../lib/i18n/i18n_configs'
+import { ServerPropsWithI18n } from '../../types/serverProps'
 
-export const AdminBeforeDashboard = async (props: ServerProps) => {
+export const AdminBeforeDashboard = async (props: ServerPropsWithI18n) => {
   const components: React.ReactNode[] = []
+  const t = props.i18n.t
   const pagClassrooms = await props.payload.find({
     collection: 'classrooms',
     limit: 1,
@@ -14,9 +13,7 @@ export const AdminBeforeDashboard = async (props: ServerProps) => {
   }
   return (
     <section className="admin-before-dashboard">
-      <h2 className="dashboard__label">
-        {(props.i18n.t as unknown as TFunction<CustomTranslationsKeys>)('dashboard:setup')}
-      </h2>
+      <h2 className="dashboard__label">{t('dashboard:setup')}</h2>
       {components.map((component) => component)}
     </section>
   )

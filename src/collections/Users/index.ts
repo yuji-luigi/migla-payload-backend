@@ -203,7 +203,6 @@ export const Users: CollectionConfig = {
       type: 'email',
       unique: true,
     },
-
     {
       saveToJWT: true,
       name: 'currentRole',
