@@ -1,0 +1,8 @@
+.title {
+  font-weight: 700;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+}

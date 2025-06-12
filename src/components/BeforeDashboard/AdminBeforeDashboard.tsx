@@ -1,27 +1,33 @@
 import { ServerPropsWithI18n } from '../../types/serverProps'
+import { checkPlatformInitialization } from './checkPlatformInitialization'
 import InitialMessage from './InitialMessage'
+import { PleaseSetup } from './PleaseSetup'
 
 export const AdminBeforeDashboard = async (props: ServerPropsWithI18n) => {
   const components: React.ReactNode[] = []
   const t = props.i18n.t
 
-  const data = await fetchData(props)
+  const data = await checkPlatformInitialization(props)
 
-  const { pagClassrooms, pagUsers, pagTeachers, pagParents } = data
+  const { hasClassrooms, hasUsers, hasTeachers, hasParents } = data
 
-  if (pagClassrooms.totalDocs === 0) {
+  if (!hasClassrooms && !hasTeachers && !hasParents) {
+    return <PleaseSetup {...props} platformInitializationStatus={data} />
+  }
+
+  if (!hasClassrooms) {
     components.push(<InitialMessage {...props} key="initial-message1" />)
   }
 
-  if (pagUsers.totalDocs === 0) {
+  if (!hasUsers) {
     components.push(<InitialMessage {...props} key="initial-message2" />)
   }
 
-  if (pagTeachers.totalDocs === 0) {
+  if (!hasTeachers) {
     components.push(<InitialMessage {...props} key="initial-message3" />)
   }
 
-  if (pagParents.totalDocs === 0) {
+  if (!hasParents) {
     components.push(<InitialMessage {...props} key="initial-message4" />)
   }
 
@@ -33,39 +39,3 @@ export const AdminBeforeDashboard = async (props: ServerPropsWithI18n) => {
   )
 }
 export default AdminBeforeDashboard
-
-async function fetchData(props: ServerPropsWithI18n) {
-  const pagRoles = await props.payload.find({
-    collection: 'roles',
-  })
-  const pagClassrooms = await props.payload.find({
-    collection: 'classrooms',
-    limit: 1,
-  })
-  const pagUsers = await props.payload.find({
-    collection: 'users',
-    limit: 1,
-  })
-  const pagTeachers = await props.payload.find({
-    collection: 'users',
-    limit: 1,
-    where: {
-      roles: { in: pagRoles.docs.filter((role) => role.isTeacher).map((role) => role.id) },
-    },
-  })
-  const pagParents = await props.payload.find({
-    collection: 'users',
-    limit: 1,
-    where: {
-      roles: { in: pagRoles.docs.filter((role) => role.isParent).map((role) => role.id) },
-    },
-  })
-
-  return {
-    pagRoles,
-    pagClassrooms,
-    pagUsers,
-    pagTeachers,
-    pagParents,
-  }
-}

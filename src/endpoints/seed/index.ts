@@ -142,21 +142,33 @@ export const seed = async ({
     }),
     payload.create({
       collection: 'media',
+      context: {
+        isSeed: true,
+      },
       data: { ...image1, createdBy: superAdmin.id },
       file: image1Buffer,
     }),
     payload.create({
       collection: 'media',
+      context: {
+        isSeed: true,
+      },
       data: { ...image2, createdBy: superAdmin.id },
       file: image2Buffer,
     }),
     payload.create({
       collection: 'media',
+      context: {
+        isSeed: true,
+      },
       data: { ...image2, createdBy: superAdmin.id },
       file: image3Buffer,
     }),
     payload.create({
       collection: 'media',
+      context: {
+        isSeed: true,
+      },
       data: { ...imageHero1, createdBy: superAdmin.id },
       file: hero1Buffer,
     }),

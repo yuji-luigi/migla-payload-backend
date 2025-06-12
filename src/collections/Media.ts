@@ -41,7 +41,10 @@ export const Media: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      async ({ req, operation, data }) => {
+      async ({ req, operation, data, context }) => {
+        if (context.isSeed) {
+          return
+        }
         if (operation === 'create') {
           console.log('create hook')
           data.createdBy = req.user?.id

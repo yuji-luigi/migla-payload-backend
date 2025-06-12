@@ -2,6 +2,8 @@ export const itCustomTranslations = {
   dashboard: {
     setup: 'Configurazione',
     please_initialize: 'Per iniziare, si prega di completare la configurazione',
+    initialize_basic_data:
+      'Per iniziare, si prega di completare la configurazione dei dati di base.',
   },
   authentication: {
     ERROR_NO_ROLE: 'Questo utente non ha accesso',
