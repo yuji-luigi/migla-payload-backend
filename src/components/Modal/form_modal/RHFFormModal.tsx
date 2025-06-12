@@ -45,7 +45,7 @@ export const RHFFormModal = ({
             {children}
 
             {!customActions && (
-              <div className="confirmation-modal__controls justify-end">
+              <div className="modal-actions">
                 {actions ? (
                   actions
                 ) : (
@@ -62,7 +62,7 @@ export const RHFFormModal = ({
                       {t('button:Close')}
                     </Button>
 
-                    <Button size="large" type="submit" className="color-primary">
+                    <Button size="large" type="submit" className="bg-primary color-primary">
                       {t('button:Submit')}
                     </Button>
                   </>

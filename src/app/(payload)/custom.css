@@ -1,9 +1,8 @@
 .tailwind-scope {
-  @import 'tailwindcss';
 
-  /* @import 'tailwindcss/base.css';
-  @import 'tailwindcss/components.css';
-  @import 'tailwindcss/utilities.css'; */
+  /* @import 'tailwindcss/base.css'; */
+  /* @import 'tailwindcss/components.css'; */
+  @import 'tailwindcss/utilities.css';
 
   @layer utilities {}
 }
@@ -71,6 +70,8 @@
   --header-height: 56px;
   --min-height: calc(100vh - var(--header-height));
 
+  --color-text-primary: hsl(var(--primary-100));
+
   --c: hsl(var(--primary));
   /* semi-opaque circle color */
   --r: 300px;
@@ -82,6 +83,7 @@
 
   /* --card-color: 60 22% 96%; */
 }
+
 
 [data-theme='dark'] {
   --card: 0 0% 4%;
@@ -121,7 +123,22 @@
   --foreground: 210 40% 98%;
   --bg-pattern:
     url('/images/bg_pattern/shape_top_dark.svg'), url('/images/bg_pattern/shape_bottom_dark.svg');
+
+  --color-text-primary: hsl(var(--primary-700));
   /* // --card-color: var(--foreground); */
+}
+
+body {
+  color: red;
+  /* color: hsl(var(--color-text-primary)); */
+}
+
+.color-primary {
+  color: hsl(var(--color-text-primary));
+}
+
+.btn {
+  font-weight: 800;
 }
 
 @layer payload-default {
@@ -183,6 +200,12 @@
   display: none;
 }
 
-.color-primary {
+.bg-primary {
   background-color: hsl(var(--primary));
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
 }

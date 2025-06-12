@@ -1,6 +1,7 @@
 export const jaCustomTranslations = {
   dashboard: {
     setup: 'セットアップ',
+    please_initialize: 'ダッシュボードを使用するには、セットアップを完了してください。',
   },
   authentication: {
     ERROR_NO_ROLE: 'このユーザーにはアクセス権限がありません',
