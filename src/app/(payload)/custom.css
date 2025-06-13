@@ -70,7 +70,7 @@
   --header-height: 56px;
   --min-height: calc(100vh - var(--header-height));
 
-  --color-text-primary: hsl(var(--primary-100));
+  --color-text-primary: var(--primary-100);
 
   --c: hsl(var(--primary));
   /* semi-opaque circle color */
@@ -124,13 +124,12 @@
   --bg-pattern:
     url('/images/bg_pattern/shape_top_dark.svg'), url('/images/bg_pattern/shape_bottom_dark.svg');
 
-  --color-text-primary: hsl(var(--primary-700));
+  --color-text-primary: var(--primary-700);
   /* // --card-color: var(--foreground); */
 }
 
 body {
-  color: red;
-  /* color: hsl(var(--color-text-primary)); */
+  color: hsl(var(--color-text-primary));
 }
 
 .color-primary {

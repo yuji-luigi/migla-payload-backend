@@ -3,6 +3,7 @@ export const enCustomTranslations = {
     setup: 'Setup',
     please_initialize: 'Please initialize the setup',
     initialize_basic_data: 'Please initialize the basic data from here.',
+    import_basic_data: 'Import excel file to initialize the basic functionality',
   },
   authentication: {
     ERROR_NO_ROLE: 'This user does not have access',

@@ -3,6 +3,7 @@ export const jaCustomTranslations = {
     setup: 'セットアップ',
     please_initialize: 'ダッシュボードを使用するには、セットアップを完了してください。',
     initialize_basic_data: '基本データを設定するにはここから。',
+    import_basic_data: '基本機能を初期化するにはここから。',
   },
   authentication: {
     ERROR_NO_ROLE: 'このユーザーにはアクセス権限がありません',

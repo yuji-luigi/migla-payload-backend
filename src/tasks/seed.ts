@@ -7,7 +7,9 @@ export const onInit = async (payload: Payload) => {
   await localizeUserFullName(payload).catch((error) => {
     console.log('localizeUserFullName error', error)
   })
-
+  await localizeHero(payload).catch((error) => {
+    console.log('localizeHero error', error)
+  })
   // const user = await payload.create({
   //   collection: 'users',
   //   locale: 'ja',
@@ -129,3 +131,19 @@ const localizeUserFullName = async (payload: Payload) => {
 
 // Call the function here to run your seed script
 // await seed()
+
+async function localizeHero(payload: Payload) {
+  const pages = await payload.find({
+    collection: 'pages',
+  })
+
+  for (const page of pages.docs) {
+    await payload.update({
+      collection: 'pages',
+      id: page.id,
+      data: {
+        heroLocalized: page.hero,
+      },
+    })
+  }
+}
