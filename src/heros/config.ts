@@ -78,11 +78,3 @@ export const hero: Field = {
   ],
   label: false,
 }
-
-export const heroLocalized: Field = {
-  ...hero,
-  name: 'heroLocalized',
-  type: 'group',
-  localized: true,
-  fields: [...hero.fields],
-}
