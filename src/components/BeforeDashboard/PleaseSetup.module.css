@@ -1,8 +1,19 @@
 .title {
   font-weight: 700;
+  grid-column: 1 / -1;
+
 }
 
-.cardBody {
-  display: flex;
-  flex-direction: column;
+.section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  padding: 2rem 4rem;
+  gap: 1rem;
+  border-radius: 1rem;
+  background-color: hsl(var(--card)/0.5);
+  border: 1px solid hsl(var(--card-foreground)/0.2);
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
 }

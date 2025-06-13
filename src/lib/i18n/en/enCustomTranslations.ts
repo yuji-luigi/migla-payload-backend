@@ -1,7 +1,7 @@
 export const enCustomTranslations = {
   dashboard: {
     setup: 'Setup',
-    please_initialize: 'Please initialize the setup',
+    please_initialize: "Let's get start with the MIGLA dashboard",
     initialize_basic_data: 'Please initialize the basic data from here.',
     import_basic_data: 'Import excel file to initialize the basic functionality',
   },

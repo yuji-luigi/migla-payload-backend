@@ -1,9 +1,9 @@
 export const jaCustomTranslations = {
   dashboard: {
     setup: 'セットアップ',
-    please_initialize: 'ダッシュボードを使用するには、セットアップを完了してください。',
+    please_initialize: 'ミグラダッシュボードを始めましょう。',
     initialize_basic_data: '基本データを設定するにはここから。',
-    import_basic_data: '基本機能を初期化するにはここから。',
+    import_basic_data: 'エクセルを読み込む',
   },
   authentication: {
     ERROR_NO_ROLE: 'このユーザーにはアクセス権限がありません',

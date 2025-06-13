@@ -16,7 +16,7 @@ export const i18nConfigs: Config['i18n'] = {
   translations: {
     ja: jaCustomTranslations,
     en: enCustomTranslations,
-    it: enCustomTranslations,
+    it: itCustomTranslations,
   },
 } as const
 

@@ -1,7 +1,7 @@
 export const itCustomTranslations = {
   dashboard: {
     setup: 'Configurazione',
-    please_initialize: 'Per iniziare, si prega di completare la configurazione',
+    please_initialize: 'Iniziamo con il dashboard MIGLA',
     initialize_basic_data:
       'Per iniziare, si prega di completare la configurazione dei dati di base.',
     import_basic_data: 'Importa file excel per inizializzare la funzionalità di base.',
