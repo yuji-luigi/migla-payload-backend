@@ -1,21 +1,12 @@
 'use client'
-import React, { useRef, useState } from 'react'
-import ModalCustom from '@/components/Modal/ModalCustom'
-import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
-import {
-  Button,
-  Dropzone,
-  LoadingOverlayToggle,
-  toast,
-  useListQuery,
-  useModal,
-  usePayloadAPI,
-} from '@payloadcms/ui'
-import { http } from '../../../lib/fetch/http'
-import ImportModal, { RHFFormModal } from '../../../components/Modal/form_modal/RHFFormModal'
-import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
-import { useForm, useFormContext } from 'react-hook-form'
+import { toast, useListQuery, useModal } from '@payloadcms/ui'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { AlertMessage } from '../../../components/error/AlertMessage'
+import { RHFFormModal } from '../../../components/Modal/form_modal/RHFFormModal'
+import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
+import { http } from '../../../lib/fetch/http'
+import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 
 export const UserImportModal = ({ slug }: { slug: string }) => {
   const { handleWhereChange } = useListQuery()

@@ -1,0 +1,5 @@
+export const svgTeacher = '/icons/teacher.svg'
+export const svgUser = '/icons/user.svg'
+// export const svgParent = '/icons/parent.svg'
+export const svgStudent = '/icons/student.svg'
+export const svgClassroom = '/icons/classroom.svg'

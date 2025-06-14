@@ -3,6 +3,36 @@ import { Config } from 'payload'
 import { Users } from '../collections/Users'
 
 export const getAdminConfig = (dirname: string): Config['admin'] => ({
+  meta: {
+    title: 'MIGLA DASHBOARD',
+    description: 'ミグラの管理パネルです。',
+    icons: [
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: '/favicon-96x96.png',
+        url: '/favicon-96x96.png',
+        sizes: '96x96',
+      },
+      {
+        rel: 'shortcut icon',
+        href: '/favicon.ico',
+        url: '/favicon.ico',
+      },
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/favicon.svg',
+        url: '/favicon.svg',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/apple-touch-icon.png',
+        url: '/apple-touch-icon.png',
+        sizes: '180x180',
+      },
+    ],
+  },
   components: {
     // header: ['@/components/Header'],
     // afterNavLinks: ['@/components/AfterNavLinks'],
@@ -27,7 +57,15 @@ export const getAdminConfig = (dirname: string): Config['admin'] => ({
 
     // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
     // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
-    beforeDashboard: ['@/components/BeforeDashboard'],
+    beforeDashboard: [
+      '@/components/BeforeDashboard',
+      {
+        path: '@/components/BeforeDashboard/before_dashboard_admin_role/InitializeDataModal.tsx',
+        clientProps: {
+          slug: 'initialize-data',
+        },
+      },
+    ],
   },
 
   importMap: {

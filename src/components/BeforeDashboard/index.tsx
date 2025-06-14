@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react' // If using lucide-react
 import { AdminViewServerProps, Payload, ServerProps } from 'payload'
 import React from 'react'
 import { User } from '../../payload-types'
-import { AdminBeforeDashboard } from './AdminBeforeDashboard'
+import { BeforeDashboardAdminRole } from './before_dashboard_admin_role/BeforeDashboardAdminRole'
 import { SeedButton } from './SeedButton'
 import { TeacherBeforeDashboard } from './TeacherBeforeDashboard'
 import './index.scss'
@@ -20,7 +20,9 @@ const BeforeDashboard = async ({ payload, user, i18n, ...rest }: ServerPropsWith
     return <TeacherBeforeDashboard key="teacher-dashboard" payload={payload} user={user} />
   }
   if (user?.currentRole?.isAdminLevel) {
-    return <AdminBeforeDashboard key="admin-dashboard" payload={payload} user={user} i18n={i18n} />
+    return (
+      <BeforeDashboardAdminRole key="admin-dashboard" payload={payload} user={user} i18n={i18n} />
+    )
   }
   return null
   return (

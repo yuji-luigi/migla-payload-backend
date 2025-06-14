@@ -1,0 +1,39 @@
+.container {
+  --padding-x: 1.5rem;
+  --padding: 2rem var(--padding-x);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  row-gap: 4px;
+  padding: var(--padding);
+  margin-left: calc(-1 * var(--padding-x));
+  place-content: start;
+  border-radius: 8px;
+
+  &[data-pointer='true'] {
+    cursor: pointer;
+
+    &:hover {
+      background-color: hsl(var(--muted));
+    }
+  }
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.34rem;
+}
+
+.iconContainer {
+  display: flex;
+  margin-bottom: auto;
+  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+  background-color: hsl(var(--foreground));
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}

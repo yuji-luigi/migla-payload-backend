@@ -4,6 +4,10 @@ export const enCustomTranslations = {
     please_initialize: "Let's get start with the MIGLA dashboard",
     initialize_basic_data: 'Please initialize the basic data from here.',
     import_basic_data: 'Import excel file to initialize the basic functionality',
+    classrooms_title: 'The number of classrooms is {{count}}.',
+    teachers_title: 'The number of teachers is {{count}}.',
+    parents_title: 'The number of parents is {{count}}.',
+    students_title: 'The number of students is {{count}}.',
   },
   authentication: {
     ERROR_NO_ROLE: 'This user does not have access',

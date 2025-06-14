@@ -33,7 +33,11 @@ export const checkPlatformInitialization = async (props: ServerPropsWithI18n) =>
     hasUsers: pagUsers.totalDocs > 1,
     hasTeachers: pagTeachers.totalDocs > 0,
     hasParents: pagParents.totalDocs > 0,
+    classroomsCount: pagClassrooms.totalDocs,
+    teachersCount: pagTeachers.totalDocs,
+    parentsCount: pagParents.totalDocs,
+    usersCount: pagUsers.totalDocs,
   }
 }
 
-export type PlatformInitialization = Awaited<ReturnType<typeof checkPlatformInitialization>>
+export type PlatformInitializationStatus = Awaited<ReturnType<typeof checkPlatformInitialization>>

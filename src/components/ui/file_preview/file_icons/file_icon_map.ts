@@ -1,8 +1,10 @@
+'use client'
+import { useTheme } from '@payloadcms/ui'
 import { existingFileIcons } from './existing_file_icons'
 // convert to excel string as extension
 const excelFileExtensions = ['xlsx', 'xlsb', 'xltx', 'xls'] as const
 
-const existingFileExtensions = ['excel', 'json', 'mov', 'csv', 'pdf', 'mp3', 'mp4'] as const
+const existingFileExtensions = ['excel', 'json', 'mov', 'pdf', 'mp3', 'mp4'] as const
 
 type FileExtensions = (typeof existingFileExtensions)[number] | (string & {})
 
@@ -24,7 +26,6 @@ export const getFileIconPath = (fileExtensionOriginal: FileExtensions, theme: ic
   ) {
     const filePath = `${fileIconDir}/${formattedFileExtension}_${theme}.svg`
     if (existingFileIcons.includes(filePath as (typeof existingFileIcons)[number])) {
-      console.error('fjask')
       return filePath
     }
 
@@ -56,3 +57,14 @@ export const fileIconMap = [
   '/icons/pdf_light.svg',
   '/icons/pdf_dark.svg',
 ] as const
+
+export const iconPathsByTheme = (theme: iconThemes) => ({
+  excel: getFileIconPath('excel', theme),
+  json: getFileIconPath('json', theme),
+  mov: getFileIconPath('mov', theme),
+  mp3: getFileIconPath('mp3', theme),
+  mp4: getFileIconPath('mp4', theme),
+  pdf: getFileIconPath('pdf', theme),
+})
+
+export type ExistingFileIconExtensions = (typeof existingFileExtensions)[number]
