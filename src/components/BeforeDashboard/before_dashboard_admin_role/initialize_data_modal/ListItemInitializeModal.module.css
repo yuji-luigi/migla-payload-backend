@@ -24,3 +24,16 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+.filePreviewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1rem;
+}
+
+.actions {
+  display: flex;
+  margin-left: auto;
+  gap: .5rem;
+}

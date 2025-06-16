@@ -16,6 +16,7 @@ const ListSectionInitializeData = () => {
         enabled
         title={t('dashboard:modal:import_classroom_heading')}
         dropzoneButtonText={t('button:Import')}
+        exampleLink="https://docs.google.com/spreadsheets/d/16_AFyrEyBQkeTV1fXVOSGqUaYX9OD1ear90OADCE5G4/edit?usp=sharing"
         payloadResult={classroomsResult}
         dropzoneName="classrooms"
       />

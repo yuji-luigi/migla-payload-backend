@@ -17,6 +17,7 @@ export const jaCustomTranslations = {
     create_parents: 'ファイルを読み込むか手動で保護者を作成してください。',
     create_students: 'ファイルを読み込むか手動で学生を作成してください。',
     modal: {
+      check_file: 'ファイルを確認してください。',
       import_classroom_heading: '教室を登録しましょう。',
       import_teachers_heading: '先生を登録しましょう。',
       import_users_heading: 'ユーザーを登録しましょう。',
@@ -38,6 +39,7 @@ export const jaCustomTranslations = {
     Change: '変更',
     dropzoneImport: 'ファイルを読み込む',
     example_excel: 'エクセルの例',
+    Delete: '削除',
   },
   students: {
     importModal: {
