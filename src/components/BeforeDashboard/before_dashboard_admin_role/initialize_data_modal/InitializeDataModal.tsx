@@ -1,14 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
-import RHFFormModal from '../../../Modal/form_modal/RHFFormModal'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { RHFDropzone } from '../../../ui/rhf_dropzone'
-import { AlertMessage } from '../../../error/AlertMessage'
 import { useCustomTranslations } from '../../../../lib/i18n/useCustomTranslations'
-import { Button, useModal, usePayloadAPI } from '@payloadcms/ui'
-import { TailWindScope } from '../../../tailwind/TailWindScope'
-import ListItemInitializeModal from './ListItemInitializeModal'
+import { AlertMessage } from '../../../error/AlertMessage'
+import RHFFormModal from '../../../Modal/form_modal/RHFFormModal'
 import ListSectionInitializeData from './ListSectionInitializeData'
 
 const InitializeDataModal = ({ slug }: { slug: string }) => {

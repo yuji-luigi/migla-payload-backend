@@ -1,24 +1,24 @@
-import type { GlobalConfig } from 'payload'
+import type { GlobalConfig, LabelFunction, StaticLabel } from 'payload'
 
 import { link } from '@/fields/link'
-import { revalidateFooter } from './hooks/revalidateFooter'
-import { isAdmin } from '../hooks/showOnlyAdmin'
-import { LabelsT } from '../types/my_types/labels'
+import { revalidateHeader } from './hooks/revalidateHeader'
+import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { LabelsT } from '../../types/my_types/labels'
 
-export const Footer: GlobalConfig & {
+export const Header: GlobalConfig & {
   labels?: LabelsT
 } = {
-  slug: 'footer',
+  slug: 'header',
   labels: {
     singular: {
-      ja: 'フッター',
-      en: 'Footer',
-      it: 'Footer',
+      ja: 'ヘッダー',
+      en: 'Header',
+      it: 'Header',
     },
     plural: {
-      ja: 'フッター',
-      en: 'Footers',
-      it: 'Footers',
+      ja: 'ヘッダー',
+      en: 'Headers',
+      it: 'Headers',
     },
   },
   access: {
@@ -44,12 +44,12 @@ export const Footer: GlobalConfig & {
       admin: {
         initCollapsed: true,
         components: {
-          RowLabel: '@/Footer/RowLabel#RowLabel',
+          RowLabel: '@/globals/Header/RowLabel#RowLabel',
         },
       },
     },
   ],
   hooks: {
-    afterChange: [revalidateFooter],
+    afterChange: [revalidateHeader],
   },
 }

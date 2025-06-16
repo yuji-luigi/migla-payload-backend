@@ -8,6 +8,8 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
+import { LogoRectangle } from '../LogoGlobal/LogoRectangle'
+import { LogoRectangleClientSide } from '../LogoGlobal/LogoRectangleClientSide'
 
 interface HeaderClientProps {
   data: Header
@@ -29,10 +31,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
   return (
-    <header className=" relative z-20 bg-black " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="container py-8 flex justify-between mx-auto ">
+    <header className=" relative z-20 bg-primary " {...(theme ? { 'data-theme': theme } : {})}>
+      <div className="container py-4 flex justify-between mx-auto ">
         <Link href="/">
-          <Logo loading="eager" priority="high" className="dark:invert-0" />
+          <LogoRectangleClientSide className="dark:invert-0" />
         </Link>
         <HeaderNav data={data} />
       </div>

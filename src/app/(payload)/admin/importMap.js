@@ -22,8 +22,8 @@ import { default as default_82bc7c32ecaac11bab111c5001af23f2 } from '@/collectio
 import { default as default_a3930902dca2a9b95804de70be39e005 } from '@/collections/Users/ui/DescriptionUsers.tsx'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
-import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
-import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
+import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
+import { RowLabel as RowLabel_e5f2ea2a3ff3620de63526e885e3b034 } from '@/globals/Footer/RowLabel'
 import { default as default_fe9ca0c9b67829fe284b73bb77968447 } from '@/components/Icon'
 import { default as default_a72917c3259d218de48ad4de2331eaac } from '@/components/Logo/LogoServer'
 import { default as default_2e7a2e2a9e6559d9720f342562dd5a72 } from '@/components/Actions'
@@ -58,8 +58,8 @@ export const importMap = {
   "@/collections/Users/ui/DescriptionUsers.tsx#default": default_a3930902dca2a9b95804de70be39e005,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
-  "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
-  "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
+  "@/globals/Header/RowLabel#RowLabel": RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,
+  "@/globals/Footer/RowLabel#RowLabel": RowLabel_e5f2ea2a3ff3620de63526e885e3b034,
   "@/components/Icon#default": default_fe9ca0c9b67829fe284b73bb77968447,
   "@/components/Logo/LogoServer#default": default_a72917c3259d218de48ad4de2331eaac,
   "@/components/Actions#default": default_2e7a2e2a9e6559d9720f342562dd5a72,

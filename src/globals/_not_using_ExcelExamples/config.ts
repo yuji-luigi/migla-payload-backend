@@ -1,23 +1,23 @@
 import type { GlobalConfig } from 'payload'
 
 import { revalidateLogoGlobal } from './hooks/revalidateLogoGlobal'
-import { isAdmin } from '../hooks/showOnlyAdmin'
-import { LabelsT } from '../types/my_types/labels'
+import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { LabelsT } from '../../types/my_types/labels'
 
 export const LogoGlobal: GlobalConfig & {
   labels?: LabelsT
 } = {
-  slug: 'logoGlobal',
+  slug: 'excelExample',
   labels: {
     singular: {
-      ja: 'ロゴ',
-      en: 'Logo',
-      it: 'Logo',
+      ja: 'エクセルの例',
+      en: 'Excel example',
+      it: 'Esempio excel',
     },
     plural: {
-      ja: 'ロゴ',
-      en: 'Logos',
-      it: 'Loghi',
+      ja: 'エクセルの例',
+      en: 'Excel examples',
+      it: 'Esempi excel',
     },
   },
   admin: {
@@ -25,12 +25,12 @@ export const LogoGlobal: GlobalConfig & {
   },
   fields: [
     {
-      name: 'logo_square',
+      name: 'user_example',
       type: 'upload',
       label: {
-        ja: '正方形ロゴ',
-        en: 'Square Logo',
-        it: 'Logo Quadrato',
+        ja: 'ユーザーの例',
+        en: 'User example',
+        it: 'Esempio utenti',
       },
       relationTo: 'media',
     },
