@@ -1,0 +1,32 @@
+/* tailwind utility mocking */
+@layer utility {
+
+  .flex {
+    display: flex;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .flex-row {
+    flex-direction: row;
+  }
+
+  .items-center {
+    align-items: center;
+  }
+
+  .justify-center {
+    justify-content: center;
+  }
+
+  .gap-4 {
+    gap: 4px;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+}

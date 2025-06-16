@@ -60,7 +60,7 @@ export const getAdminConfig = (dirname: string): Config['admin'] => ({
     beforeDashboard: [
       '@/components/BeforeDashboard',
       {
-        path: '@/components/BeforeDashboard/before_dashboard_admin_role/InitializeDataModal.tsx',
+        path: '@/components/BeforeDashboard/before_dashboard_admin_role/initialize_data_modal/InitializeDataModal.tsx',
         clientProps: {
           slug: 'initialize-data',
         },

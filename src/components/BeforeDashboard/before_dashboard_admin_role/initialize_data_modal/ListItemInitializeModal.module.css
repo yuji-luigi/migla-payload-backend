@@ -1,0 +1,26 @@
+.li {
+  margin-bottom: 1.5rem;
+}
+
+.li[data-enabled='false'] {
+  opacity: 0.5
+}
+
+.titleRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+}
+
+
+.dropzoneDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

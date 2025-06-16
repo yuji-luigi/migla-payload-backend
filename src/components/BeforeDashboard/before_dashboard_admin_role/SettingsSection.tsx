@@ -6,6 +6,7 @@ import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import { useModal } from '@payloadcms/ui'
 import { platform } from 'os'
 import { svgClassroom, svgTeacher } from '../../../image_paths/iconPaths'
+
 /**
  * @description BeforeDashboardAdminRole section
  */
@@ -16,6 +17,7 @@ const SettingsSection = ({
 }) => {
   const { openModal } = useModal()
   const { t } = useCustomTranslations()
+
   return (
     <>
       <CardTransparent
@@ -34,7 +36,7 @@ const SettingsSection = ({
         title={t(
           status.hasClassrooms ? 'dashboard:classrooms_title' : 'dashboard:no_classrooms_title',
           {
-            count: status.classroomsCount,
+            count: status.classrooms.length,
           },
         )}
         subtitle={t(

@@ -33,10 +33,11 @@ export const checkPlatformInitialization = async (props: ServerPropsWithI18n) =>
     hasUsers: pagUsers.totalDocs > 1,
     hasTeachers: pagTeachers.totalDocs > 0,
     hasParents: pagParents.totalDocs > 0,
-    classroomsCount: pagClassrooms.totalDocs,
-    teachersCount: pagTeachers.totalDocs,
-    parentsCount: pagParents.totalDocs,
-    usersCount: pagUsers.totalDocs,
+    roles: pagRoles.docs,
+    classrooms: pagClassrooms.docs,
+    users: pagUsers.docs,
+    teachers: pagTeachers.docs,
+    parents: pagParents.docs,
   }
 }
 

@@ -1,5 +1,4 @@
 import { ServerPropsWithI18n } from '../../../types/serverProps'
-import CardTransparent from '../../Card/card_transparent/CardTransparent'
 import { checkPlatformInitialization } from '../checkPlatformInitialization'
 import styles from './BeforeDashboardAdminRole.module.css'
 import SettingsSection from './SettingsSection'

@@ -29,7 +29,7 @@ import { default as default_a72917c3259d218de48ad4de2331eaac } from '@/component
 import { default as default_2e7a2e2a9e6559d9720f342562dd5a72 } from '@/components/Actions'
 import { default as default_380afaeea2d45f396e81f036010b9e99 } from '@/components/AfterLogin'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
-import { default as default_1b8478de74b160b529ebed3b0a51f80e } from '@/components/BeforeDashboard/before_dashboard_admin_role/InitializeDataModal.tsx'
+import { default as default_58aa2b632fc973513c3466515f15df3d } from '@/components/BeforeDashboard/before_dashboard_admin_role/initialize_data_modal/InitializeDataModal.tsx'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { default as default_4b35a212bf0d5837971e07720d983e6d } from '@/components/views/ImportPage'
 
@@ -65,7 +65,7 @@ export const importMap = {
   "@/components/Actions#default": default_2e7a2e2a9e6559d9720f342562dd5a72,
   "@/components/AfterLogin#default": default_380afaeea2d45f396e81f036010b9e99,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,
-  "@/components/BeforeDashboard/before_dashboard_admin_role/InitializeDataModal.tsx#default": default_1b8478de74b160b529ebed3b0a51f80e,
+  "@/components/BeforeDashboard/before_dashboard_admin_role/initialize_data_modal/InitializeDataModal.tsx#default": default_58aa2b632fc973513c3466515f15df3d,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@/components/views/ImportPage#default": default_4b35a212bf0d5837971e07720d983e6d
 }

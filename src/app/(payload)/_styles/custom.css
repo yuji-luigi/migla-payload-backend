@@ -1,10 +1,15 @@
+@layer base, component, utility;
+
+@import './tailwind_mock.css';
+@import './modal.css';
+
 .tailwind-scope {
 
   /* @import 'tailwindcss/base.css'; */
   /* @import 'tailwindcss/components.css'; */
-  @import 'tailwindcss/utilities.css';
+  /* @import 'tailwindcss/utilities.css'; */
 
-  @layer utilities {}
+  /* @layer utilities {} */
 }
 
 :root {
@@ -77,9 +82,15 @@
   --r: 300px;
   /* circle radius */
 
-  --bg-pattern: url('/images/bg_pattern/shape_top.svg'), url('/images/bg_pattern/shape_bottom.svg');
+  --bg-pattern: url('/images/bg_pattern/shape_top.svg'), url('/images/bg_pattern/shape_bottom.svgja');
 
   --radius-card: 0.75rem;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.95rem;
+  --font-size-md: 1.25rem;
+  --font-size-lg: 1.45rem;
+
 
   /* --card-color: 60 22% 96%; */
 }
@@ -140,6 +151,7 @@ body {
   font-weight: 800;
 }
 
+
 @layer payload-default {
 
   body,
@@ -165,6 +177,7 @@ body {
     & [data-theme='dark'] {
       background-image: none;
     }
+
   }
 
   aside.nav {
@@ -193,6 +206,7 @@ body {
     border-radius: var(--radius-card);
     /* // background-color: hsl(var(--card-color)); */
   }
+
 }
 
 .display-none {
@@ -212,5 +226,4 @@ body {
 .divider {
   border-top: 1px solid hsl(var(--card-foreground)/0.2);
   width: 100%;
-
 }

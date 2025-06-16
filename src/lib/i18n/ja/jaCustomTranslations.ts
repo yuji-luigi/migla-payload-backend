@@ -16,6 +16,11 @@ export const jaCustomTranslations = {
     create_teachers: 'ファイルを読み込むか手動で先生を作成してください。',
     create_parents: 'ファイルを読み込むか手動で保護者を作成してください。',
     create_students: 'ファイルを読み込むか手動で学生を作成してください。',
+    modal: {
+      import_classroom_heading: '教室を登録しましょう。',
+      import_teachers_heading: '先生を登録しましょう。',
+      import_users_heading: 'ユーザーを登録しましょう。',
+    },
   },
   authentication: {
     ERROR_NO_ROLE: 'このユーザーにはアクセス権限がありません',
@@ -32,6 +37,7 @@ export const jaCustomTranslations = {
     Submit: '送信',
     Change: '変更',
     dropzoneImport: 'ファイルを読み込む',
+    example_excel: 'エクセルの例',
   },
   students: {
     importModal: {

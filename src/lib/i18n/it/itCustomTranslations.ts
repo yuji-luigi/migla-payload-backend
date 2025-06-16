@@ -9,6 +9,18 @@ export const itCustomTranslations = {
     teachers_title: 'Il numero di docenti è {{count}}.',
     parents_title: 'Il numero di genitori è {{count}}.',
     students_title: 'Il numero di studenti è {{count}}.',
+    no_classrooms_title: 'Nessuna classe creata.',
+    no_teachers_title: 'Nessun docente creato.',
+    no_parents_title: 'Nessun genitore creato.',
+    no_students_title: 'Nessun studente creato.',
+    create_classrooms:
+      'Per creare le classi, si prega di importare un file excel o di crearle manualmente.',
+    create_teachers:
+      'Per creare i docenti, si prega di importare un file excel o di crearli manualmente.',
+    create_parents:
+      'Per creare i genitori, si prega di importare un file excel o di crearli manualmente.',
+    create_students:
+      'Per creare gli studenti, si prega di importare un file excel o di crearli manualmente.',
   },
   authentication: {
     ERROR_NO_ROLE: 'Questo utente non ha accesso',

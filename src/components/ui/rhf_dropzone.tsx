@@ -11,15 +11,18 @@ export const RHFDropzone = ({
   isMultiple = false,
   accept,
   onChangeCallback,
-  // actions,
+  className,
+  enabled = true,
+  ...others
 }: {
   dropzoneText: string
   dropzoneButtonText: string
   name: string
+  className?: string | null
   isMultiple?: boolean
   accept?: string[]
+  enabled?: boolean
   onChangeCallback?: (file: File) => void
-  // actions?: React.ReactNode
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const { control, watch } = useFormContext()
@@ -46,12 +49,18 @@ export const RHFDropzone = ({
       name={name}
       render={({ field: { onChange, value, ref: rhfRef } }) => (
         <>
-          <Dropzone onChange={(files) => files && handleChange(files, onChange)}>
+          <Dropzone
+            className={className || undefined}
+            {...others}
+            data-enabled="false"
+            onChange={(files) => files && handleChange(files, onChange)}
+          >
             <div className="flex flex-col items-center justify-center gap-4 w-full">
               {file ? <FilePreview file={file} /> : <p>{dropzoneText}</p>}
               <div className="flex flex-row gap-2">
                 <button
                   type="button"
+                  disabled={!enabled}
                   className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
                   onClick={() => inputRef.current?.click()}
                 >
@@ -112,3 +121,44 @@ export const RHFDropzone = ({
     </>
   )
 }
+// const DropzoneBase = () => {
+//   return (
+//     <>
+//       <Dropzone onChange={(files) => files && handleChange(files, onChange)}>
+//         <div className="flex flex-col items-center justify-center gap-4 w-full">
+//           {file ? <FilePreview file={file} /> : <p>{dropzoneText}</p>}
+//           <div className="flex flex-row gap-2">
+//             <button
+//               type="button"
+//               className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
+//               onClick={() => inputRef.current?.click()}
+//             >
+//               {file ? t('button:Change') : dropzoneButtonText}
+//             </button>
+
+//             {/* {actions && actions} */}
+//           </div>
+//         </div>
+//       </Dropzone>
+
+//       <input
+//         accept={accept?.join(',')}
+//         type="file"
+//         // onChange={(e) => {
+//         //   handleChange(e.target.files)
+//         // }}
+//         onChange={(e) => {
+//           handleChange(e.target.files, onChange)
+//         }}
+//         aria-hidden="true"
+//         className="display-none"
+//         ref={(el) => {
+//           rhfRef(el)
+//           inputRef.current = el
+//         }}
+//         // {...register(name)}
+//         // ref={inputRef}
+//       />
+//     </>
+//   )
+// }

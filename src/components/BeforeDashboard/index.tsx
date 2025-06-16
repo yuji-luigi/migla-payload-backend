@@ -1,15 +1,12 @@
-import { I18n } from '@payloadcms/translations'
 import { Button, Card } from '@payloadcms/ui'
 import { Banner } from '@payloadcms/ui/elements/Banner'
 import { Plus } from 'lucide-react' // If using lucide-react
-import { AdminViewServerProps, Payload, ServerProps } from 'payload'
 import React from 'react'
-import { User } from '../../payload-types'
+import { ServerPropsWithI18n } from '../../types/serverProps'
 import { BeforeDashboardAdminRole } from './before_dashboard_admin_role/BeforeDashboardAdminRole'
+import './index.scss'
 import { SeedButton } from './SeedButton'
 import { TeacherBeforeDashboard } from './TeacherBeforeDashboard'
-import './index.scss'
-import { ServerPropsWithI18n } from '../../types/serverProps'
 
 const baseClass = 'before-dashboard'
 

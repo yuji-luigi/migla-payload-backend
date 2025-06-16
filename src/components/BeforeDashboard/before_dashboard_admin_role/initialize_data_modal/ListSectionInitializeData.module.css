@@ -1,0 +1,21 @@
+.ol {
+  /* ensure you have enough left padding so the marker shows up */
+  list-style-position: outside;
+  padding-left: 1.5em;
+
+  & li:not(:last-child) {
+    margin-bottom: 2.25rem;
+  }
+}
+
+/* style the marker (the number) itself */
+.ol li::marker {
+  /* change color, size, weight, whatever you like */
+  /* color: #1e40af; */
+  /* Tailwind’s blue-800 */
+  font-size: var(--font-size-lg);
+  /* e.g. 18px */
+  font-weight: bold;
+  /* you can even replace the marker entirely: */
+  /* content: counter(list-item) ".> "; */
+}

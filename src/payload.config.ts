@@ -30,6 +30,7 @@ import fs from 'fs'
 import { ReadNotification } from './collections/ReadNotification'
 import { getAdminConfig } from './configs/adminConfig'
 import { onInit } from './tasks/seed'
+import { Providers } from './providers'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -46,6 +47,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   i18n: i18nConfigs,
+
   localization: {
     defaultLocale: 'ja',
     locales: ['ja', 'en', 'it'],
@@ -65,6 +67,7 @@ export default buildConfig({
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
   onInit,
+
   collections: [
     // default collections leave here for d emo
     Pages,

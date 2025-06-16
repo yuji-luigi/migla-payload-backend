@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loadingBars {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+}
