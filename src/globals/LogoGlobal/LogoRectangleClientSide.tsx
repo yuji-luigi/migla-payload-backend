@@ -8,7 +8,6 @@ import { usePayloadAPI } from '@payloadcms/ui'
 
 export function LogoRectangleClientSide({ className }: { className?: string }) {
   const [result] = usePayloadAPI('/api/globals/logoGlobal')
-  console.log(result)
   const { logo_rectangle } = result.data
   if (
     !logo_rectangle ||
