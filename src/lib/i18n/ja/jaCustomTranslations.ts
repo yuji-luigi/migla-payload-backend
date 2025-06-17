@@ -41,9 +41,15 @@ export const jaCustomTranslations = {
     example_excel: 'エクセルの例',
     Delete: '削除',
   },
+  dropzone: {
+    description: 'ファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
+  },
   students: {
     importModal: {
       title: '学生データのインポート',
+      subtitle: '任意の種類の学生をインポートしてください。',
+      import: 'インポート',
+      close: '閉じる',
       dropzone:
         'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
       dropzoneButton: 'ファイルを読み込む',

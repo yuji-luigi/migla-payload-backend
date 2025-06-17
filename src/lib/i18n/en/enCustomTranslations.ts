@@ -12,10 +12,17 @@ export const enCustomTranslations = {
     no_teachers_title: 'No teachers created yet.',
     no_parents_title: 'No parents created yet.',
     no_students_title: 'No students created yet.',
+
     create_classrooms: 'Please create classrooms manually or import from excel file.',
     create_teachers: 'Please create teachers manually or import from excel file.',
     create_parents: 'Please create parents manually or import from excel file.',
     create_students: 'Please create students manually or import from excel file.',
+    modal: {
+      check_file: 'Please check the file.',
+      import_classroom_heading: "Let's register the classrooms.",
+      import_teachers_heading: "Let's register the teachers.",
+      import_users_heading: "Let's register the users.",
+    },
   },
   authentication: {
     ERROR_NO_ROLE: 'This user does not have access',
@@ -30,10 +37,16 @@ export const enCustomTranslations = {
     Submit: 'Submit',
     Change: 'Change',
     dropzoneImport: 'Import',
+    example_excel: 'Example Excel file',
+    Delete: 'Delete',
+  },
+  dropzone: {
+    description: 'Drop files here or click to upload',
   },
   students: {
     importModal: {
       title: 'Import Students',
+      subtitle: 'Import desired type of students.',
       dropzone: 'Drop files here or click to upload',
       import: 'Import',
       close: 'Close',

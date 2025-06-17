@@ -19,9 +19,8 @@ export const FilePreview = ({ file }: { file: File }) => {
     return <div>No icon found</div>
   }
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-row items-center gap-16">
       <img style={{ background: 'white' }} height={40} width={40} src={iconPath} alt={file.name} />
-
       <div>
         <p className="text-lg">{file.name}</p>
       </div>

@@ -21,6 +21,12 @@ export const itCustomTranslations = {
       'Per creare i genitori, si prega di importare un file excel o di crearli manualmente.',
     create_students:
       'Per creare gli studenti, si prega di importare un file excel o di crearli manualmente.',
+    modal: {
+      check_file: 'Si prega di controllare il file.',
+      import_classroom_heading: 'Iniziamo con la registrazione delle classi.',
+      import_teachers_heading: 'Iniziamo con la registrazione dei docenti.',
+      import_users_heading: 'Iniziamo con la registrazione degli utenti.',
+    },
   },
   authentication: {
     ERROR_NO_ROLE: 'Questo utente non ha accesso',
@@ -35,6 +41,11 @@ export const itCustomTranslations = {
     Submit: 'Invia',
     Change: 'Cambia',
     dropzoneImport: 'Importa',
+    example_excel: 'Esempio di file Excel',
+    Delete: 'Elimina',
+  },
+  dropzone: {
+    description: 'Trascina qui i file o clicca per caricare',
   },
   students: {
     importModal: {

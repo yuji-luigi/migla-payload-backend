@@ -4,7 +4,6 @@
 @import './modal.css';
 
 .tailwind-scope {
-
   /* @import 'tailwindcss/base.css'; */
   /* @import 'tailwindcss/components.css'; */
   /* @import 'tailwindcss/utilities.css'; */
@@ -31,16 +30,29 @@
   /* #dee5d4 */
   --bg-primary: 85 25% 86%;
   /* #8eaccd */
-  --primary-100: 0.99 0.0584 251.06;
-  --primary-200: 0.95 0.0584 251.06;
-  --primary-300: 0.89 0.0584 251.06;
-  --primary-400: 0.8 0.0584 251.06;
+  --primary-50: 211 39% 98%;
+  --primary-100: 211 39% 86%;
+  --primary-200: 211 39% 82%;
+  --primary-300: 211 39% 78%;
+  --primary-400: 211 39% 74%;
   --primary: 211 39% 68%;
   --primary-500: var(--primary);
-  --primary-600: 0.65 0.0584 251.06;
-  --primary-700: 0.6 0.0584 251.06;
-  --primary-800: 0.55 0.0584 251.06;
-  --primary-900: 0.45 0.0584 251.06;
+  --primary-600: 211 39% 62%;
+  --primary-700: 211 39% 58%;
+  --primary-800: 211 39% 54%;
+  --primary-900: 211 39% 50%;
+
+  // oklch
+  // --primary-100: 0.99 0.0584 251.06;
+  // --primary-200: 0.95 0.0584 251.06;
+  // --primary-300: 0.89 0.0584 251.06;
+  // --primary-400: 0.8 0.0584 251.06;
+  // --primary: 211 39% 68%;
+  // --primary-500: var(--primary);
+  // --primary-600: 0.65 0.0584 251.06;
+  // --primary-700: 0.6 0.0584 251.06;
+  // --primary-800: 0.55 0.0584 251.06;
+  // --primary-900: 0.45 0.0584 251.06;
   --bg-side-nav: 0.8 0.0584 251.06 / 60%;
   /* #364252 */
   --primary-foreground: 214 21% 27%;
@@ -82,7 +94,8 @@
   --r: 300px;
   /* circle radius */
 
-  --bg-pattern: url('/images/bg_pattern/shape_top.svg'), url('/images/bg_pattern/shape_bottom.svgja');
+  --bg-pattern:
+    url('/images/bg_pattern/shape_top.svg'), url('/images/bg_pattern/shape_bottom.svgja');
 
   --radius-card: 0.75rem;
 
@@ -91,10 +104,8 @@
   --font-size-md: 1.25rem;
   --font-size-lg: 1.45rem;
 
-
   /* --card-color: 60 22% 96%; */
 }
-
 
 [data-theme='dark'] {
   --card: 0 0% 4%;
@@ -103,8 +114,17 @@
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
   /* #213b59*/
+  --primary-50: 211 39% 58%;
+  --primary-100: 211 39% 52%;
+  --primary-200: 211 39% 46%;
+  --primary-300: 211 39% 40%;
+  --primary-400: 211 39% 34%;
   --primary: 212 46% 24%;
-
+  --primary-500: var(--primary);
+  --primary-600: 211 39% 22%;
+  --primary-700: 211 39% 18%;
+  --primary-800: 211 39% 14%;
+  --primary-900: 211 39% 10%;
   --primary-foreground: 0.93 0.0584 251.06;
   /* #8a4f01 */
   --secondary: 34 99% 27%;
@@ -134,8 +154,8 @@
   --foreground: 210 40% 98%;
   --bg-pattern:
     url('/images/bg_pattern/shape_top_dark.svg'), url('/images/bg_pattern/shape_bottom_dark.svg');
-
-  --color-text-primary: var(--primary-700);
+  // must be global white color
+  --color-text-primary: var(--color-text-primary);
   /* // --card-color: var(--foreground); */
 }
 
@@ -151,9 +171,7 @@ body {
   font-weight: 800;
 }
 
-
 @layer payload-default {
-
   body,
   .template-default__wrap {
     background-color: hsl(var(--bg-primary));
@@ -177,15 +195,12 @@ body {
     & [data-theme='dark'] {
       background-image: none;
     }
-
   }
 
   aside.nav {
     background-color: hsl(var(--bg-primary) / 0.7);
     border-right: 1px solid hsl(var(--tertiary));
   }
-
-
 
   body:has(div[data-login-role-present='false']) {
     .login__form {
@@ -206,17 +221,36 @@ body {
     border-radius: var(--radius-card);
     /* // background-color: hsl(var(--card-color)); */
   }
-
 }
+@layer utility {
+  .display-none {
+    display: none;
+  }
 
-.display-none {
-  display: none;
+  .bg-primary {
+    background-color: hsl(var(--primary));
+    // &:hover {
+    //   background-color: hsl(var(--primary-50));
+    // }
+    // &:active {
+    //   background-color: hsl(var(--primary-800));
+    // }
+  }
+  button.bg-primary {
+    background-color: hsl(var(--primary));
+    &:hover {
+      background-color: hsl(var(--primary-400));
+    }
+    &:active {
+      background-color: hsl(var(--primary-300));
+    }
+  }
+  @for $i from 1 through 50 {
+    .gap-#{$i} {
+      gap: $i * 1px;
+    }
+  }
 }
-
-.bg-primary {
-  background-color: hsl(var(--primary));
-}
-
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -224,6 +258,6 @@ body {
 }
 
 .divider {
-  border-top: 1px solid hsl(var(--card-foreground)/0.2);
+  border-top: 1px solid hsl(var(--card-foreground) / 0.2);
   width: 100%;
 }
