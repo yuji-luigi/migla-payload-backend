@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 
 import { defaultLexical } from '@/fields/defaultLexical'
 import { Categories } from './collections/Categories'
-import { Classrooms } from './collections/Classrooms'
+import { Classrooms } from './collections/classrooms'
 import { Homeworks } from './collections/Homeworks'
 import { Media } from './collections/Media'
 import { Notifications } from './collections/Notifications'

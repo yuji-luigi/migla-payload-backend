@@ -7,6 +7,8 @@ import { RHFFormModal } from '../../../components/Modal/form_modal/RHFFormModal'
 import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
 import { http } from '../../../lib/fetch/http'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
+import { ImportResult } from '../../../types/responses/importResponse'
+import { ResultUser } from '../user-types'
 
 export const UserImportModal = ({ slug }: { slug: string }) => {
   const { handleWhereChange } = useListQuery()
@@ -19,12 +21,7 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
     try {
       const formData = new FormData()
       formData.append('file', data.users)
-      const response = await http.post<{
-        updated: any[]
-        created: any[]
-        message?: string
-        errors: any[]
-      }>('/api/users/import', {
+      const response = await http.post<ImportResult<ResultUser>>('/api/users/import', {
         body: formData,
       })
       await handleWhereChange?.({})

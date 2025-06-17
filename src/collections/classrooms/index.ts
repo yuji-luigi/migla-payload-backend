@@ -1,11 +1,11 @@
-import { Teacher } from './../payload-types'
+import { Teacher } from '../../payload-types'
 import { APIError, type CollectionConfig } from 'payload'
 
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { anyone } from '../../access/anyone'
+import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin } from '../hooks/showOnlyAdmin'
-import { User } from '../payload-types'
+import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { User } from '../../payload-types'
 
 export const Classrooms: CollectionConfig = {
   slug: 'classrooms',

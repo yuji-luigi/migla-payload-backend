@@ -4,26 +4,16 @@ import { Classroom, Role, Student, User } from '../../../payload-types'
 import { cn } from '../../../utilities/ui'
 import { consolidateHTMLConverters } from '@payloadcms/richtext-lexical'
 import { notEmpty } from '../../../lib/notEmpty'
+import { ImportResult } from '../../../types/responses/importResponse'
+import { ResultUser } from '../user-types'
 
-type resultUser = {
-  fullname: string
-  email: string
-  roles?: string[]
-}
-
-type ImportResult = {
-  updated: resultUser[]
-  created: resultUser[]
-  errors: Record<string, string>[]
-  message?: string
-}
 export const importUsers: Omit<Endpoint, 'root'> = {
   path: '/import',
   method: 'post',
   handler: async (req) => {
     const result: {
-      updated: resultUser[]
-      created: resultUser[]
+      updated: ResultUser[]
+      created: ResultUser[]
       errors: Record<string, string>[]
       message?: string
     } = {
@@ -200,7 +190,7 @@ async function handleCreateUsers({
   user: (UserDto & { roles: Role[] | null }) | null
   sameUsers: PaginatedDocs<User>
   payload: Payload
-  result: ImportResult
+  result: ImportResult<ResultUser>
 }) {
   if (!user) return
   try {
