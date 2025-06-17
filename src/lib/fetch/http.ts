@@ -26,16 +26,19 @@ export const http = {
       return (await response.json()) as ResponseData
     }
     const data = await response.json()
-    console.error(
-      data.errors
-        .map((error: any) => Object.entries(error).map(([key, value]) => `${key}: ${value}`))
-        .split('\n'),
-    )
-    throw new Error(
-      data.errors.map((error: any) =>
-        Object.entries(error).map(([key, value]) => `${key}: ${value}`),
-      ),
-    )
+    if (data.errors && Array.isArray(data.errors)) {
+      console.error(
+        data.errors
+          .map((error: any) => Object.entries(error).map(([key, value]) => `${key}: ${value}`))
+          ?.split('\n'),
+      )
+      throw new Error(
+        data.errors.map((error: any) =>
+          Object.entries(error).map(([key, value]) => `${key}: ${value}`),
+        ),
+      )
+    }
+    throw new Error(response.statusText)
   },
   put: async (url: string, body: any) => {
     const response = await fetch(url, {

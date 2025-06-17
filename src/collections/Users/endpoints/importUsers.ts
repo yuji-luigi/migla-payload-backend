@@ -5,7 +5,7 @@ import { cn } from '../../../utilities/ui'
 import { consolidateHTMLConverters } from '@payloadcms/richtext-lexical'
 import { notEmpty } from '../../../lib/notEmpty'
 import { ImportResult } from '../../../types/responses/importResponse'
-import { ResultUser } from '../user-types'
+import { ResultUser } from '../types/result-user'
 
 export const importUsers: Omit<Endpoint, 'root'> = {
   path: '/import',
@@ -57,7 +57,6 @@ export const importUsers: Omit<Endpoint, 'root'> = {
       await Promise.all(promises.map((run) => run()))
       return Response.json(result)
     }
-
     return Response.json({ ...result, message: 'No operation' })
   },
 }

@@ -6,6 +6,7 @@ import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { User } from '../../payload-types'
+import { importClassrooms } from './endpoints/import-classrooms'
 
 export const Classrooms: CollectionConfig = {
   slug: 'classrooms',
@@ -27,6 +28,7 @@ export const Classrooms: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  endpoints: [importClassrooms],
   hooks: {
     // NOTE: too much to test. when necessary set unset readonly the teachers field
     // afterChange: [

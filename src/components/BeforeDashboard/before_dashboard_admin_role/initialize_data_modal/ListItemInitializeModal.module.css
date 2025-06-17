@@ -1,5 +1,14 @@
 .li {
   margin-bottom: 1.5rem;
+
+
+}
+
+.li[data-loading='true'] {
+
+  opacity: 0.5;
+  pointer-events: none;
+
 }
 
 .li[data-enabled='false'] {

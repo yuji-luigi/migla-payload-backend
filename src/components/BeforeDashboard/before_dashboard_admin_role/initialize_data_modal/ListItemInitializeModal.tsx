@@ -6,6 +6,9 @@ import { useCustomTranslations } from '../../../../lib/i18n/useCustomTranslation
 import { useFormContext } from 'react-hook-form'
 import { FilePreview } from '../../../ui/file_preview/FilePreview'
 import { CollectionSlug } from 'payload'
+import { http } from '../../../../lib/fetch/http'
+import { useState } from 'react'
+import { LoadingButton } from '../../../Button/LoadingButton'
 
 const ListItemInitializeModal = ({
   enabled = false,
@@ -27,7 +30,8 @@ const ListItemInitializeModal = ({
   uploadEndpoint: `/api/${CollectionSlug}/${'import'}`
 }) => {
   const { t } = useCustomTranslations()
-  const { watch } = useFormContext()
+  const [isLoading, setIsLoading] = useState(false)
+  const { watch, getValues, setValue } = useFormContext()
   if (payloadResult?.isLoading) {
     return (
       <li style={{}}>
@@ -40,7 +44,7 @@ const ListItemInitializeModal = ({
   }
 
   return (
-    <li className={styles.li} data-enabled={enabled}>
+    <li className={styles.li} data-enabled={enabled} data-loading={isLoading}>
       <div className={styles.titleRow}>
         <p className={styles.title}>{title}</p>
         {exampleLink && (
@@ -55,19 +59,35 @@ const ListItemInitializeModal = ({
           <p>{t('dashboard:modal:check_file')}</p>
           <FilePreview file={watch(dropzoneName)} />
           <div className={styles.actions}>
-            <Button size="small" className="btn--style-pill">
+            <Button
+              onClick={() => setValue(dropzoneName, undefined)}
+              size="medium"
+              className="btn--style-pill"
+            >
               {t('button:Change')}
             </Button>
-            <Button
-              size="small"
+            <LoadingButton
+              isLoading={isLoading}
+              size="medium"
               type="button"
-              className="btn--style-pill bg-primary color-primary"
-              onClick={() => {
-                console.log('submit', uploadEndpoint)
+              className="bg-primary color-primary"
+              onClick={async () => {
+                try {
+                  setIsLoading(true)
+                  const formData = new FormData()
+                  formData.append('file', getValues(dropzoneName))
+                  const response = await http.post(uploadEndpoint, {
+                    body: formData,
+                  })
+                  console.log(response)
+                } catch (error) {
+                } finally {
+                  setIsLoading(false)
+                }
               }}
             >
               {t('button:Submit')}
-            </Button>
+            </LoadingButton>
           </div>
         </div>
       ) : (

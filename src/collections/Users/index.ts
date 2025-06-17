@@ -4,7 +4,7 @@ import { authenticated } from '../../access/authenticated'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
 import { Role, User } from '../../payload-types'
-import { importUsers } from './usersEndpoints/importUsers'
+import { importUsers } from './endpoints/importUsers'
 export const Users: CollectionConfig = {
   slug: 'users',
   labels: {

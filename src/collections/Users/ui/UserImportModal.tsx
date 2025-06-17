@@ -8,7 +8,7 @@ import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
 import { http } from '../../../lib/fetch/http'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import { ImportResult } from '../../../types/responses/importResponse'
-import { ResultUser } from '../user-types'
+import { ResultUser } from '../types/result-user'
 
 export const UserImportModal = ({ slug }: { slug: string }) => {
   const { handleWhereChange } = useListQuery()
@@ -24,6 +24,7 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
       const response = await http.post<ImportResult<ResultUser>>('/api/users/import', {
         body: formData,
       })
+
       await handleWhereChange?.({})
 
       if (!response.errors.length) {
