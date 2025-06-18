@@ -22,6 +22,9 @@ export const enCustomTranslations = {
       import_classroom_heading: "Let's register the classrooms.",
       import_teachers_heading: "Let's register the teachers.",
       import_users_heading: "Let's register the users.",
+      import_classroom_completed: 'The classrooms have been registered.',
+      import_teachers_completed: 'The teachers have been registered.',
+      import_users_completed: 'The users have been registered.',
     },
   },
   authentication: {

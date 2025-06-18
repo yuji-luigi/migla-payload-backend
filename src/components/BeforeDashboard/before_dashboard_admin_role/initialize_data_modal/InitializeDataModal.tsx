@@ -6,6 +6,7 @@ import { useCustomTranslations } from '../../../../lib/i18n/useCustomTranslation
 import { AlertMessage } from '../../../error/AlertMessage'
 import RHFFormModal from '../../../Modal/form_modal/RHFFormModal'
 import ListSectionInitializeData from './ListSectionInitializeData'
+import { usePayloadAPI } from '@payloadcms/ui'
 
 const InitializeDataModal = ({ slug }: { slug: string }) => {
   const { t } = useCustomTranslations()

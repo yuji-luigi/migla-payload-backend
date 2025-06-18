@@ -3,39 +3,47 @@ import ListItemInitializeModal from './ListItemInitializeModal'
 import { usePayloadAPI } from '@payloadcms/ui'
 import { useCustomTranslations } from '../../../../lib/i18n/useCustomTranslations'
 import styles from './ListSectionInitializeData.module.css'
+import { useFormContext } from 'react-hook-form'
 
 const ListSectionInitializeData = () => {
-  const [classroomsResult] = usePayloadAPI(`/api/classrooms`)
-  const [teachersResult] = usePayloadAPI(`/api/teachers`)
-  const [usersResult] = usePayloadAPI(`/api/users`)
   const { t } = useCustomTranslations()
-
+  const { watch } = useFormContext()
+  const classroomsCompleted = watch('classrooms_completed')
+  const teachersCompleted = watch('teachers_completed')
+  const usersCompleted = watch('users_completed')
   return (
     <ol className={styles.ol}>
       <ListItemInitializeModal
         enabled
+        collectionSlug="classrooms"
+        completedText={t('dashboard:modal:import_classroom_completed')}
         title={t('dashboard:modal:import_classroom_heading')}
         dropzoneButtonText={t('button:Import')}
         exampleLink="https://docs.google.com/spreadsheets/d/16_AFyrEyBQkeTV1fXVOSGqUaYX9OD1ear90OADCE5G4/edit?usp=sharing"
-        payloadResult={classroomsResult}
-        dropzoneName="classrooms"
-        uploadEndpoint="/api/classrooms/import"
+        // payloadResult={classroomsResult}
+        // dropzoneName="classrooms"
+        // uploadEndpoint="/api/classrooms/import"
       />
       <ListItemInitializeModal
         title={t('dashboard:modal:import_teachers_heading')}
-        enabled={!!classroomsResult.data.length}
+        enabled={classroomsCompleted}
+        completedText={t('dashboard:modal:import_teachers_completed')}
         dropzoneButtonText={t('button:Import')}
-        payloadResult={teachersResult}
-        dropzoneName="teachers"
-        uploadEndpoint="/api/teachers/import"
+        collectionSlug="teachers"
+        exampleLink="https://docs.google.com/spreadsheets/d/1zKXid-7b4e2lyxg05glPbgb_dnrdUFnnrMTMh4XVNT0/edit?usp=sharing"
+        // payloadResult={teachersResult}
+        // dropzoneName="teachers"
+        // uploadEndpoint="/api/teachers/import"
       />
       <ListItemInitializeModal
         title={t('dashboard:modal:import_users_heading')}
+        completedText={t('dashboard:modal:import_users_completed')}
         dropzoneButtonText={t('button:Import')}
-        enabled={!!classroomsResult.data.length && !!teachersResult.data.length}
-        payloadResult={usersResult}
-        dropzoneName="users"
-        uploadEndpoint="/api/users/import"
+        enabled={classroomsCompleted && teachersCompleted}
+        collectionSlug="users"
+        // payloadResult={usersResult}
+        // dropzoneName="users"
+        // uploadEndpoint="/api/users/import"
       />
     </ol>
   )

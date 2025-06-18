@@ -1,10 +1,11 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { anyone } from '../../access/anyone'
+import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin } from '../hooks/showOnlyAdmin'
-import { User } from '../payload-types'
+import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { User } from '../../payload-types'
+import { importTeachers } from './endpoints/import-teachers'
 
 export const Teachers: CollectionConfig = {
   labels: {
@@ -20,6 +21,7 @@ export const Teachers: CollectionConfig = {
     },
   },
   slug: 'teachers',
+  endpoints: [importTeachers],
   hooks: {
     afterChange: [
       async ({ req: { user, payload }, doc, operation }) => {
@@ -88,6 +90,7 @@ export const Teachers: CollectionConfig = {
       type: 'relationship',
       relationTo: 'users',
       unique: true,
+      required: true,
       // maxDepth: 0,
       hasMany: false,
     },

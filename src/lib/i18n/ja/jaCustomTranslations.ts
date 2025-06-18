@@ -21,6 +21,9 @@ export const jaCustomTranslations = {
       import_classroom_heading: '教室を登録しましょう。',
       import_teachers_heading: '先生を登録しましょう。',
       import_users_heading: 'ユーザーを登録しましょう。',
+      import_classroom_completed: '教室の登録が完了しました。',
+      import_teachers_completed: '先生の登録が完了しました。',
+      import_users_completed: 'ユーザーの登録が完了しました。',
     },
   },
   authentication: {

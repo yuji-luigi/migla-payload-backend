@@ -26,6 +26,9 @@ export const itCustomTranslations = {
       import_classroom_heading: 'Iniziamo con la registrazione delle classi.',
       import_teachers_heading: 'Iniziamo con la registrazione dei docenti.',
       import_users_heading: 'Iniziamo con la registrazione degli utenti.',
+      import_classroom_completed: 'Le classi sono state registrate.',
+      import_teachers_completed: 'I docenti sono stati registrati.',
+      import_users_completed: 'Gli utenti sono stati registrati.',
     },
   },
   authentication: {

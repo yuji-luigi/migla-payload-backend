@@ -792,7 +792,7 @@ export interface Teacher {
   id: number;
   name: string;
   isAssistant?: boolean | null;
-  user?: (number | null) | User;
+  user: number | User;
   classroom?: (number | null) | Classroom;
   slug?: string | null;
   slugLock?: boolean | null;
