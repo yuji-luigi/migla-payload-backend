@@ -113,6 +113,8 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
       }
     })
 
+    const updateTechersUsersPromises = existingUsers.map((teacher) => async () => {
+
     const promises = json.map((item, index) => async () => {
       try {
       } catch (error) {
