@@ -39,8 +39,9 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
       },
     })
 
-    assert(!roleTeacher?.isTeacher, 'Role teacher not found')
-
+    if (!roleTeacher) {
+      throw new Error('Role teacher not found')
+    }
     const { docs: existingTeachers } = await req.payload.find({
       collection: 'teachers',
       where: {
@@ -56,6 +57,7 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
     const createUsersTeachersPromises = nonExistingUsersExcel.map((row) => async () => {
       const user = await req.payload.create({
         collection: 'users',
+        locale: 'ja',
         data: teacherExcelToUser({
           row: row,
           locale: 'ja',
@@ -63,15 +65,23 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
         }),
       })
       for (const locale of restLocales) {
-        await req.payload.update({
-          collection: 'users',
-          id: user.id,
-          data: teacherExcelToUser({
-            row: row,
-            locale: locale,
-            roleTeacher: roleTeacher as Role & { isTeacher: true },
-          }),
-        })
+        await req.payload
+          .update({
+            collection: 'users',
+            locale,
+            id: user.id,
+            data: teacherExcelToUser({
+              row: row,
+              locale: locale,
+              roleTeacher: roleTeacher as Role & { isTeacher: true },
+            }),
+          })
+          .catch((error) => {
+            errors.push({
+              row: row.email,
+              message: error.message,
+            })
+          })
       }
 
       const {
@@ -86,9 +96,9 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
         },
         limit: 1,
       })
-      if (!classroom) {
-        throw new Error(`Classroom ${row.classroom_ja} not found`)
-      }
+      // if (!classroom) {
+      //   throw new Error(`Classroom ${row.classroom_ja} not found`)
+      // }
       const newTeacher = await req.payload.create({
         collection: 'teachers',
         locale: 'ja',
@@ -96,7 +106,7 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
           row: row,
           locale: 'ja',
           userId: user.id,
-          classroomId: classroom.id,
+          classroomId: classroom?.id ?? null,
         }),
       })
       for (const locale of restLocales) {
@@ -107,26 +117,125 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
             row: row,
             locale: locale,
             userId: user.id,
-            classroomId: classroom.id,
+            classroomId: classroom?.id ?? null,
           }),
         })
       }
     })
 
-    const updateTechersUsersPromises = existingUsers.map((teacher) => async () => {
+    const updateTeachersUsersPromises = existingUsers.map((user) => async () => {
+      const row = json.find((item) => item.email === user.email)
+      if (!row) {
+        throw new Error(`Row not found for user ${user.email}`)
+      }
+      const classroomName = row.classroom_ja
 
-    const promises = json.map((item, index) => async () => {
-      try {
-      } catch (error) {
-        const deformedItem = item as unknown as Record<string, string>
-        const keys = Object.keys(deformedItem)
-        errors.push({
-          row: keys.map((key) => deformedItem[key] || '').join(', '),
-          message: error instanceof Error ? `${error.message} ` : 'Unknown error',
+      const {
+        docs: [foundClassroom],
+      } = await req.payload.find({
+        collection: 'classrooms',
+        locale: 'ja',
+        where: {
+          name: {
+            equals: classroomName,
+          },
+        },
+      })
+      const {
+        docs: [upTeacher],
+      } = await req.payload.find({
+        collection: 'teachers',
+        locale: 'ja',
+        where: {
+          user: {
+            equals: user.id,
+          },
+        },
+        limit: 1,
+      })
+
+      for (const locale of locales) {
+        /** update user */
+        await req.payload.update({
+          collection: 'users',
+          id: user.id,
+          locale,
+          data: {
+            ...teacherExcelToUser({
+              row: row,
+              locale: locale,
+              roleTeacher: roleTeacher as Role & { isTeacher: true },
+            }),
+            roles: [
+              // set existing role + roleTeacher + eliminate duplicates
+              ...new Set([
+                roleTeacher.id,
+                ...(user.roles?.map((role) => (typeof role === 'number' ? role : role.id)) ?? []),
+              ]),
+            ],
+          },
         })
+        /** update teacher */
+        if (upTeacher) {
+          await req.payload.update({
+            collection: 'teachers',
+            id: upTeacher.id,
+            data: {
+              ...teacherExcelToTeacher({
+                row: row,
+                locale: locale,
+                userId: user.id,
+                classroomId: foundClassroom?.id ?? null,
+              }),
+            },
+          })
+        }
+      }
+      /** create teacher */
+      if (!upTeacher) {
+        /** create ja teacher first then iterate over rest locales */
+        const newTeacher = await req.payload.create({
+          collection: 'teachers',
+          locale: 'ja',
+          data: teacherExcelToTeacher({
+            row: row,
+            locale: 'ja',
+            userId: user.id,
+            classroomId: foundClassroom?.id ?? null,
+          }),
+        })
+        for (const locale of restLocales) {
+          /** set other locales */
+          await req.payload.update({
+            collection: 'teachers',
+            id: newTeacher.id,
+            locale,
+            data: {
+              ...teacherExcelToTeacher({
+                row: row,
+                locale: locale,
+                userId: user.id,
+                classroomId: foundClassroom?.id ?? null,
+              }),
+            },
+          })
+        }
       }
     })
-    await Promise.all(promises.map((call) => call()))
+
+    // const promises = json.map((item, index) => async () => {
+    //   try {
+    //   } catch (error) {
+    //     const deformedItem = item as unknown as Record<string, string>
+    //     const keys = Object.keys(deformedItem)
+    //     errors.push({
+    //       row: keys.map((key) => deformedItem[key] || '').join(', '),
+    //       message: error instanceof Error ? `${error.message} ` : 'Unknown error',
+    //     })
+    //   }
+    // })
+    await Promise.all(createUsersTeachersPromises.map((call) => call()))
+    await Promise.all(updateTeachersUsersPromises.map((call) => call()))
     return Response.json({
       updated,
       created,

@@ -11,14 +11,22 @@ export function teacherExcelToUser({
   locale: 'ja' | 'en' | 'it'
   roleTeacher: Role & { isTeacher: true }
 }): Omit<User, 'id' | 'updatedAt' | 'createdAt'> {
+  console.log(row[`name_${locale}`])
+  if (!row[`name_${locale}`]) {
+    throw new Error(`Name ${locale} is required`)
+  }
+  if (!row[`surname_${locale}`]) {
+    throw new Error(`Surname ${locale} is required`)
+  }
+  if (!row.email) {
+    throw new Error(`Email is required`)
+  }
+
   return {
     password: row.password,
     roles: [roleTeacher.id],
-    // id: 0,
     name: row[`name_${locale}`],
-    surname: row[`surname_${locale}`],
+    surname: row[`surname_${locale}`]!,
     email: row.email,
-    // updatedAt: new Date().toISOString(),
-    // createdAt: new Date().toISOString(),
   }
 }

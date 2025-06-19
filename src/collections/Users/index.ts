@@ -30,21 +30,17 @@ export const Users: CollectionConfig = {
       if (!req.user) {
         throw new APIError('You must be logged in to access this resource', 401, null, true)
       }
-      const user = await req.payload.findByID({
-        collection: 'users',
-        id: req.user?.id,
-        depth: 2, // Populate roles up to 2 levels deep
-      })
-      return isAdmin(user)
+      if (req.user?.currentRole?.isSuperAdmin || req.user?.currentRole?.isAdminLevel) {
+        return true
+      }
+      return false
     },
     delete: async ({ req }) => {
       if (req.user) {
-        const user = await req.payload.findByID({
-          collection: 'users',
-          id: req.user?.id,
-          depth: 2, // Populate roles up to 2 levels deep
-        })
-        return isAdmin(user)
+        console.log(req.user.currentRole)
+        if (req.user.currentRole?.isSuperAdmin || req.user.currentRole?.isAdminLevel) {
+          return true
+        }
       }
       return false
     },

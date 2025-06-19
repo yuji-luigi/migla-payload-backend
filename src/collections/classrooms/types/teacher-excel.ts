@@ -11,7 +11,7 @@ export interface TeacherExcel {
   /** User's surname in English */
   surname_en: string
   /** User's surname in Italian */
-  surname_it: string
+  surname_it?: string
 
   /** Contact email */
   email: string
@@ -21,9 +21,9 @@ export interface TeacherExcel {
   /** Teacher's name in Japanese */
   teacher_name_ja: string
   /** Teacher's name in English */
-  teacher_name_en: string
+  teacher_name_en?: string
   /** Teacher's name in Italian */
-  teacher_name_it: string
+  teacher_name_it?: string
 
   /** Classroom name in Japanese */
   classroom_ja: string

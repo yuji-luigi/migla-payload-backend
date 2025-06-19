@@ -29,14 +29,14 @@ export const Teachers: CollectionConfig = {
           if (doc.classroom) {
             const classroom = await payload.findByID({
               collection: 'classrooms',
-              id: doc.classroom,
+              id: doc.classroom.id || doc.classroom,
               depth: 0,
             })
             if (classroom) {
               classroom.teachers = [...new Set([...(classroom.teachers as number[]), doc.id])]
               await payload.update({
                 collection: 'classrooms',
-                id: doc.classroom,
+                id: doc.classroom.id || doc.classroom,
                 data: classroom,
               })
             }

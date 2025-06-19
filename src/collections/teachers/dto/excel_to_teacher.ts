@@ -13,7 +13,7 @@ export function teacherExcelToTeacher({
   classroomId: number | null
 }): Omit<Teacher, 'id' | 'updatedAt' | 'createdAt'> {
   return {
-    name: row[`name_${locale}`],
+    name: row[`teacher_name_${locale}`] || '',
     user: userId,
     isAssistant: false,
     classroom: classroomId,

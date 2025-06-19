@@ -280,7 +280,7 @@ main {
   z-index: 1;
 }
 
-@layer utility {
+@layer utilities {
   .bg-primary {
     background-color: hsl(var(--bg-primary));
   }
@@ -294,5 +294,20 @@ main {
   }
 
 
+  .blur-xs {
+    filter: blur(1px);
+  }
+
+  .blur-sm {
+    filter: blur(3px);
+  }
+
+  .blur-md {
+    filter: blur(6px);
+  }
+
+  .blur-lg {
+    filter: blur(9px);
+  }
 
 }

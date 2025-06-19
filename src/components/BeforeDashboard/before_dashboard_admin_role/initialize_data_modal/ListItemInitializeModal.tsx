@@ -38,13 +38,15 @@ const ListItemInitializeModal = ({
   const { t } = useCustomTranslations()
   const [isLoading, setIsLoading] = useState(false)
   const { watch, getValues, setValue } = useFormContext()
+
   useEffect(() => {
     console.log(payloadResult?.data.totalDocs)
     if (payloadResult?.data.totalDocs > 0) {
       console.log(`completed ${collectionSlug}`)
       setValue(`${collectionSlug}_completed`, true)
     }
-  }, [payloadResult])
+  }, [payloadResult.data.totalDocs])
+
   if (payloadResult?.isLoading) {
     return (
       <li className={styles.li} data-enabled={enabled} data-loading={isLoading}>
