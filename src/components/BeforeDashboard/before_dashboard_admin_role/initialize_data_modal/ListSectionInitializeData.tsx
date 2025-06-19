@@ -20,9 +20,6 @@ const ListSectionInitializeData = () => {
         title={t('dashboard:modal:import_classroom_heading')}
         dropzoneButtonText={t('button:Import')}
         exampleLink="https://docs.google.com/spreadsheets/d/16_AFyrEyBQkeTV1fXVOSGqUaYX9OD1ear90OADCE5G4/edit?usp=sharing"
-        // payloadResult={classroomsResult}
-        // dropzoneName="classrooms"
-        // uploadEndpoint="/api/classrooms/import"
       />
       <ListItemInitializeModal
         title={t('dashboard:modal:import_teachers_heading')}
@@ -31,9 +28,6 @@ const ListSectionInitializeData = () => {
         dropzoneButtonText={t('button:Import')}
         collectionSlug="teachers"
         exampleLink="https://docs.google.com/spreadsheets/d/1zKXid-7b4e2lyxg05glPbgb_dnrdUFnnrMTMh4XVNT0/edit?usp=sharing"
-        // payloadResult={teachersResult}
-        // dropzoneName="teachers"
-        // uploadEndpoint="/api/teachers/import"
       />
       <ListItemInitializeModal
         title={t('dashboard:modal:import_users_heading')}
@@ -41,9 +35,6 @@ const ListSectionInitializeData = () => {
         dropzoneButtonText={t('button:Import')}
         enabled={classroomsCompleted && teachersCompleted}
         collectionSlug="users"
-        // payloadResult={usersResult}
-        // dropzoneName="users"
-        // uploadEndpoint="/api/users/import"
       />
     </ol>
   )

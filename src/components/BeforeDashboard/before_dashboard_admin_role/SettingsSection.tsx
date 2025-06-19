@@ -30,9 +30,7 @@ const SettingsSection = ({
         iconPath={svgTeacher}
       />
       <CardTransparent
-        onClick={() => {
-          openModal('initialize-data')
-        }}
+        onClick={() => {}}
         title={t(
           status.hasClassrooms ? 'dashboard:classrooms_title' : 'dashboard:no_classrooms_title',
           {
