@@ -1,4 +1,10 @@
 export const jaCustomTranslations = {
+  components: {
+    dropzone: {
+      description: 'ファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
+      button: 'ファイルを読み込む',
+    },
+  },
   dashboard: {
     setup: 'セットアップ',
     please_initialize: 'ミグラダッシュボードを始めましょう。',
@@ -24,6 +30,8 @@ export const jaCustomTranslations = {
       import_classroom_completed: '教室の登録が完了しました。',
       import_teachers_completed: '先生の登録が完了しました。',
       import_users_completed: 'ユーザーの登録が完了しました。',
+      import_parents_students_heading: '保護者と学生を登録しましょう。',
+      import_parents_students_completed: '保護者と学生の登録が完了しました。',
     },
   },
   authentication: {
@@ -44,9 +52,7 @@ export const jaCustomTranslations = {
     example_excel: 'エクセルの例',
     Delete: '削除',
   },
-  dropzone: {
-    description: 'ファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
-  },
+
   students: {
     importModal: {
       title: '学生データのインポート',
@@ -78,6 +84,16 @@ export const jaCustomTranslations = {
       dropzone:
         'CSVファイル または Excelファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
       dropzoneButton: 'ファイルを読み込む',
+    },
+  },
+  teachers: {
+    importModal: {
+      title: '先生データのインポート',
+      subtitle: '任意の種類の先生をインポートしてください。',
+
+      dropzoneButton: 'ファイルを読み込む',
+      importExampleExcel: '読み込みエクセルの例',
+      loadingText: '先生データを作成しています。しばらくお待ちください。',
     },
   },
   errors: {

@@ -2,10 +2,11 @@ import React from 'react'
 import ListItemInitializeModal from './ListItemInitializeModal'
 import { usePayloadAPI } from '@payloadcms/ui'
 import { useCustomTranslations } from '../../../../lib/i18n/useCustomTranslations'
-import styles from './ListSectionInitializeData.module.css'
+import styles from './InitializeDataSteps.module.css'
 import { useFormContext } from 'react-hook-form'
+import excelExamples from '../../../../external_links/excel_examples/excel_examples'
 
-const ListSectionInitializeData = () => {
+const InitializeDataSteps = () => {
   const { t } = useCustomTranslations()
   const { watch } = useFormContext()
   const classroomsCompleted = watch('classrooms_completed')
@@ -19,7 +20,7 @@ const ListSectionInitializeData = () => {
         completedText={t('dashboard:modal:import_classroom_completed')}
         title={t('dashboard:modal:import_classroom_heading')}
         dropzoneButtonText={t('button:Import')}
-        exampleLink="https://docs.google.com/spreadsheets/d/16_AFyrEyBQkeTV1fXVOSGqUaYX9OD1ear90OADCE5G4/edit?usp=sharing"
+        exampleLink={excelExamples.classrooms.importDefault}
       />
       <ListItemInitializeModal
         title={t('dashboard:modal:import_teachers_heading')}
@@ -27,17 +28,18 @@ const ListSectionInitializeData = () => {
         completedText={t('dashboard:modal:import_teachers_completed')}
         dropzoneButtonText={t('button:Import')}
         collectionSlug="teachers"
-        exampleLink="https://docs.google.com/spreadsheets/d/1zKXid-7b4e2lyxg05glPbgb_dnrdUFnnrMTMh4XVNT0/edit?usp=sharing"
+        exampleLink={excelExamples.teachers.importDefault}
       />
       <ListItemInitializeModal
-        title={t('dashboard:modal:import_users_heading')}
-        completedText={t('dashboard:modal:import_users_completed')}
+        title={t('dashboard:modal:import_parents_students_heading')}
+        completedText={t('dashboard:modal:import_parents_students_completed')}
         dropzoneButtonText={t('button:Import')}
-        enabled={classroomsCompleted && teachersCompleted}
-        collectionSlug="users"
+        enabled={true}
+        collectionSlug="students"
+        exampleLink={excelExamples.parents.importWithStudents}
       />
     </ol>
   )
 }
 
-export default ListSectionInitializeData
+export default InitializeDataSteps

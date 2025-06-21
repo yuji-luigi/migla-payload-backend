@@ -8,10 +8,10 @@ import { RHFDropzone } from '../../../components/ui/rhf_dropzone'
 import { http } from '../../../lib/fetch/http'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import { ImportResult } from '../../../types/responses/importResponse'
-import { ResultUser } from '../types/result-user'
-import excelExamples from '../../../external_links/excel_examples/excel_examples'
+import { ResultUser } from '../../Users/types/result-user'
+import { teachersImportModalSlug } from '../slug'
 
-export const UserImportModal = ({ slug }: { slug: string }) => {
+export const TeacherImportModal = () => {
   const { handleWhereChange } = useListQuery()
   const { closeModal } = useModal()
   const { t } = useCustomTranslations()
@@ -29,7 +29,7 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
       await handleWhereChange?.({})
 
       if (!response.errors.length) {
-        closeModal(slug)
+        closeModal(teachersImportModalSlug)
       } else {
         toast.error('Error while operation', {
           description: (
@@ -58,12 +58,12 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
     <>
       <RHFFormModal
         methods={methods}
-        slug={slug}
-        title={t('users:importModal:title')}
-        subtitle={t('users:importModal:subtitle')}
+        slug={teachersImportModalSlug}
+        title={t('teachers:importModal:title')}
+        subtitle={t('teachers:importModal:subtitle')}
         className="tailwind-scope"
         submitCallback={handleSubmit}
-        loadingText={t('users:importModal:loadingText')}
+        loadingText={t('teachers:importModal:loadingText')}
       >
         <div className="flex flex-col gap-2">
           {successfulErrors && (
@@ -80,7 +80,7 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
           <a
             target="_blank"
             className="btn btn--icon-style-without-border btn--size-small  btn--style-pill my-0 w-fit mr-auto"
-            href={excelExamples.users.importDefault}
+            href="https://docs.google.com/spreadsheets/d/19aswBJ5tY5oCbU_grmCxe9aRscNzmRxKQY8uWxp1-l8/edit?usp=sharing"
           >
             <>{t('users:importModal:importExampleExcel')}</>
           </a>
@@ -88,8 +88,8 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
             onChangeCallback={(_: File) => setSuccessfulErrors(null)}
             name="users"
             accept={['.xlsx', '.xls']}
-            dropzoneText={t('users:importModal:importUsers')}
-            dropzoneButtonText={t('button:dropzoneImport')}
+            dropzoneText={t('components:dropzone:description')}
+            dropzoneButtonText={t('components:dropzone:button')}
           />
         </div>
       </RHFFormModal>
@@ -97,4 +97,4 @@ export const UserImportModal = ({ slug }: { slug: string }) => {
   )
 }
 
-export default UserImportModal
+export default TeacherImportModal

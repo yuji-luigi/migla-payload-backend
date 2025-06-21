@@ -20,6 +20,8 @@ import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { default as default_82bc7c32ecaac11bab111c5001af23f2 } from '@/collections/Users/ui/UserImportModal.tsx'
 import { default as default_a3930902dca2a9b95804de70be39e005 } from '@/collections/Users/ui/DescriptionUsers.tsx'
+import { default as default_cacc620a5844ea10fa498565a40f1e4a } from '@/collections/teachers/ui/TeacherImportModal'
+import { default as default_8d76106131be6f63bada73a9ca22318f } from '@/collections/teachers/ui/DescriptionTeachers'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
@@ -56,6 +58,8 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/collections/Users/ui/UserImportModal.tsx#default": default_82bc7c32ecaac11bab111c5001af23f2,
   "@/collections/Users/ui/DescriptionUsers.tsx#default": default_a3930902dca2a9b95804de70be39e005,
+  "@/collections/teachers/ui/TeacherImportModal#default": default_cacc620a5844ea10fa498565a40f1e4a,
+  "@/collections/teachers/ui/DescriptionTeachers#default": default_8d76106131be6f63bada73a9ca22318f,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/globals/Header/RowLabel#RowLabel": RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,

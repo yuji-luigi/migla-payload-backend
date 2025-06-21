@@ -1,4 +1,10 @@
 export const itCustomTranslations = {
+  components: {
+    dropzone: {
+      description: 'Trascina qui i file o clicca per caricare',
+      button: 'Importa',
+    },
+  },
   dashboard: {
     setup: 'Configurazione',
     please_initialize: 'Iniziamo con il dashboard MIGLA',
@@ -29,6 +35,9 @@ export const itCustomTranslations = {
       import_classroom_completed: 'Le classi sono state registrate.',
       import_teachers_completed: 'I docenti sono stati registrati.',
       import_users_completed: 'Gli utenti sono stati registrati.',
+      import_parents_students_heading:
+        'Iniziamo con la registrazione dei genitori e degli studenti.',
+      import_parents_students_completed: 'I genitori e gli studenti sono stati registrati.',
     },
   },
   authentication: {
@@ -47,8 +56,13 @@ export const itCustomTranslations = {
     example_excel: 'Esempio di file Excel',
     Delete: 'Elimina',
   },
-  dropzone: {
-    description: 'Trascina qui i file o clicca per caricare',
+  teachers: {
+    importModal: {
+      title: 'Importa Docenti',
+      subtitle: 'Importa il tipo di docenti desiderato.',
+      dropzone: 'Trascina qui i file o clicca per caricare',
+      dropzoneButton: 'Importa',
+    },
   },
   students: {
     importModal: {

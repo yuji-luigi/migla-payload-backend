@@ -6,20 +6,28 @@ import { it } from '@payloadcms/translations/languages/it'
 import type { NestedKeysStripped } from '@payloadcms/translations'
 import { enCustomTranslations } from './en/enCustomTranslations'
 import { itCustomTranslations } from './it/itCustomTranslations'
+const supportedLanguages = {
+  ja: jaSupportedLanguage,
+  en: en,
+  it: it,
+} as const
+
 export const i18nConfigs: Config['i18n'] = {
   fallbackLanguage: 'ja',
-  supportedLanguages: {
-    ja: jaSupportedLanguage,
-    en: en,
-    it: it,
-  },
+  supportedLanguages,
   translations: {
     ja: jaCustomTranslations,
     en: enCustomTranslations,
     it: itCustomTranslations,
   },
-} as const
+} as const satisfies Config['i18n']
 
+export const availableLocales = Object.keys(supportedLanguages) as Array<
+  keyof typeof supportedLanguages
+>
+// 1) Get the compile‐time union of your keys
+export type AvailableLocale = keyof typeof supportedLanguages
+// → “ja” | “en” | “it”
 type JaCustomTranslations = typeof jaCustomTranslations &
   typeof jaSupportedLanguage &
   typeof itCustomTranslations

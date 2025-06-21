@@ -15,12 +15,16 @@
   opacity: 0.5
 }
 
-.titleRow {
+.titleSection {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+
+  & a {
+    margin-left: auto;
+  }
 }
 
 .title {

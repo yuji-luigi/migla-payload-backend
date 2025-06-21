@@ -6,6 +6,8 @@ import { slugField } from '@/fields/slug'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { User } from '../../payload-types'
 import { importTeachers } from './endpoints/import-teachers'
+import DescriptionTeachers from './ui/DescriptionTeachers'
+import TeacherImportModal from './ui/TeacherImportModal'
 
 export const Teachers: CollectionConfig = {
   labels: {
@@ -55,6 +57,10 @@ export const Teachers: CollectionConfig = {
     useAsTitle: 'name',
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)
+    },
+    components: {
+      beforeList: ['@/collections/teachers/ui/TeacherImportModal'],
+      Description: '@/collections/teachers/ui/DescriptionTeachers',
     },
   },
 

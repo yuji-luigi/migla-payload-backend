@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useCustomTranslations } from '../../../../lib/i18n/useCustomTranslations'
 import { AlertMessage } from '../../../error/AlertMessage'
 import RHFFormModal from '../../../Modal/form_modal/RHFFormModal'
-import ListSectionInitializeData from './ListSectionInitializeData'
+import InitializeDataSteps from './InitializeDataSteps'
 import { usePayloadAPI } from '@payloadcms/ui'
 
 const InitializeDataModal = ({ slug }: { slug: string }) => {
@@ -21,9 +21,7 @@ const InitializeDataModal = ({ slug }: { slug: string }) => {
           console.log('submitted!!')
         }}
       >
-        <div className="">
-          <ListSectionInitializeData />
-        </div>
+        <InitializeDataSteps />
       </RHFFormModal>
     </>
   )

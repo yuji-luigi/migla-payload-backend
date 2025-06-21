@@ -1,4 +1,10 @@
 export const enCustomTranslations = {
+  components: {
+    dropzone: {
+      description: 'Drop files here or click to upload',
+      button: 'Import',
+    },
+  },
   dashboard: {
     setup: 'Setup',
     please_initialize: "Let's get start with the MIGLA dashboard",
@@ -25,6 +31,8 @@ export const enCustomTranslations = {
       import_classroom_completed: 'The classrooms have been registered.',
       import_teachers_completed: 'The teachers have been registered.',
       import_users_completed: 'The users have been registered.',
+      import_parents_students_heading: "Let's register the parents and students.",
+      import_parents_students_completed: 'The parents and students have been registered.',
     },
   },
   authentication: {
@@ -43,9 +51,7 @@ export const enCustomTranslations = {
     example_excel: 'Example Excel file',
     Delete: 'Delete',
   },
-  dropzone: {
-    description: 'Drop files here or click to upload',
-  },
+
   students: {
     importModal: {
       title: 'Import Students',
@@ -72,6 +78,14 @@ export const enCustomTranslations = {
     },
     importTeachers: {
       title: 'Import Teachers',
+      dropzone: 'Drop files here or click to upload',
+      dropzoneButton: 'Import',
+    },
+  },
+  teachers: {
+    importModal: {
+      title: 'Import Teachers',
+      subtitle: 'Import desired type of teachers.',
       dropzone: 'Drop files here or click to upload',
       dropzoneButton: 'Import',
     },

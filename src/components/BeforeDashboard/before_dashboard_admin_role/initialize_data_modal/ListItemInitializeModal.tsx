@@ -1,4 +1,4 @@
-import { Button, SuccessIcon, usePayloadAPI } from '@payloadcms/ui'
+import { Button, SuccessIcon, useModal, usePayloadAPI } from '@payloadcms/ui'
 import { LoaderPayload } from '../../../Loader/LoaderPayload'
 import { RHFDropzone } from '../../../ui/rhf_dropzone'
 import styles from './ListItemInitializeModal.module.css'
@@ -34,18 +34,19 @@ const ListItemInitializeModal = ({
   // payloadResult?: ReturnType<typeof usePayloadAPI>[0]
   // uploadEndpoint: `/api/${CollectionSlug}/${'import'}`
 }) => {
+  const { modalState } = useModal()
   const [payloadResult, { setParams }] = usePayloadAPI(`/api/${collectionSlug}`)
   const { t } = useCustomTranslations()
   const [isLoading, setIsLoading] = useState(false)
   const { watch, getValues, setValue } = useFormContext()
 
   useEffect(() => {
-    console.log(payloadResult?.data.totalDocs)
-    if (payloadResult?.data.totalDocs > 0) {
-      console.log(`completed ${collectionSlug}`)
-      setValue(`${collectionSlug}_completed`, true)
+    if (modalState['initialize-data']?.isOpen) {
+      if (payloadResult?.data.totalDocs > 0) {
+        setValue(`${collectionSlug}_completed`, true)
+      }
     }
-  }, [payloadResult.data.totalDocs])
+  }, [payloadResult.data.totalDocs, modalState])
 
   if (payloadResult?.isLoading) {
     return (
@@ -67,7 +68,7 @@ const ListItemInitializeModal = ({
 
   return (
     <li className={styles.li} data-enabled={enabled} data-loading={isLoading}>
-      <div className={styles.titleRow}>
+      <div className={styles.titleSection}>
         <p className={styles.title}>{title}</p>
         {exampleLink && (
           <a href={exampleLink} target="_blank" rel="noopener noreferrer">
@@ -116,7 +117,7 @@ const ListItemInitializeModal = ({
       ) : (
         <RHFDropzone
           className={!enabled ? styles.dropzoneDisabled : undefined}
-          dropzoneText={dropzoneText ?? t('dropzone:description')}
+          dropzoneText={dropzoneText ?? t('components:dropzone:description')}
           dropzoneButtonText={dropzoneButtonText}
           name={collectionSlug}
           enabled={enabled}

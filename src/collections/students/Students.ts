@@ -6,6 +6,8 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
 import { Classroom } from '../../payload-types'
 import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
+import { importStudents } from './endpoints/importStudents'
+import { studentsEndpoints } from './endpoints'
 export const studentsModal = {
   slug: 'students',
   labels: {
@@ -38,7 +40,7 @@ export const Students: CollectionConfig = {
   //     },
   //   ],
   // },
-
+  endpoints: studentsEndpoints,
   access: {
     create: authenticated,
     delete: authenticated,
