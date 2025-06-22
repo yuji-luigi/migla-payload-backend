@@ -17,7 +17,6 @@ export function handleTransformStudentExcel(
   if (!classroom) {
     throw new Error(`classroom not found ${parentStudentExcel.メール} ${parentStudentExcel.クラス}`)
   }
-  console.log({ parentId, classroom })
   return {
     name: parentStudentExcel[`student_name_${locale}`] || '',
     surname: parentStudentExcel[`student_surname_${locale}`] || '',
