@@ -72,6 +72,9 @@ export const Students: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, operation, originalDoc, data }) => {
+        if (req.context.isAdminOperation) {
+          return
+        }
         // throw new Error('test')
         if (!req.user?.currentRole) {
           throw new APIError('You must logged in to complete the operation', 403, null, true)
@@ -148,13 +151,22 @@ export const Students: CollectionConfig = {
       type: 'text',
       required: true,
     },
+
     {
-      name: 'parent',
+      name: 'birthday',
+      type: 'date',
+      required: true,
+    },
+    {
+      name: 'parents',
       type: 'relationship',
       relationTo: 'users',
       required: true,
       hasMany: true,
       filterOptions: async ({ user, req }) => {
+        if (req.context.isAdminOperation) {
+          return true
+        }
         if (!user) {
           throw new APIError(
             'filterOptions error: user is not logged in. collection: students',
@@ -193,6 +205,9 @@ export const Students: CollectionConfig = {
       relationTo: 'classrooms',
       hasMany: false,
       filterOptions: async ({ user, req }: FilterOptionsProps<Classroom>) => {
+        if (req.context.isAdminOperation) {
+          return true
+        }
         if (user?.currentRole) {
           if (user.currentRole.isTeacher) {
             const foundTeacher = await findTeacherRoleOfUser({ user, payload: req.payload })
@@ -217,6 +232,6 @@ export const Students: CollectionConfig = {
         allowEdit: false,
       },
     },
-    ...slugField('name'),
+    ...slugField('slug'),
   ],
 }

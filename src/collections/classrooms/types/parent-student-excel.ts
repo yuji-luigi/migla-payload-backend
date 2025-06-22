@@ -18,6 +18,7 @@ export type ParentStudentExcel = {
   student_name_it: string | null
 
   student_slug: string
+  student_birthday: number
 
   メール: string
   電話番号: string

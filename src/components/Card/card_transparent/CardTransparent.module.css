@@ -30,7 +30,7 @@
   margin-bottom: auto;
   border-radius: 8px;
   padding: 0.2rem 0.4rem;
-  background-color: hsl(var(--foreground));
+  background-color: white;
 }
 
 .icon {

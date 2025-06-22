@@ -821,7 +821,8 @@ export interface Student {
   id: number;
   name: string;
   surname: string;
-  parent: (number | User)[];
+  birthday: string;
+  parents: (number | User)[];
   classroom?: (number | null) | Classroom;
   slug?: string | null;
   slugLock?: boolean | null;
@@ -1452,7 +1453,8 @@ export interface TeachersSelect<T extends boolean = true> {
 export interface StudentsSelect<T extends boolean = true> {
   name?: T;
   surname?: T;
-  parent?: T;
+  birthday?: T;
+  parents?: T;
   classroom?: T;
   slug?: T;
   slugLock?: T;

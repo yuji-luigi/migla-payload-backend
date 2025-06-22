@@ -37,7 +37,6 @@ export const Users: CollectionConfig = {
     },
     delete: async ({ req }) => {
       if (req.user) {
-        console.log(req.user.currentRole)
         if (req.user.currentRole?.isSuperAdmin || req.user.currentRole?.isAdminLevel) {
           return true
         }
@@ -138,7 +137,6 @@ export const Users: CollectionConfig = {
               collection: 'roles',
               id: matchedRole,
             })
-            console.log(currentRole)
             // set the user role in the DB level. to authorize in dashboard.
             await req.payload.update({
               collection: collection.slug, // Use the collection name dynamically
@@ -243,8 +241,6 @@ export const Users: CollectionConfig = {
       hasMany: true,
 
       filterOptions: async ({ req }) => {
-        console.log(req.user)
-        console.log(req.user?.currentRole?.isSuperAdmin)
         if (req.user) {
           if (req.user?.currentRole?.isSuperAdmin) {
             return true
