@@ -23,7 +23,7 @@ export const importStudents: Omit<Endpoint, 'root'> = {
       const createdStudents: Student[] = []
       const updatedStudents: Student[] = []
       const formData = await req.formData?.()
-      let errors: Record<string, string>[] = []
+      const errors: Record<string, string>[] = []
       if (formData?.get('file') instanceof File) {
         const json = await parseExcelToJson<ParentStudentExcel>(formData.get('file') as File)
         const {
