@@ -52,7 +52,7 @@ export const Students: CollectionConfig = {
       }
       if (user?.currentRole.isParent) {
         return {
-          parent: {
+          parents: {
             equals: user.id,
           },
         }

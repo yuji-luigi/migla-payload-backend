@@ -110,16 +110,18 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
         }),
       })
       for (const locale of restLocales) {
-        await req.payload.update({
-          collection: 'teachers',
-          id: newTeacher.id,
-          data: teacherExcelToTeacher({
-            row: row,
-            locale: locale,
-            userId: user.id,
-            classroomId: classroom?.id ?? null,
-          }),
-        })
+        if (row[`teacher_name_${locale}`]) {
+          await req.payload.update({
+            collection: 'teachers',
+            id: newTeacher.id,
+            data: teacherExcelToTeacher({
+              row: row,
+              locale: locale,
+              userId: user.id,
+              classroomId: classroom?.id ?? null,
+            }),
+          })
+        }
       }
     })
 
@@ -177,18 +179,26 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
         })
         /** update teacher */
         if (upTeacher) {
-          await req.payload.update({
-            collection: 'teachers',
-            id: upTeacher.id,
-            data: {
-              ...teacherExcelToTeacher({
-                row: row,
-                locale: locale,
-                userId: user.id,
-                classroomId: foundClassroom?.id ?? null,
-              }),
-            },
-          })
+          await req.payload
+            .update({
+              collection: 'teachers',
+              id: upTeacher.id,
+              locale,
+              data: {
+                ...teacherExcelToTeacher({
+                  row: row,
+                  locale: locale,
+                  userId: user.id,
+                  classroomId: foundClassroom?.id ?? null,
+                }),
+              },
+            })
+            .catch((error) => {
+              errors.push({
+                row: row.email,
+                message: error.message,
+              })
+            })
         }
       }
       /** create teacher */
