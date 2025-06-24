@@ -810,7 +810,7 @@ export interface Classroom {
   description?: string | null;
   teachers?: (number | Teacher)[] | null;
   ord: number;
-  slug: string;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }

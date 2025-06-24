@@ -114,7 +114,7 @@ export const Classrooms: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
+      // required: true,
       localized: false,
       defaultValue: 'default',
     },
