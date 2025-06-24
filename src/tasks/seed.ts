@@ -53,7 +53,7 @@ export const seed = async (payload: Payload) => {
         slug: 'super_admin',
         canLoginAdmin: true,
         isSuperAdmin: true,
-        isAdminLevel: true,
+        isAdmin: true,
         label: 'スーパー管理者',
       },
       context: {
@@ -70,7 +70,7 @@ export const seed = async (payload: Payload) => {
       data: {
         name: 'admin',
         slug: 'admin',
-        isAdminLevel: true,
+        isAdmin: true,
         canLoginAdmin: true,
         label: '管理者',
       },
