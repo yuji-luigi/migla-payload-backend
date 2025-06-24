@@ -111,7 +111,7 @@ export const Classrooms: CollectionConfig = {
       localized: false,
       defaultValue: 0,
     },
-    ...slugField(),
+    ...slugField('slug'),
   ],
   timestamps: true,
 }

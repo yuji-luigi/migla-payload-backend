@@ -38,6 +38,7 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
               data: {
                 name: item[`name_${locale}`],
                 ord: item.ord,
+                slug: item.slug,
               },
             })
           }
@@ -48,6 +49,7 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
             data: {
               name: item.name_ja,
               ord: item.ord,
+              slug: item.slug,
             },
           })
           created.push(newClassroom)
@@ -62,6 +64,8 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
               locale: locale,
               data: {
                 name: item[`name_${locale}`],
+                slug: item.slug,
+                ord: item.ord,
               },
             })
           }
