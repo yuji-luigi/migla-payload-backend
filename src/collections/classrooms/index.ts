@@ -61,6 +61,7 @@ export const Classrooms: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+
     components: {
       Description: '@/collections/classrooms/components/Description',
     },
@@ -81,7 +82,7 @@ export const Classrooms: CollectionConfig = {
       return null
     },
   },
-
+  defaultSort: 'ord',
   fields: [
     {
       name: 'name',
