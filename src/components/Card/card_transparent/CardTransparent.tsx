@@ -25,6 +25,7 @@ const CardTransparent = ({
 }) => {
   const { theme } = useTheme()
   const src = extension ? iconPathsByTheme(theme)[extension] : iconPath || ''
+
   return (
     <div
       className={`${styles.container} ${styles.card}`}

@@ -15,8 +15,8 @@ export const RHFDropzone = ({
   enabled = true,
   ...others
 }: {
-  dropzoneText: string
-  dropzoneButtonText: string
+  dropzoneText?: string
+  dropzoneButtonText?: string
   name: string
   className?: string | null
   isMultiple?: boolean
@@ -56,7 +56,11 @@ export const RHFDropzone = ({
             onChange={(files) => files && handleChange(files, onChange)}
           >
             <div className="flex flex-col items-center justify-center gap-4 w-full">
-              {file ? <FilePreview file={file} /> : <p>{dropzoneText}</p>}
+              {file ? (
+                <FilePreview file={file} />
+              ) : (
+                <p>{dropzoneText ?? t('components:dropzone:description')}</p>
+              )}
               <div className="flex flex-row gap-2">
                 <button
                   type="button"
@@ -64,7 +68,7 @@ export const RHFDropzone = ({
                   className="btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup"
                   onClick={() => inputRef.current?.click()}
                 >
-                  {file ? t('button:Change') : dropzoneButtonText}
+                  {file ? t('button:Change') : (dropzoneButtonText ?? t('button:dropzoneImport'))}
                 </button>
 
                 {/* {actions && actions} */}

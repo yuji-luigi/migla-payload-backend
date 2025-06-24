@@ -3,12 +3,7 @@ import { checkPlatformInitialization } from '../checkPlatformInitialization'
 import styles from './BeforeDashboardAdminRole.module.css'
 import SettingsSection from './SettingsSection'
 export const BeforeDashboardAdminRole = async (props: ServerPropsWithI18n) => {
-  const components: React.ReactNode[] = []
-  const t = props.i18n.t
-
   const data = await checkPlatformInitialization(props)
-
-  const { hasClassrooms, hasUsers, hasTeachers, hasParents } = data
   return (
     <>
       <div className={`${styles.section} card`}>

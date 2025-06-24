@@ -1,4 +1,7 @@
 export const jaCustomTranslations = {
+  common: {
+    example_excel: '読み込みエクセルの例',
+  },
   components: {
     dropzone: {
       description: 'ファイルをドラッグ&ドロップするか、クリックしてアップロードしてください',
@@ -94,6 +97,13 @@ export const jaCustomTranslations = {
       dropzoneButton: 'ファイルを読み込む',
       importExampleExcel: '読み込みエクセルの例',
       loadingText: '先生データを作成しています。しばらくお待ちください。',
+    },
+  },
+  classrooms: {
+    importModal: {
+      title: '教室データのインポート',
+      subtitle: '教室を読み込んでください',
+      loadingText: '教室データを作成しています。しばらくお待ちください。',
     },
   },
   errors: {

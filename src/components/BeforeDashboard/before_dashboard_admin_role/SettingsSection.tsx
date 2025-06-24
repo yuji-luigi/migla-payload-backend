@@ -17,18 +17,19 @@ const SettingsSection = ({
 }) => {
   const { openModal } = useModal()
   const { t } = useCustomTranslations()
-
+  console.log({ hasTeachers: status.hasTeachers })
   return (
     <>
-      <CardTransparent
-        onClick={() => {
-          openModal('initialize-data')
-        }}
-        title={t('dashboard:initialize_basic_data')}
-        subtitle={t('dashboard:import_basic_data')}
-        // extension={'excel'}
-        iconPath={svgTeacher}
-      />
+      {(!status.hasUsers || !status.hasTeachers || !status.hasClassrooms || !status.hasParents) && (
+        <CardTransparent
+          onClick={() => {
+            openModal('initialize-data')
+          }}
+          title={t('dashboard:initialize_basic_data')}
+          subtitle={t('dashboard:import_basic_data')}
+          iconPath={svgTeacher}
+        />
+      )}
       <CardTransparent
         onClick={() => {}}
         title={t(

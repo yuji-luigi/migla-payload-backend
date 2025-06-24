@@ -11,10 +11,7 @@ export const checkPlatformInitialization = async (props: ServerPropsWithI18n) =>
     collection: 'users',
   })
   const pagTeachers = await props.payload.find({
-    collection: 'users',
-    where: {
-      roles: { in: pagRoles.docs.filter((role) => role.isTeacher).map((role) => role.id) },
-    },
+    collection: 'teachers',
   })
   const pagParents = await props.payload.find({
     collection: 'users',

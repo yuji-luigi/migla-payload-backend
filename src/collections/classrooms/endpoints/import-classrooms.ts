@@ -16,7 +16,6 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
     const updated: Classroom[] = []
     const promises = json.map((item, index) => async () => {
       try {
-        console.log('jspaioj')
         const paginatedClassrooms = await req.payload.find({
           collection: 'classrooms',
           locale: 'ja',
@@ -38,6 +37,7 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
               locale,
               data: {
                 name: item[`name_${locale}`],
+                ord: item.ord,
               },
             })
           }
@@ -47,6 +47,7 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
             locale: 'ja',
             data: {
               name: item.name_ja,
+              ord: item.ord,
             },
           })
           created.push(newClassroom)

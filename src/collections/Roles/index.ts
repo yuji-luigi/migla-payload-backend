@@ -157,13 +157,12 @@ export const Roles: CollectionConfig<'roles'> = {
       type: 'checkbox',
     },
     {
-      name: 'isAdminLevel',
+      name: 'isAdmin',
       label: {
         ja: '管理者',
         en: 'Admin',
         it: 'Amministratore',
       },
-
       type: 'checkbox',
     },
     {
@@ -181,6 +180,15 @@ export const Roles: CollectionConfig<'roles'> = {
         ja: '保護者',
         en: 'Parent',
         it: 'Genitore',
+      },
+      type: 'checkbox',
+    },
+    {
+      name: 'isOperationsCommitteeMember',
+      label: {
+        ja: '運営委員会メンバー',
+        en: 'Operations Committee Member',
+        it: 'Membro del comitato di gestione',
       },
       type: 'checkbox',
     },

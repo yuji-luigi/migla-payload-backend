@@ -1,4 +1,7 @@
 export const enCustomTranslations = {
+  common: {
+    example_excel: 'Example Excel file',
+  },
   components: {
     dropzone: {
       description: 'Drop files here or click to upload',
@@ -88,6 +91,13 @@ export const enCustomTranslations = {
       subtitle: 'Import desired type of teachers.',
       dropzone: 'Drop files here or click to upload',
       dropzoneButton: 'Import',
+    },
+  },
+  classrooms: {
+    importModal: {
+      title: 'Import Classrooms',
+      subtitle: 'Import desired type of classrooms.',
+      loadingText: 'Classrooms data is being created. It can take some minutes...',
     },
   },
   errors: {

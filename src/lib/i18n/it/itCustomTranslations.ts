@@ -1,4 +1,7 @@
 export const itCustomTranslations = {
+  common: {
+    example_excel: 'Esempio di file Excel',
+  },
   components: {
     dropzone: {
       description: 'Trascina qui i file o clicca per caricare',
@@ -71,6 +74,13 @@ export const itCustomTranslations = {
       import: 'Importa',
       close: 'Chiudi',
       dropzoneButton: 'Importa',
+    },
+  },
+  classrooms: {
+    importModal: {
+      title: 'Importa Classi',
+      subtitle: 'Importa il tipo di classi desiderato.',
+      loadingText: 'Le classi sono in fase di creazione. Potrebbe volerci qualche minuto...',
     },
   },
   users: {

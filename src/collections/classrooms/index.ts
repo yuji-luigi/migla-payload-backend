@@ -61,6 +61,9 @@ export const Classrooms: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    components: {
+      Description: '@/collections/classrooms/components/Description',
+    },
     hidden: ({ user }) => {
       return !isAdmin(user as unknown as User)
     },
@@ -99,6 +102,13 @@ export const Classrooms: CollectionConfig = {
       admin: { readOnly: true },
       relationTo: 'teachers',
       hasMany: true,
+    },
+    {
+      name: 'ord',
+      type: 'number',
+      required: true,
+      localized: false,
+      defaultValue: 0,
     },
     ...slugField(),
   ],

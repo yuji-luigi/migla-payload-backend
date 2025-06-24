@@ -407,9 +407,10 @@ export interface Role {
   label: string;
   canLoginAdmin?: boolean | null;
   isSuperAdmin?: boolean | null;
-  isAdminLevel?: boolean | null;
+  isAdmin?: boolean | null;
   isTeacher?: boolean | null;
   isParent?: boolean | null;
+  isOperationsCommitteeMember?: boolean | null;
   canWriteReports?: boolean | null;
   canWriteHomeworks?: boolean | null;
   canWritePages?: boolean | null;
@@ -808,6 +809,7 @@ export interface Classroom {
   name: string;
   description?: string | null;
   teachers?: (number | Teacher)[] | null;
+  ord: number;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -1487,6 +1489,7 @@ export interface ClassroomsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   teachers?: T;
+  ord?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1652,9 +1655,10 @@ export interface RolesSelect<T extends boolean = true> {
   label?: T;
   canLoginAdmin?: T;
   isSuperAdmin?: T;
-  isAdminLevel?: T;
+  isAdmin?: T;
   isTeacher?: T;
   isParent?: T;
+  isOperationsCommitteeMember?: T;
   canWriteReports?: T;
   canWriteHomeworks?: T;
   canWritePages?: T;
