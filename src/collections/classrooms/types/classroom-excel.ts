@@ -3,4 +3,5 @@ export type ClassroomExcel = {
   name_en: string
   name_it: string
   ord: number
+  slug: string
 }

@@ -24,7 +24,6 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
           },
           limit: 1,
         })
-        console.log(paginatedClassrooms)
         if (paginatedClassrooms.docs.length > 0 && paginatedClassrooms.docs[0]?.id) {
           updated.push(paginatedClassrooms.docs[0])
           for (const locale of locales) {
@@ -38,6 +37,7 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
               data: {
                 name: item[`name_${locale}`],
                 ord: item.ord,
+                slug: item.slug,
               },
             })
           }
@@ -48,6 +48,7 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
             data: {
               name: item.name_ja,
               ord: item.ord,
+              slug: item.slug,
             },
           })
           created.push(newClassroom)
@@ -62,12 +63,12 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
               locale: locale,
               data: {
                 name: item[`name_${locale}`],
+                slug: item.slug,
               },
             })
           }
         }
       } catch (error) {
-        console.log('jspaioj')
         const deformedItem = item as unknown as Record<string, string>
         const keys = Object.keys(deformedItem)
         errors.push({

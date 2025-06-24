@@ -111,7 +111,19 @@ export const Classrooms: CollectionConfig = {
       localized: false,
       defaultValue: 0,
     },
-    ...slugField(),
+    {
+      name: 'slug',
+      type: 'text',
+      required: true,
+      localized: false,
+      defaultValue: 'default',
+    },
+    // ...slugField('name', {
+    //   slugOverrides: {
+    //     // required: true,
+    //     defaultValue: 'default',
+    //   },
+    // }),
   ],
   timestamps: true,
 }

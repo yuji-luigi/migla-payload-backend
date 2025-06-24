@@ -810,8 +810,7 @@ export interface Classroom {
   description?: string | null;
   teachers?: (number | Teacher)[] | null;
   ord: number;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1491,7 +1490,6 @@ export interface ClassroomsSelect<T extends boolean = true> {
   teachers?: T;
   ord?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
