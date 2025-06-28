@@ -110,5 +110,9 @@ export const jaCustomTranslations = {
     excel: {
       valueNotProvided: 'セルに値がありません。',
     },
+    delete: {
+      generic: 'この{{collectionLabel}}は削除できません。理由：{{reason}}',
+      classroom: 'この教室は削除できません。理由：{{reason}}',
+    },
   },
 }

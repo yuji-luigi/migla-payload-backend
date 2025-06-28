@@ -7,6 +7,8 @@ import { slugField } from '@/fields/slug'
 import { isAdmin } from '../../hooks/showOnlyAdmin'
 import { User } from '../../payload-types'
 import { importClassrooms } from './endpoints/import-classrooms'
+import { CustomTranslationsKeys } from '../../lib/i18n/i18n_configs'
+import { I18nTFunc } from '../../types/my_types/i18n_types'
 
 export const Classrooms: CollectionConfig = {
   slug: 'classrooms',
@@ -30,6 +32,27 @@ export const Classrooms: CollectionConfig = {
   },
   endpoints: [importClassrooms],
   hooks: {
+    beforeDelete: [
+      async ({ req: { payload, data, i18n }, id }) => {
+        const t = i18n.t as any as I18nTFunc
+        const {
+          docs: [foundTeacher],
+        } = await payload.find({
+          collection: 'teachers',
+          depth: 0,
+          limit: 1,
+          where: { classroom: { equals: id } },
+        })
+        if (foundTeacher) {
+          throw new Error(
+            t('errors:delete:classroom', {
+              reason: `Assigned teacher to the classroom: ${foundTeacher.name}. please delete before the teacher from teacher collection`,
+            }),
+          )
+        }
+      },
+    ],
+
     // NOTE: too much to test. when necessary set unset readonly the teachers field
     // afterChange: [
     //   async ({ req: { user, payload }, doc, operation }) => {
@@ -61,7 +84,6 @@ export const Classrooms: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-
     components: {
       Description: '@/collections/classrooms/components/Description',
     },

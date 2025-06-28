@@ -62,7 +62,7 @@ export const RHFFormModal = ({
                       {t('button:Close')}
                     </Button>
 
-                    <Button size="large" type="submit" className="bg-primary color-primary">
+                    <Button size="large" type="submit" className="bg-primary color-white">
                       {t('button:Submit')}
                     </Button>
                   </>

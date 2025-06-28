@@ -1,0 +1,52 @@
+[
+  {
+    "id": 81,
+    "name": "幸徳先生",
+    "isAssistant": false,
+    "user": {
+      "id": 63,
+      "name": "義和",
+      "surname": "幸徳",
+      "currentRole": {
+        "name": null,
+        "isSuperAdmin": null,
+        "isAdminLevel": null,
+        "isTeacher": null,
+        "isParent": null
+      },
+      "roles": [{ "id": 3, "slug": "teacher" }],
+      "updatedAt": "2025-06-28T06:41:39.088Z",
+      "createdAt": "2025-06-19T07:14:07.536Z",
+      "email": "u.ji.jp777+koutoku.teacher@gmail.com",
+      "fullname": "幸徳 義和",
+      "loginAttempts": 0
+    },
+    "classroom": {
+      "id": 202,
+      "name": "小学２年生",
+      "description": null,
+      "teachers": [
+        {
+          "id": 81,
+          "name": "幸徳先生",
+          "isAssistant": false,
+          "user": 63,
+          "classroom": 202,
+          "slug": "",
+          "slugLock": true,
+          "updatedAt": "2025-06-24T19:01:47.451Z",
+          "createdAt": "2025-06-24T19:01:47.180Z"
+        }
+      ],
+      "ord": 2,
+      "slug": "second",
+      "slugLock": true,
+      "updatedAt": "2025-06-28T08:27:30.071Z",
+      "createdAt": "2025-06-19T06:45:17.514Z"
+    },
+    "slug": "",
+    "slugLock": true,
+    "updatedAt": "2025-06-24T19:01:47.451Z",
+    "createdAt": "2025-06-24T19:01:47.180Z"
+  }
+]

@@ -9,52 +9,62 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
   path: '/import',
   method: 'post',
   handler: async (req) => {
+    // await new Promise((resolve) => setTimeout(resolve, 100000))
     const json = await parseRequestToExcelJson<ClassroomExcel>(req)
     const locales = ['ja', 'en', 'it'] as const
     const errors: Record<string, string>[] = []
     const created: Classroom[] = []
     const updated: Classroom[] = []
-    const promises = json.map((item, index) => async () => {
+    const { docs: existingClassrooms } = await req.payload.find({
+      collection: 'classrooms',
+      locale: 'ja',
+      depth: 0,
+      where: {
+        slug: { in: json.map((excelRow) => excelRow.slug) },
+      },
+      limit: 0,
+    })
+
+    console.log(json.map((excelRow) => excelRow.slug))
+
+    req.payload.logger.info(existingClassrooms)
+    const promises = json.map((excelRow, index) => async () => {
       try {
-        const paginatedClassrooms = await req.payload.find({
-          collection: 'classrooms',
-          locale: 'ja',
-          where: {
-            name: { equals: item.name_ja },
-          },
-          limit: 1,
-        })
-        console.log(paginatedClassrooms)
-        if (paginatedClassrooms.docs.length > 0 && paginatedClassrooms.docs[0]?.id) {
-          updated.push(paginatedClassrooms.docs[0])
+        console.log(excelRow.slug)
+        const upClassroom = existingClassrooms.find(
+          (existingClassroom) => existingClassroom.slug === excelRow.slug,
+        )
+
+        if (upClassroom) {
           for (const locale of locales) {
-            if (!item[`name_${locale}`]) {
+            if (!excelRow[`name_${locale}`]) {
               throw new Error(`Name in ${locale} is required`)
             }
-            req.payload.update({
+            await req.payload.update({
               collection: 'classrooms',
-              id: paginatedClassrooms.docs[0].id,
+              id: upClassroom.id,
               locale,
               data: {
-                name: item[`name_${locale}`],
-                ord: item.ord,
-                slug: item.slug,
+                name: excelRow[`name_${locale}`],
+                ord: excelRow.ord,
+                slug: excelRow.slug,
               },
             })
           }
+          updated.push(upClassroom)
         } else {
           const newClassroom = await req.payload.create({
             collection: 'classrooms',
             locale: 'ja',
             data: {
-              name: item.name_ja,
-              ord: item.ord,
-              slug: item.slug,
+              name: excelRow.name_ja,
+              ord: excelRow.ord,
+              slug: excelRow.slug,
             },
           })
           created.push(newClassroom)
           for (const locale of locales) {
-            if (!item[`name_${locale}`]) {
+            if (!excelRow[`name_${locale}`]) {
               throw new Error(`Name in ${locale} is required`)
             }
             if (locale === 'ja') continue
@@ -63,19 +73,20 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
               id: newClassroom.id,
               locale: locale,
               data: {
-                name: item[`name_${locale}`],
-                slug: item.slug,
-                ord: item.ord,
+                name: excelRow[`name_${locale}`],
+                slug: excelRow.slug,
+                ord: excelRow.ord,
               },
             })
           }
         }
       } catch (error) {
-        console.log('jspaioj')
-        const deformedItem = item as unknown as Record<string, string>
+        console.log(error)
+        const deformedItem = excelRow as unknown as Record<string, string>
         const keys = Object.keys(deformedItem)
         errors.push({
           row: keys.map((key) => deformedItem[key] || '').join(', '),
+
           message: error instanceof Error ? `${error.message} ` : 'Unknown error',
         })
       }

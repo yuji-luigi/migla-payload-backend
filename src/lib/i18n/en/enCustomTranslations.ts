@@ -104,5 +104,9 @@ export const enCustomTranslations = {
     excel: {
       valueNotProvided: 'Value is not provided in the cell',
     },
+    delete: {
+      generic: 'This {{collectionLabel}} cannot be deleted. Reason: {{reason}}',
+      classroom: 'This classroom cannot be deleted. Reason: {{reason}}',
+    },
   },
 }

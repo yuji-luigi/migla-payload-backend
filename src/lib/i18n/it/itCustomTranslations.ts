@@ -107,5 +107,9 @@ export const itCustomTranslations = {
     excel: {
       valueNotProvided: 'Il valore non è fornito nella cella',
     },
+    delete: {
+      generic: 'Questo {{collectionLabel}} non può essere eliminato. Motivo: {{reason}}',
+      classroom: 'Questa classe non può essere eliminata. Motivo: {{reason}}',
+    },
   },
 }
