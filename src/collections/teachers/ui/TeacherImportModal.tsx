@@ -10,6 +10,7 @@ import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import { ImportResult } from '../../../types/responses/importResponse'
 import { ResultUser } from '../../Users/types/result-user'
 import { teachersImportModalSlug } from '../slug'
+import excelExamples from '../../../external_links/excel_examples/excel_examples'
 
 export const TeacherImportModal = () => {
   const { handleWhereChange } = useListQuery()
@@ -22,7 +23,7 @@ export const TeacherImportModal = () => {
     try {
       const formData = new FormData()
       formData.append('file', data.users)
-      const response = await http.post<ImportResult<ResultUser>>('/api/users/import', {
+      const response = await http.post<ImportResult<ResultUser>>('/api/teachers/import', {
         body: formData,
       })
 
@@ -77,11 +78,7 @@ export const TeacherImportModal = () => {
               )}
             </AlertMessage>
           )}
-          <a
-            target="_blank"
-            className="btn btn--icon-style-without-border btn--size-small  btn--style-pill my-0 w-fit mr-auto"
-            href="https://docs.google.com/spreadsheets/d/19aswBJ5tY5oCbU_grmCxe9aRscNzmRxKQY8uWxp1-l8/edit?usp=sharing"
-          >
+          <a target="_blank" className="ml-auto" href={excelExamples.teachers.importDefault}>
             <>{t('users:importModal:importExampleExcel')}</>
           </a>
           <RHFDropzone
