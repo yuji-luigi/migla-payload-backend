@@ -22,6 +22,7 @@ import { default as default_82bc7c32ecaac11bab111c5001af23f2 } from '@/collectio
 import { default as default_a3930902dca2a9b95804de70be39e005 } from '@/collections/Users/ui/DescriptionUsers.tsx'
 import { default as default_cacc620a5844ea10fa498565a40f1e4a } from '@/collections/teachers/ui/TeacherImportModal'
 import { default as default_8d76106131be6f63bada73a9ca22318f } from '@/collections/teachers/ui/DescriptionTeachers'
+import { default as default_b20ec1ff5f090478282d8dd824fa2ff6 } from '@/collections/students/ui/DescriptionStudents.tsx'
 import { default as default_5346adc0b5bffbd1a761e5b1c8a0dd21 } from '@/collections/classrooms/components/Description'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
@@ -61,6 +62,7 @@ export const importMap = {
   "@/collections/Users/ui/DescriptionUsers.tsx#default": default_a3930902dca2a9b95804de70be39e005,
   "@/collections/teachers/ui/TeacherImportModal#default": default_cacc620a5844ea10fa498565a40f1e4a,
   "@/collections/teachers/ui/DescriptionTeachers#default": default_8d76106131be6f63bada73a9ca22318f,
+  "@/collections/students/ui/DescriptionStudents.tsx#default": default_b20ec1ff5f090478282d8dd824fa2ff6,
   "@/collections/classrooms/components/Description#default": default_5346adc0b5bffbd1a761e5b1c8a0dd21,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,

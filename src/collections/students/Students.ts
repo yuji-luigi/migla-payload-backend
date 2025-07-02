@@ -108,7 +108,7 @@ export const Students: CollectionConfig = {
       //     clientProps: { slug: 'students' },
       //   },
       // ],
-      // Description: '@/collections/students/ui/DescriptionStudents.tsx',
+      Description: '@/collections/students/ui/DescriptionStudents.tsx',
       views: {
         list: {
           // actions: ['@/collections/students/ui/UploadStudents.tsx'],
@@ -232,6 +232,6 @@ export const Students: CollectionConfig = {
         allowEdit: false,
       },
     },
-    ...slugField('slug'),
+    ...slugField('slug', { slugOverrides: { required: true } }),
   ],
 }

@@ -7,7 +7,7 @@ export type ParentStudentExcel = {
   parent_name_en: string | null
   parent_name_it: string | null
 
-  slug: string
+  parent_slug: string
 
   student_surname_ja: string
   student_surname_en: string | null

@@ -8,13 +8,13 @@ import { TeacherExcel } from '../../classrooms/types/teacher-excel'
 import { assert } from 'console'
 import { teacherExcelToUser } from '../../Users/dto/teacher_excel_to_user'
 import { teacherExcelToTeacher } from '../dto/excel_to_teacher'
+import { availableLocales, availableLocalesWithoutJa } from '../../../lib/i18n/i18n_configs'
 
 export const importTeachers: Omit<Endpoint, 'root'> = {
   path: '/import',
   method: 'post',
   handler: async (req) => {
     const json = await parseRequestToExcelJson<TeacherExcel>(req)
-    const locales = ['ja', 'en', 'it'] as const
     const errors: Record<string, string>[] = []
     const created: Classroom[] = []
     const updated: Classroom[] = []
@@ -28,6 +28,7 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
         },
       },
     })
+
     const {
       docs: [roleTeacher],
     } = await req.payload.find({
@@ -42,88 +43,24 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
     if (!roleTeacher) {
       throw new Error('Role teacher not found')
     }
+
     const { docs: existingTeachers } = await req.payload.find({
       collection: 'teachers',
+      depth: 0,
       where: {
-        id: {
+        user: {
           in: existingUsers.map((user) => user.id),
         },
       },
     })
+
     const nonExistingUsersExcel = json.filter(
       (row) => !existingUsers.some((user) => user.email === row.email),
     )
-    const restLocales = locales.filter((locale) => locale !== 'ja')
-    const createUsersTeachersPromises = nonExistingUsersExcel.map((row) => async () => {
-      const user = await req.payload.create({
-        collection: 'users',
-        locale: 'ja',
-        data: teacherExcelToUser({
-          row: row,
-          locale: 'ja',
-          roleTeacher: roleTeacher as Role & { isTeacher: true },
-        }),
-      })
-      for (const locale of restLocales) {
-        await req.payload
-          .update({
-            collection: 'users',
-            locale,
-            id: user.id,
-            data: teacherExcelToUser({
-              row: row,
-              locale: locale,
-              roleTeacher: roleTeacher as Role & { isTeacher: true },
-            }),
-          })
-          .catch((error) => {
-            errors.push({
-              row: row.email,
-              message: error.message,
-            })
-          })
-      }
 
-      const {
-        docs: [classroom],
-      } = await req.payload.find({
-        collection: 'classrooms',
-        locale: 'ja',
-        where: {
-          name: {
-            equals: row.classroom_ja,
-          },
-        },
-        limit: 1,
-      })
-      // if (!classroom) {
-      //   throw new Error(`Classroom ${row.classroom_ja} not found`)
-      // }
-      const newTeacher = await req.payload.create({
-        collection: 'teachers',
-        locale: 'ja',
-        data: teacherExcelToTeacher({
-          row: row,
-          locale: 'ja',
-          userId: user.id,
-          classroomId: classroom?.id ?? null,
-        }),
-      })
-      for (const locale of restLocales) {
-        if (row[`teacher_name_${locale}`]) {
-          await req.payload.update({
-            collection: 'teachers',
-            id: newTeacher.id,
-            data: teacherExcelToTeacher({
-              row: row,
-              locale: locale,
-              userId: user.id,
-              classroomId: classroom?.id ?? null,
-            }),
-          })
-        }
-      }
-    })
+    const createUsersTeachersPromises = nonExistingUsersExcel.map((row) =>
+      handleCreateTeacherUsers({ row, req, roleTeacher }),
+    )
 
     const updateTeachersUsersPromises = existingUsers.map((user) => async () => {
       const row = json.find((item) => item.email === user.email)
@@ -156,7 +93,7 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
         limit: 1,
       })
 
-      for (const locale of locales) {
+      for (const locale of availableLocales) {
         /** update user */
         await req.payload.update({
           collection: 'users',
@@ -214,7 +151,7 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
             classroomId: foundClassroom?.id ?? null,
           }),
         })
-        for (const locale of restLocales) {
+        for (const locale of availableLocalesWithoutJa) {
           /** set other locales */
           await req.payload.update({
             collection: 'teachers',
@@ -233,17 +170,6 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
       }
     })
 
-    // const promises = json.map((item, index) => async () => {
-    //   try {
-    //   } catch (error) {
-    //     const deformedItem = item as unknown as Record<string, string>
-    //     const keys = Object.keys(deformedItem)
-    //     errors.push({
-    //       row: keys.map((key) => deformedItem[key] || '').join(', '),
-    //       message: error instanceof Error ? `${error.message} ` : 'Unknown error',
-    //     })
-    //   }
-    // })
     await Promise.all(createUsersTeachersPromises.map((call) => call()))
     await Promise.all(updateTeachersUsersPromises.map((call) => call()))
     return Response.json({
@@ -253,4 +179,83 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
       message: errors.length > 0 ? 'Some errors occurred' : 'Success!',
     })
   },
+}
+
+function handleCreateTeacherUsers({
+  row,
+  req,
+  roleTeacher,
+}: {
+  row: TeacherExcel
+  req: PayloadRequest
+  roleTeacher: Role
+}) {
+  return async () => {
+    const user = await req.payload.create({
+      collection: 'users',
+      locale: 'ja',
+      data: teacherExcelToUser({
+        row: row,
+        locale: 'ja',
+        roleTeacher: roleTeacher as Role & { isTeacher: true },
+      }),
+    })
+    for (const locale of availableLocalesWithoutJa) {
+      await req.payload
+        .update({
+          collection: 'users',
+          locale,
+          id: user.id,
+          data: teacherExcelToUser({
+            row: row,
+            locale: locale,
+            roleTeacher: roleTeacher as Role & { isTeacher: true },
+          }),
+        })
+        .catch((error) => {
+          // errors.push({
+          //   row: row.email,
+          //   message: error.message,
+          // })
+        })
+    }
+
+    const {
+      docs: [classroom],
+    } = await req.payload.find({
+      collection: 'classrooms',
+      locale: 'ja',
+      where: {
+        name: {
+          equals: row.classroom_ja,
+        },
+      },
+      limit: 1,
+    })
+
+    const newTeacher = await req.payload.create({
+      collection: 'teachers',
+      locale: 'ja',
+      data: teacherExcelToTeacher({
+        row: row,
+        locale: 'ja',
+        userId: user.id,
+        classroomId: classroom?.id ?? null,
+      }),
+    })
+    for (const locale of availableLocalesWithoutJa) {
+      if (row[`teacher_name_${locale}`]) {
+        await req.payload.update({
+          collection: 'teachers',
+          id: newTeacher.id,
+          data: teacherExcelToTeacher({
+            row: row,
+            locale: locale,
+            userId: user.id,
+            classroomId: classroom?.id ?? null,
+          }),
+        })
+      }
+    }
+  }
 }

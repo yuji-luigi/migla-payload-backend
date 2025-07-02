@@ -1,5 +1,5 @@
 import { Endpoint, getPayload, Payload, PayloadRequest } from 'payload'
-import { parseExcelToJson } from '../../../lib/excel/parseExcelToJson'
+import { parseExcelToJson, parseRequestToExcelJson } from '../../../lib/excel/parseExcelToJson'
 import { Classroom, Role, Student, User } from '../../../payload-types'
 import { ParentStudentExcel } from '../../classrooms/types/parent-student-excel'
 import { AvailableLocale, availableLocales } from '../../../lib/i18n/i18n_configs'
@@ -9,6 +9,8 @@ import {
 } from '../dto/parentStutentExcelToStudent'
 import { excelSerialToDate } from '../../../utilities/excelSerialToDate'
 import { handleCreateUserFromStudentExcel } from '../helper/handleCreateUserFromStudentExcel'
+import { match } from 'assert'
+import { handleUpdateParentUser, studentParentExcelToUser } from '../dto/studentParentExcelToUser'
 
 let parentRole: Role | null = null
 
@@ -22,10 +24,9 @@ export const importStudents: Omit<Endpoint, 'root'> = {
       }
       const createdStudents: Student[] = []
       const updatedStudents: Student[] = []
-      const formData = await req.formData?.()
+      const json = await parseRequestToExcelJson<ParentStudentExcel>(req)
       const errors: Record<string, string>[] = []
-      if (formData?.get('file') instanceof File) {
-        const json = await parseExcelToJson<ParentStudentExcel>(formData.get('file') as File)
+      if (json.length > 0) {
         const {
           docs: [pRole],
         } = await req.payload.find({
@@ -50,62 +51,60 @@ export const importStudents: Omit<Endpoint, 'root'> = {
         })
         const { docs: foundStudents } = await req.payload.find({
           collection: 'students',
+          depth: 1,
           where: {
             parents: {
               in: foundUsers.map((user) => user.id),
             },
           },
+          populate: {
+            users: {
+              email: true,
+            },
+            classrooms: { name: true },
+          },
         })
-
+        // console.dir(foundStudents, { depth: null })
+        // throw new Error('stop')
         const { docs: classrooms } = await req.payload?.find({
           collection: 'classrooms',
           locale: 'ja',
         })
         for (const excelRow of json) {
           try {
-            const matchedStudent = foundStudents.find((student) => {
-              return (
-                (student.parents as User[]).some((parent) => parent.email === excelRow.メール) &&
-                student.birthday === excelSerialToDate(excelRow.student_birthday).toISOString()
-              )
-            })
+            const matchedStudent = findMatchedStudent({ excelRow, foundStudents })
             /** found by email in excelRow */
-            const studentsParent = foundUsers.find((user) => user.email === excelRow.メール)
-            if (studentsParent) {
-              /** the classroom to set to the student */
-              const classroom = classrooms.find((classroom) => classroom.name === excelRow.クラス)
-              if (!classroom) {
-                throw new Error(`Classroom not found for student ${excelRow.クラス}`)
-              }
-              // await handleUpdateStudent({
-              //   payload: req.payload,
-              //   parent: studentsParent,
-              //   classroom,
-              //   locale: 'ja',
-              //   excelRow: excelRow,
-              // })
-              continue
+            const foundStudentParent = foundUsers.find((user) => user.email === excelRow.メール)
+            const classroom = classrooms.find((classroom) => classroom.name === excelRow.クラス)
+            if (foundStudentParent && classroom) {
+              // update the user (parent) that is found by email
+              await handleUpdateParentUser({ payload: req.payload, foundStudentParent, excelRow })
             }
             if (matchedStudent) {
-              req.payload.logger.debug(
-                `UPDATE LOGIC TO BE IMPLEMENTED
-              Student ${excelRow.student_name_ja} ${excelRow.student_surname_ja} already exists.`,
-              )
+              const { updated } = await handleUpdateStudent({
+                foundStudentParent,
+                excelRow,
+                req,
+                matchedStudent,
+              })
+              updatedStudents.push(updated)
               continue
             }
-            const newStudent = await handleCreateStudent({
+            /** create student. if parent exists, parent is not touched here. */
+            const newStudent = await handleCreateParentAndStudent({
               req,
               excelRow,
-              studentsParent: studentsParent || null,
+              foundStudentParent,
               classrooms,
             })
             createdStudents.push(newStudent)
           } catch (err) {
-            console.log(err)
             // err might be an Error or something else
             const message = err instanceof Error ? err.message : String(err)
             // use excelRow.surname (or whatever identifies the excelRow)
             errors.push({
+              row: excelRow.メール,
+              message,
               [`${excelRow.student_name_ja} ${excelRow.student_surname_ja}`]: message,
             })
           }
@@ -114,13 +113,18 @@ export const importStudents: Omit<Endpoint, 'root'> = {
 
       return Response.json(
         {
-          updated: [],
-          created: [],
+          updated: updatedStudents,
+          created: createdStudents,
           errors,
           message: errors.length > 0 ? 'Some errors occurred' : 'Success!',
         },
         {
-          status: errors.length > 0 ? 400 : 200,
+          status:
+            createdStudents.length > 0 || updatedStudents.length > 0
+              ? 200
+              : errors.length > 0
+                ? 400
+                : 200,
         },
       )
     } catch (err) {
@@ -187,65 +191,42 @@ function ExcelToStudent({
 }
 // function ExcelToStudent(json: )
 
-async function handleUpdateStudent({
-  payload,
-  excelRow,
-  parent,
-  classroom,
-  locale,
-}: {
-  payload: Payload
-  excelRow: ParentStudentExcel
-  parent: User
-  classroom: Classroom
-  locale: AvailableLocale
-}) {
-  const student: Omit<Student, 'id' | 'updatedAt' | 'createdAt'> = {
-    ...studentExcelToStudent(excelRow, {
-      locale,
-    }),
-    parents: [parent.id],
-    classroom,
-  }
-  throw new Error('Not implemented')
-}
-
-async function handleCreateStudent({
+async function handleCreateParentAndStudent({
   req,
   excelRow,
   classrooms,
-  studentsParent,
+  foundStudentParent,
 }: {
   req: PayloadRequest
   excelRow: ParentStudentExcel
   classrooms: Classroom[]
-  studentsParent: User | null
+  foundStudentParent: User | null | undefined
 }) {
   if (!parentRole) {
     throw new Error('Parent role not found')
   }
-  let foundParent = studentsParent
-  if (!foundParent) {
+  if (!foundStudentParent) {
     const newParent = await handleCreateUserFromStudentExcel({
       row: excelRow,
       payload: req.payload,
       parentRole: parentRole as Role,
     })
-    foundParent = newParent
+    foundStudentParent = newParent
   }
   const newStudent = await req.payload.create({
     collection: 'students',
     locale: 'ja',
-    context: {
-      isAdminOperation: true,
-    },
+    // context: {
+    //   isAdminOperation: true,
+    // },
+    req,
     data: handleTransformStudentExcel(excelRow, {
       locale: 'ja',
-      parentId: foundParent.id,
+      parentId: foundStudentParent.id,
       classrooms,
     }),
   })
-  console.log('after create student')
+
   // createdStudents.push(newStudent)
   if (!newStudent.classroom) {
     throw new Error('Classroom not found')
@@ -292,4 +273,54 @@ async function handleCreateStudent({
     }
   }
   return newStudent
+}
+
+const findMatchedStudent = ({
+  excelRow,
+  foundStudents,
+}: {
+  excelRow: ParentStudentExcel
+  foundStudents: Student[]
+}) =>
+  foundStudents.find((student) => {
+    return (
+      (student.parents as User[]).some((parent) => parent.email === excelRow.メール) &&
+      student.birthday === excelSerialToDate(excelRow.student_birthday).toISOString()
+    )
+  })
+
+async function handleUpdateStudent({
+  foundStudentParent,
+  excelRow,
+  req,
+  matchedStudent,
+}: {
+  foundStudentParent: User | null | undefined
+  excelRow: ParentStudentExcel
+  req: PayloadRequest
+  matchedStudent: Student
+}) {
+  let settingParentId = [foundStudentParent?.id]
+  if (!foundStudentParent) {
+    const newParent = await handleCreateUserFromStudentExcel({
+      row: excelRow,
+      payload: req.payload,
+      parentRole: parentRole as Role,
+    })
+    settingParentId = [newParent.id]
+  }
+  // student.parents are not updated fully. it is only added. so if excel changes the parent the new parent is added to existing array only removing the duplicates
+  for (const locale of availableLocales) {
+    await req.payload.update({
+      collection: 'students',
+      id: matchedStudent.id,
+      locale,
+      data: {
+        ...studentExcelToStudent(excelRow, { locale }),
+        parents: [...new Set([...matchedStudent.parents, ...settingParentId])],
+      },
+      req,
+    })
+  }
+  return { updated: matchedStudent }
 }

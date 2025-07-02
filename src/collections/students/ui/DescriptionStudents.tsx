@@ -5,6 +5,7 @@ import React, { useRef } from 'react'
 import { useCustomTranslations } from '../../../lib/i18n/useCustomTranslations'
 import styles from './DescriptionStudents.module.css'
 import { http } from '../../../lib/fetch/http'
+import StudentsImportModal, { studentsImportModalSlug } from './StudentsImportModal'
 const DescriptionStudents = () => {
   const { t } = useCustomTranslations()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -28,14 +29,13 @@ const DescriptionStudents = () => {
   }
   return (
     <>
+      <StudentsImportModal />
       <div className={styles.container}>
         <input onChange={handleChange} type="file" className="display-none" ref={inputRef} />
         <button
-          className={`btn btn--icon-style-without-border btn--size-small btn--withoutPopup btn--style-pill btn--withoutPopup ${styles.button}`}
+          className={`ml-auto`}
           onClick={() => {
-            // x.children = <div>Hello</div>
-            x.openModal('students')
-            // inputRef.current?.click()
+            x.openModal(studentsImportModalSlug)
           }}
         >
           {t('button:Import')}

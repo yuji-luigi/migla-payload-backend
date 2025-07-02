@@ -27,11 +27,6 @@ export const http = {
     }
     const data = await response.json()
     if (data.errors && Array.isArray(data.errors)) {
-      console.error(
-        data.errors
-          .map((error: any) => Object.entries(error).map(([key, value]) => `${key}: ${value}`))
-          ?.split('\n'),
-      )
       throw new Error(
         data.errors.map((error: any) =>
           Object.entries(error).map(([key, value]) => `${key}: ${value}`),

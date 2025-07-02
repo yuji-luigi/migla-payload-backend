@@ -25,6 +25,8 @@ export const i18nConfigs: Config['i18n'] = {
 export const availableLocales = Object.keys(supportedLanguages) as Array<
   keyof typeof supportedLanguages
 >
+
+export const availableLocalesWithoutJa = availableLocales.filter((locale) => locale !== 'ja')
 // 1) Get the compile‐time union of your keys
 export type AvailableLocale = keyof typeof supportedLanguages
 // → “ja” | “en” | “it”

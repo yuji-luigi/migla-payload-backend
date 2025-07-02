@@ -29,17 +29,41 @@ export const Teachers: CollectionConfig = {
       async ({ req: { user, payload }, doc, operation }) => {
         setImmediate(async () => {
           if (doc.classroom) {
+            const newClassroomId = doc.classroom.id || doc.classroom
             const classroom = await payload.findByID({
               collection: 'classrooms',
-              id: doc.classroom.id || doc.classroom,
+              id: newClassroomId,
               depth: 0,
             })
             if (classroom) {
               classroom.teachers = [...new Set([...(classroom.teachers as number[]), doc.id])]
               await payload.update({
                 collection: 'classrooms',
-                id: doc.classroom.id || doc.classroom,
+                id: newClassroomId,
                 data: classroom,
+              })
+            }
+            const { docs: prevClassrooms } = await payload.find({
+              collection: 'classrooms',
+              where: {
+                teachers: {
+                  contains: doc.id,
+                },
+              },
+              depth: 0,
+            })
+            const removingClassrooms = prevClassrooms.filter(
+              (classroom) => classroom.id !== newClassroomId,
+            )
+
+            if (removingClassrooms.length > 0) {
+              removingClassrooms.forEach(async (classroom) => {
+                classroom.teachers = classroom.teachers?.filter((teacher) => teacher !== doc.id)
+                await payload.update({
+                  collection: 'classrooms',
+                  id: classroom.id,
+                  data: classroom,
+                })
               })
             }
           }

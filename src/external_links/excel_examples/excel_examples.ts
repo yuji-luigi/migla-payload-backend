@@ -11,6 +11,7 @@ const excelExamples = {
     importDefault:
       'https://docs.google.com/spreadsheets/d/16_AFyrEyBQkeTV1fXVOSGqUaYX9OD1ear90OADCE5G4/edit?usp=sharing',
   },
+  /** parents/students import */
   parents: {
     importWithStudents:
       'https://docs.google.com/spreadsheets/d/1HJ1vwxCRQgv_R-FzTtmhxLeodY2KK7G3uvDWcZ3ITL0/edit?gid=0#gid=0',

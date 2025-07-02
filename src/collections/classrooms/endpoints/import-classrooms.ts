@@ -25,9 +25,6 @@ export const importClassrooms: Omit<Endpoint, 'root'> = {
       limit: 0,
     })
 
-    console.log(json.map((excelRow) => excelRow.slug))
-
-    req.payload.logger.info(existingClassrooms)
     const promises = json.map((excelRow, index) => async () => {
       try {
         console.log(excelRow.slug)
