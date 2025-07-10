@@ -8,6 +8,7 @@ import { Classroom } from '../../payload-types'
 import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
 import { importStudents } from './endpoints/importStudents'
 import { studentsEndpoints } from './endpoints'
+import { handleDuplicatedParents, setQueryBeforeChange } from './hooks/beforeChange'
 export const studentsModal = {
   slug: 'students',
   labels: {
@@ -70,33 +71,7 @@ export const Students: CollectionConfig = {
   },
 
   hooks: {
-    beforeChange: [
-      async ({ req, operation, originalDoc, data }) => {
-        if (req.context.isAdminOperation) {
-          return
-        }
-        // throw new Error('test')
-        if (!req.user?.currentRole) {
-          throw new APIError('You must logged in to complete the operation', 403, null, true)
-        }
-        if (req.user.currentRole.isAdminLevel) {
-          return
-        }
-
-        if (req.user.currentRole.isTeacher) {
-          const foundTeacher = await findTeacherRoleOfUser({ user: req.user, payload: req.payload })
-          data.classroom =
-            typeof foundTeacher?.classroom === 'object'
-              ? foundTeacher?.classroom?.id
-              : foundTeacher?.classroom
-
-          return
-        }
-        throw new APIError(
-          'not implemented for non admin, non teacher role. need to set up the logic',
-        )
-      },
-    ],
+    beforeChange: [setQueryBeforeChange, handleDuplicatedParents],
   },
   admin: {
     defaultColumns: ['name', 'surname', 'slug', 'updatedAt'],

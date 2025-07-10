@@ -23,7 +23,7 @@ export const importStudents: Omit<Endpoint, 'root'> = {
         throw new Error('You are not authorized to import students')
       }
       const createdStudents: Student[] = []
-      const updatedStudents: Student[] = []
+      const updatedStudents: any[] = []
       const json = await parseRequestToExcelJson<ParentStudentExcel>(req)
       const errors: Record<string, string>[] = []
       if (json.length > 0) {
@@ -98,12 +98,14 @@ export const importStudents: Omit<Endpoint, 'root'> = {
               classrooms,
             })
             createdStudents.push(newStudent)
-          } catch (err) {
+          } catch (err: any) {
             // err might be an Error or something else
             const message = err instanceof Error ? err.message : String(err)
+            console.dir(err, { depth: null })
             // use excelRow.surname (or whatever identifies the excelRow)
             errors.push({
               row: excelRow.メール,
+              collection: err.data.collection,
               message,
               [`${excelRow.student_name_ja} ${excelRow.student_surname_ja}`]: message,
             })
@@ -301,6 +303,7 @@ async function handleUpdateStudent({
   matchedStudent: Student
 }) {
   let settingParentId = [foundStudentParent?.id]
+  let updatedStudent = {}
   if (!foundStudentParent) {
     const newParent = await handleCreateUserFromStudentExcel({
       row: excelRow,
@@ -309,18 +312,31 @@ async function handleUpdateStudent({
     })
     settingParentId = [newParent.id]
   }
+  const studentParentsIDs = matchedStudent.parents.map((parent) => {
+    if (typeof parent == 'number') {
+      return parent
+    }
+    return parent.id
+  })
   // student.parents are not updated fully. it is only added. so if excel changes the parent the new parent is added to existing array only removing the duplicates
   for (const locale of availableLocales) {
-    await req.payload.update({
-      collection: 'students',
-      id: matchedStudent.id,
-      locale,
-      data: {
+    if (excelRow[`student_name_${locale}`] && excelRow[`student_surname_${locale}`]) {
+      await req.payload.update({
+        collection: 'students',
+        id: matchedStudent.id,
+        locale,
+        data: {
+          ...studentExcelToStudent(excelRow, { locale }),
+          parents: [...new Set([...studentParentsIDs, ...settingParentId])],
+        },
+        req,
+      })
+      updatedStudent = {
+        ...updatedStudent,
         ...studentExcelToStudent(excelRow, { locale }),
-        parents: [...new Set([...matchedStudent.parents, ...settingParentId])],
-      },
-      req,
-    })
+        id: matchedStudent.id,
+      }
+    }
   }
-  return { updated: matchedStudent }
+  return { updated: updatedStudent }
 }

@@ -98,7 +98,6 @@ export const Users: CollectionConfig = {
     beforeLogin: [
       async ({ req, user, collection }) => {
         const t = req.i18n.t as any // <-- Cast to your custom keys
-
         try {
           let roleIds: number[] | null = null
 
