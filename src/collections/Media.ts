@@ -46,8 +46,8 @@ export const Media: CollectionConfig = {
           return
         }
         if ((operation === 'create' || operation === 'update') && req.file) {
-          console.log(req.pathname)
-          req.file.name = 'media' + '/' + req.file.name
+          // console.log(req.pathname)
+          // req.file.name = 'media' + '/' + req.file.name
         }
       },
     ],
