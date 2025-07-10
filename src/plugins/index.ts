@@ -34,7 +34,7 @@ export const plugins: Plugin[] = [
       media: true,
     },
     bucket: process.env.S3_BUCKET || '',
-    acl: 'private',
+    // acl: 'private',
     config: {
       credentials: {
         accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
