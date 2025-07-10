@@ -16,7 +16,7 @@ const BeforeDashboard = async ({ payload, user, i18n, ...rest }: ServerPropsWith
   if (user?.currentRole?.isTeacher) {
     return <TeacherBeforeDashboard key="teacher-dashboard" payload={payload} user={user} />
   }
-  if (user?.currentRole?.isAdminLevel) {
+  if (user?.currentRole?.isAdminLevel || user?.currentRole?.isSuperAdmin) {
     return (
       <BeforeDashboardAdminRole key="admin-dashboard" payload={payload} user={user} i18n={i18n} />
     )

@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { User } from '../../payload-types'
 import { importTeachers } from './endpoints/import-teachers'
 import DescriptionTeachers from './ui/DescriptionTeachers'
@@ -80,7 +80,7 @@ export const Teachers: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     hidden: ({ user }) => {
-      return !isAdmin(user as unknown as User)
+      return !isAdmin(user) && !isSuperAdmin(user)
     },
     components: {
       beforeList: ['@/collections/teachers/ui/TeacherImportModal'],

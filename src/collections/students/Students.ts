@@ -2,11 +2,8 @@ import { APIError, FilterOptionsProps, type CollectionConfig } from 'payload'
 
 import { slugField } from '@/fields/slug'
 import { authenticated } from '../../access/authenticated'
-import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
 import { Classroom } from '../../payload-types'
-import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
-import { importStudents } from './endpoints/importStudents'
 import { studentsEndpoints } from './endpoints'
 import { setQueryBeforeChange } from './hooks/beforeChange'
 export const studentsModal = {
@@ -99,8 +96,14 @@ export const Students: CollectionConfig = {
       if (!req.user) {
         throw new APIError('You must logged in to complete the operation', 403, null, true)
       }
-      if (!req.user.currentRole?.isAdminLevel) {
-        const foundTeacher = await findTeacherRoleOfUser({ user: req.user, payload: req.payload })
+      if (!req.user.currentRole?.isAdminLevel && !req.user.currentRole?.isSuperAdmin) {
+        const foundTeacher = await findTeacherRoleOfUser({
+          user: req.user,
+          payload: req.payload,
+        }).catch((e) => {
+          console.error(e)
+          return null
+        })
         if (foundTeacher?.classroom) {
           return {
             classroom: {
@@ -150,7 +153,7 @@ export const Students: CollectionConfig = {
             true,
           )
         }
-        if (user.currentRole?.isAdminLevel) {
+        if (user.currentRole?.isAdminLevel || user.currentRole?.isSuperAdmin) {
           return true
         }
         if (user.currentRole?.isTeacher) {

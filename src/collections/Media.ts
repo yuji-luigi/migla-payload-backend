@@ -40,6 +40,17 @@ export const Media: CollectionConfig = {
     baseListFilter: currentUserFilter({ userKey: 'createdBy' }),
   },
   hooks: {
+    beforeOperation: [
+      async ({ req, operation, context }) => {
+        if (context.isSeed) {
+          return
+        }
+        if ((operation === 'create' || operation === 'update') && req.file) {
+          console.log(req.pathname)
+          req.file.name = 'media' + '/' + req.file.name
+        }
+      },
+    ],
     beforeChange: [
       async ({ req, operation, data, context }) => {
         if (context.isSeed) {

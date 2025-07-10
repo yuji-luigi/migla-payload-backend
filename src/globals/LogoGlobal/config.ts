@@ -1,7 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { revalidateLogoGlobal } from './hooks/revalidateLogoGlobal'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { LabelsT } from '../../types/my_types/labels'
 
 export const LogoGlobal: GlobalConfig & {
@@ -21,7 +21,7 @@ export const LogoGlobal: GlobalConfig & {
     },
   },
   admin: {
-    hidden: ({ user }) => !isAdmin(user),
+    hidden: ({ user }) => !isAdmin(user) && !isSuperAdmin(user),
   },
   fields: [
     {

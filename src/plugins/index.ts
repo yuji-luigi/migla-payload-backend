@@ -16,7 +16,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post, User } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
-import { isAdmin } from '../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../hooks/showOnlyAdmin'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
@@ -34,6 +34,7 @@ export const plugins: Plugin[] = [
       media: true,
     },
     bucket: process.env.S3_BUCKET || '',
+    acl: 'private',
     config: {
       credentials: {
         accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
@@ -62,7 +63,7 @@ export const plugins: Plugin[] = [
       },
       admin: {
         hidden: ({ user }) => {
-          return !isAdmin(user as unknown as User)
+          return !isAdmin(user) && !isSuperAdmin(user)
         },
       },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
@@ -111,7 +112,7 @@ export const plugins: Plugin[] = [
       },
       admin: {
         hidden: ({ user }) => {
-          return !isAdmin(user as unknown as User)
+          return !isAdmin(user) && !isSuperAdmin(user)
         },
       },
     },
@@ -130,7 +131,7 @@ export const plugins: Plugin[] = [
       },
       admin: {
         hidden: ({ user }) => {
-          return !isAdmin(user as unknown as User)
+          return !isAdmin(user) && !isSuperAdmin(user)
         },
       },
       fields: ({ defaultFields }) => {
@@ -172,7 +173,7 @@ export const plugins: Plugin[] = [
       },
       admin: {
         hidden: ({ user }) => {
-          return !isAdmin(user as unknown as User)
+          return !isAdmin(user) && !isSuperAdmin(user)
         },
       },
       fields: ({ defaultFields }) => {

@@ -4,7 +4,7 @@ import { slugField } from '@/fields/slug'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { User } from '../../payload-types'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { anyone } from '../../access/anyone'
 
 export const Roles: CollectionConfig<'roles'> = {
@@ -30,13 +30,13 @@ export const Roles: CollectionConfig<'roles'> = {
       if (data?.isSuperAdmin) {
         throw new APIError('You are not allowed to create this role', 403, null, true)
       }
-      return isAdmin(user as unknown as User)
+      return isAdmin(user)
     },
     delete: ({ req: { user, data } }) => {
       if (data?.isSuperAdmin) {
         throw new APIError('You are not allowed to delete this role', 403, null, true)
       }
-      return isAdmin(user as unknown as User)
+      return isAdmin(user)
     },
     read: anyone,
     update: ({ req: { user, data } }) => {
@@ -46,7 +46,7 @@ export const Roles: CollectionConfig<'roles'> = {
       if (data?.isSuperAdmin) {
         throw new APIError('You are not allowed to update this role', 403, null, true)
       }
-      return isAdmin(user as unknown as User)
+      return isAdmin(user)
     },
   },
 
@@ -78,13 +78,7 @@ export const Roles: CollectionConfig<'roles'> = {
       }
     },
     hidden: ({ user }) => {
-      if (user?.currentRole?.isAdminLevel) {
-        return false
-      }
-      if (user?.currentRole?.isSuperAdmin) {
-        return false
-      }
-      return true
+      return !isAdmin(user) && !isSuperAdmin(user)
     },
   },
   hooks: {

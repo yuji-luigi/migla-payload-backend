@@ -4,7 +4,7 @@ import { APIError, type CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { User } from '../../payload-types'
 import { importClassrooms } from './endpoints/import-classrooms'
 import { CustomTranslationsKeys } from '../../lib/i18n/i18n_configs'
@@ -88,7 +88,7 @@ export const Classrooms: CollectionConfig = {
       Description: '@/collections/classrooms/components/Description',
     },
     hidden: ({ user }) => {
-      return !isAdmin(user as unknown as User)
+      return !isAdmin(user) && !isSuperAdmin(user)
     },
     baseListFilter: ({ req: { user } }) => {
       if (!user) {

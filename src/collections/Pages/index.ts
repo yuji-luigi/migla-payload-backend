@@ -18,7 +18,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -49,7 +49,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
 
   admin: {
-    hidden: ({ user }) => !isAdmin(user),
+    hidden: ({ user }) => !isAdmin(user) && !isSuperAdmin(user),
     defaultColumns: ['title', 'slug', 'updatedAt'],
 
     livePreview: {

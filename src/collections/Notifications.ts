@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin } from '../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../hooks/showOnlyAdmin'
 import { User } from '../payload-types'
 import { link } from '../fields/link'
 import { linkGroup } from '../fields/linkGroup'
@@ -33,7 +33,7 @@ export const Notifications: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     hidden: ({ user }) => {
-      return !isAdmin(user as unknown as User)
+      return !isAdmin(user) && !isSuperAdmin(user)
     },
   },
   fields: [

@@ -1,7 +1,7 @@
 import { equal } from 'assert'
 import { APIError, logError, Where, type CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
 import { Role, User } from '../../payload-types'
 import { importUsers } from './endpoints/importUsers'
@@ -65,7 +65,7 @@ export const Users: CollectionConfig = {
       },
     },
     hidden: ({ user }) => {
-      return !isAdmin(user as unknown as User)
+      return !isAdmin(user) && !isSuperAdmin(user)
     },
   },
 
