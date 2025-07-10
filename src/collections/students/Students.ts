@@ -136,7 +136,7 @@ export const Students: CollectionConfig = {
       name: 'parent',
       type: 'relationship',
       relationTo: 'users',
-      required: true,
+      required: false,
       hasMany: false,
       filterOptions: async ({ user, req }) => {
         if (req.context.isAdminOperation) {
