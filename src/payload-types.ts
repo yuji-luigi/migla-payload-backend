@@ -824,7 +824,7 @@ export interface Student {
   name: string;
   surname: string;
   birthday: string;
-  parents: (number | User)[];
+  parent: number | User;
   classroom?: (number | null) | Classroom;
   slug: string;
   slugLock?: boolean | null;
@@ -1456,7 +1456,7 @@ export interface StudentsSelect<T extends boolean = true> {
   name?: T;
   surname?: T;
   birthday?: T;
-  parents?: T;
+  parent?: T;
   classroom?: T;
   slug?: T;
   slugLock?: T;

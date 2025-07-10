@@ -8,7 +8,7 @@ import { Classroom } from '../../payload-types'
 import { parseExcelToJson } from '../../lib/excel/parseExcelToJson'
 import { importStudents } from './endpoints/importStudents'
 import { studentsEndpoints } from './endpoints'
-import { handleDuplicatedParents, setQueryBeforeChange } from './hooks/beforeChange'
+import { setQueryBeforeChange } from './hooks/beforeChange'
 export const studentsModal = {
   slug: 'students',
   labels: {
@@ -53,7 +53,7 @@ export const Students: CollectionConfig = {
       }
       if (user?.currentRole.isParent) {
         return {
-          parents: {
+          parent: {
             equals: user.id,
           },
         }
@@ -71,7 +71,7 @@ export const Students: CollectionConfig = {
   },
 
   hooks: {
-    beforeChange: [setQueryBeforeChange, handleDuplicatedParents],
+    beforeChange: [setQueryBeforeChange],
   },
   admin: {
     defaultColumns: ['name', 'surname', 'slug', 'updatedAt'],
@@ -133,11 +133,11 @@ export const Students: CollectionConfig = {
       required: true,
     },
     {
-      name: 'parents',
+      name: 'parent',
       type: 'relationship',
       relationTo: 'users',
       required: true,
-      hasMany: true,
+      hasMany: false,
       filterOptions: async ({ user, req }) => {
         if (req.context.isAdminOperation) {
           return true

@@ -31,14 +31,3 @@ export const setQueryBeforeChange: CollectionBeforeChangeHook = async ({
   }
   throw new APIError('not implemented for non admin, non teacher role. need to set up the logic')
 }
-
-export const handleDuplicatedParents: CollectionBeforeChangeHook = async ({
-  req,
-  operation,
-  originalDoc,
-  data,
-}) => {
-  if (operation == 'update' || operation == 'create') {
-    data.parents = [...new Set(data.parents.map(extractID))]
-  }
-}

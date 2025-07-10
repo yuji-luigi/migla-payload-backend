@@ -21,7 +21,7 @@ export function handleTransformStudentExcel(
     name: parentStudentExcel[`student_name_${locale}`] || '',
     surname: parentStudentExcel[`student_surname_${locale}`] || '',
     classroom: classroom.id,
-    parents: [parentId],
+    parent: parentId,
     birthday: excelSerialToDate(parentStudentExcel.student_birthday).toDateString(),
     slug: parentStudentExcel.student_slug,
   }
@@ -39,7 +39,6 @@ export function studentExcelToStudent(
   return {
     name: parentStudentExcel[`student_name_${locale}`] || '',
     surname: parentStudentExcel[`student_surname_${locale}`] || '',
-    parents: [],
     birthday: excelSerialToDate(parentStudentExcel.student_birthday).toDateString(),
     slug: parentStudentExcel.student_slug,
   }

@@ -53,7 +53,7 @@ export const importStudents: Omit<Endpoint, 'root'> = {
           collection: 'students',
           depth: 1,
           where: {
-            parents: {
+            parent: {
               in: foundUsers.map((user) => user.id),
             },
           },
@@ -141,56 +141,56 @@ export const importStudents: Omit<Endpoint, 'root'> = {
   },
 }
 
-function ExcelToStudent({
-  json,
-  parents,
-  classrooms,
-  locale,
-}: {
-  json: ParentStudentExcel[]
-  parents: User[]
-  classrooms: Classroom[]
-  locale: AvailableLocale
-}) {
-  const errors: Record<string, string>[] = []
-  //0. get all users with in emails[] get existing students.
-  //1. check existing users
-  //2. user exists then set parent role -> update user (name, surname, by )
-  //3. check student exists -> update student (set parent classroom)
-  //4.
-  const studentsDto = json.map((parentStudentExcel) => {
-    const parent = parents.find((parent) => parent.email === parentStudentExcel.メール)
-    const classroom = classrooms.find((classroom) => classroom.name === parentStudentExcel.クラス)
-    if (!parent) {
-      errors.push({
-        [parentStudentExcel.メール]: `Parent not found for student ${parentStudentExcel.メール}`,
-      })
-      return null
-    }
-    if (!classroom) {
-      errors.push({
-        [parentStudentExcel.メール]: `Classroom not found for student ${parentStudentExcel.クラス}`,
-      })
-      return null
-    }
-    return {
-      surname: parentStudentExcel[`student_surname_${locale}`],
-      name: parentStudentExcel[`student_name_${locale}`],
-      guardianSurname: parentStudentExcel[`parent_surname_${locale}`],
-      guardianName: parentStudentExcel[`parent_name_${locale}`],
-      email: parentStudentExcel.メール,
-      phone: parentStudentExcel.電話番号,
-      grade: parentStudentExcel.クラス,
-      parent: parent?.id,
-      classroom: classroom?.id,
-    }
-  })
+// function ExcelToStudent({
+//   json,
+//   parent,
+//   classrooms,
+//   locale,
+// }: {
+//   json: ParentStudentExcel[]
+//   parent: User
+//   classrooms: Classroom[]
+//   locale: AvailableLocale
+// }) {
+//   const errors: Record<string, string>[] = []
+//   //0. get all users with in emails[] get existing students.
+//   //1. check existing users
+//   //2. user exists then set parent role -> update user (name, surname, by )
+//   //3. check student exists -> update student (set parent classroom)
+//   //4.
+//   const studentsDto = json.map((parentStudentExcel) => {
+//     const parent = parent.find((parent) => parent.email === parentStudentExcel.メール)
+//     const classroom = classrooms.find((classroom) => classroom.name === parentStudentExcel.クラス)
+//     if (!parent) {
+//       errors.push({
+//         [parentStudentExcel.メール]: `Parent not found for student ${parentStudentExcel.メール}`,
+//       })
+//       return null
+//     }
+//     if (!classroom) {
+//       errors.push({
+//         [parentStudentExcel.メール]: `Classroom not found for student ${parentStudentExcel.クラス}`,
+//       })
+//       return null
+//     }
+//     return {
+//       surname: parentStudentExcel[`student_surname_${locale}`],
+//       name: parentStudentExcel[`student_name_${locale}`],
+//       guardianSurname: parentStudentExcel[`parent_surname_${locale}`],
+//       guardianName: parentStudentExcel[`parent_name_${locale}`],
+//       email: parentStudentExcel.メール,
+//       phone: parentStudentExcel.電話番号,
+//       grade: parentStudentExcel.クラス,
+//       parent: parent?.id,
+//       classroom: classroom?.id,
+//     }
+//   })
 
-  return {
-    dto: studentsDto,
-    errors,
-  }
-}
+//   return {
+//     dto: studentsDto,
+//     errors,
+//   }
+// }
 // function ExcelToStudent(json: )
 
 async function handleCreateParentAndStudent({
@@ -246,15 +246,11 @@ async function handleCreateParentAndStudent({
     }
   }
 
-  if (!newStudent.parents) {
+  if (!newStudent.parent) {
     throw new Error('Parent not found')
   }
-  const parent = newStudent.parents.map((parent) => {
-    if (typeof parent == 'number') {
-      return parent
-    }
-    return parent.id
-  })
+  const parent = typeof newStudent.parent == 'number' ? newStudent.parent : newStudent.parent.id
+
   for (const locale of availableLocales.filter((locale) => locale !== 'ja')) {
     if (excelRow[`parent_name_${locale}`] && excelRow[`parent_surname_${locale}`]) {
       await req.payload.update({
@@ -269,7 +265,7 @@ async function handleCreateParentAndStudent({
             locale,
           }),
           classroom,
-          parents: parent,
+          parent: parent,
         },
       })
     }
@@ -283,13 +279,17 @@ const findMatchedStudent = ({
 }: {
   excelRow: ParentStudentExcel
   foundStudents: Student[]
-}) =>
-  foundStudents.find((student) => {
+}) => {
+  return foundStudents.find((student) => {
+    if (typeof student.parent === 'number') {
+      throw new Error('parent must be populated')
+    }
     return (
-      (student.parents as User[]).some((parent) => parent.email === excelRow.メール) &&
+      (student.parent as User).email === excelRow.メール &&
       student.birthday === excelSerialToDate(excelRow.student_birthday).toISOString()
     )
   })
+}
 
 async function handleUpdateStudent({
   foundStudentParent,
@@ -302,7 +302,7 @@ async function handleUpdateStudent({
   req: PayloadRequest
   matchedStudent: Student
 }) {
-  let settingParentId = [foundStudentParent?.id]
+  let settingParentId = foundStudentParent?.id
   let updatedStudent = {}
   if (!foundStudentParent) {
     const newParent = await handleCreateUserFromStudentExcel({
@@ -310,15 +310,10 @@ async function handleUpdateStudent({
       payload: req.payload,
       parentRole: parentRole as Role,
     })
-    settingParentId = [newParent.id]
+    settingParentId = newParent.id
   }
-  const studentParentsIDs = matchedStudent.parents.map((parent) => {
-    if (typeof parent == 'number') {
-      return parent
-    }
-    return parent.id
-  })
-  // student.parents are not updated fully. it is only added. so if excel changes the parent the new parent is added to existing array only removing the duplicates
+
+  // student.parent are not updated fully. it is only added. so if excel changes the parent the new parent is added to existing array only removing the duplicates
   for (const locale of availableLocales) {
     if (excelRow[`student_name_${locale}`] && excelRow[`student_surname_${locale}`]) {
       await req.payload.update({
@@ -327,7 +322,7 @@ async function handleUpdateStudent({
         locale,
         data: {
           ...studentExcelToStudent(excelRow, { locale }),
-          parents: [...new Set([...studentParentsIDs, ...settingParentId])],
+          parent: settingParentId,
         },
         req,
       })
