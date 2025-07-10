@@ -1,5 +1,5 @@
 {
-  "id": "4a5d1f34-6b1a-425d-90c3-27c476268ce9",
+  "id": "20cc8c4d-5c9b-4c57-95eb-95958a03e8c2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -5769,7 +5769,7 @@
           "name": "parent_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "classroom_id": {
           "name": "classroom_id",

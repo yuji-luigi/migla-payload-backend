@@ -452,7 +452,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE IF NOT EXISTS "teachers" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"is_assistant" boolean DEFAULT false,
-  	"user_id" integer,
+  	"user_id" integer NOT NULL,
   	"classroom_id" integer,
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
@@ -471,19 +471,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"name" varchar NOT NULL,
   	"surname" varchar NOT NULL,
+  	"birthday" timestamp(3) with time zone NOT NULL,
+  	"parent_id" integer NOT NULL,
   	"classroom_id" integer,
-  	"slug" varchar,
+  	"slug" varchar NOT NULL,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
-  );
-  
-  CREATE TABLE IF NOT EXISTS "students_rels" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"order" integer,
-  	"parent_id" integer NOT NULL,
-  	"path" varchar NOT NULL,
-  	"users_id" integer
   );
   
   CREATE TABLE IF NOT EXISTS "reports" (
@@ -518,6 +512,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   
   CREATE TABLE IF NOT EXISTS "classrooms" (
   	"id" serial PRIMARY KEY NOT NULL,
+  	"ord" numeric DEFAULT 0 NOT NULL,
   	"slug" varchar,
   	"slug_lock" boolean DEFAULT true,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
@@ -674,9 +669,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"description" varchar,
   	"can_login_admin" boolean DEFAULT false,
   	"is_super_admin" boolean,
-  	"is_admin_level" boolean,
+  	"is_admin" boolean,
   	"is_teacher" boolean,
   	"is_parent" boolean,
+  	"is_operations_committee_member" boolean,
   	"can_write_reports" boolean,
   	"can_write_homeworks" boolean,
   	"can_write_pages" boolean,
@@ -1498,19 +1494,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   END $$;
   
   DO $$ BEGIN
+   ALTER TABLE "students" ADD CONSTRAINT "students_parent_id_users_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
    ALTER TABLE "students" ADD CONSTRAINT "students_classroom_id_classrooms_id_fk" FOREIGN KEY ("classroom_id") REFERENCES "public"."classrooms"("id") ON DELETE set null ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "students_rels" ADD CONSTRAINT "students_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."students"("id") ON DELETE cascade ON UPDATE no action;
-  EXCEPTION
-   WHEN duplicate_object THEN null;
-  END $$;
-  
-  DO $$ BEGIN
-   ALTER TABLE "students_rels" ADD CONSTRAINT "students_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   EXCEPTION
    WHEN duplicate_object THEN null;
   END $$;
@@ -2233,14 +2223,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX IF NOT EXISTS "teachers_updated_at_idx" ON "teachers" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "teachers_created_at_idx" ON "teachers" USING btree ("created_at");
   CREATE UNIQUE INDEX IF NOT EXISTS "teachers_locales_locale_parent_id_unique" ON "teachers_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "students_parent_idx" ON "students" USING btree ("parent_id");
   CREATE INDEX IF NOT EXISTS "students_classroom_idx" ON "students" USING btree ("classroom_id");
   CREATE INDEX IF NOT EXISTS "students_slug_idx" ON "students" USING btree ("slug");
   CREATE INDEX IF NOT EXISTS "students_updated_at_idx" ON "students" USING btree ("updated_at");
   CREATE INDEX IF NOT EXISTS "students_created_at_idx" ON "students" USING btree ("created_at");
-  CREATE INDEX IF NOT EXISTS "students_rels_order_idx" ON "students_rels" USING btree ("order");
-  CREATE INDEX IF NOT EXISTS "students_rels_parent_idx" ON "students_rels" USING btree ("parent_id");
-  CREATE INDEX IF NOT EXISTS "students_rels_path_idx" ON "students_rels" USING btree ("path");
-  CREATE INDEX IF NOT EXISTS "students_rels_users_id_idx" ON "students_rels" USING btree ("users_id");
   CREATE INDEX IF NOT EXISTS "reports_created_by_idx" ON "reports" USING btree ("created_by_id");
   CREATE INDEX IF NOT EXISTS "reports_teacher_idx" ON "reports" USING btree ("teacher_id");
   CREATE INDEX IF NOT EXISTS "reports_slug_idx" ON "reports" USING btree ("slug");
@@ -2485,7 +2472,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "teachers" CASCADE;
   DROP TABLE "teachers_locales" CASCADE;
   DROP TABLE "students" CASCADE;
-  DROP TABLE "students_rels" CASCADE;
   DROP TABLE "reports" CASCADE;
   DROP TABLE "reports_locales" CASCADE;
   DROP TABLE "reports_rels" CASCADE;
