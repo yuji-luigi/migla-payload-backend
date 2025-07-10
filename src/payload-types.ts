@@ -824,7 +824,7 @@ export interface Student {
   name: string;
   surname: string;
   birthday: string;
-  parent: number | User;
+  parent?: (number | null) | User;
   classroom?: (number | null) | Classroom;
   slug: string;
   slugLock?: boolean | null;
