@@ -248,6 +248,7 @@ function handleCreateTeacherUsers({
         await req.payload.update({
           collection: 'teachers',
           id: newTeacher.id,
+          locale,
           data: teacherExcelToTeacher({
             row: row,
             locale: locale,
