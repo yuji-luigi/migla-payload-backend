@@ -26,7 +26,7 @@ import { Footer } from './globals/Footer/config'
 import { i18nConfigs } from './lib/i18n/i18n_configs'
 import { LogoGlobal } from './globals/LogoGlobal/config'
 import { plugins } from './plugins'
-import { onInit } from './tasks/seed'
+import { onInit } from './configs/onInit/seed'
 import { getServerSideURL } from './utilities/getURL'
 import { Header } from './globals/Header/config'
 const filename = fileURLToPath(import.meta.url)
