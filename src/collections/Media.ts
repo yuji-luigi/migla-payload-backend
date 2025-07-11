@@ -80,7 +80,7 @@ export const Media: CollectionConfig = {
       relationTo: 'users',
       maxDepth: 1,
       hasMany: false,
-      required: true,
+      required: false,
 
       admin: {
         // disabled: true,
