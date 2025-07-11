@@ -4,7 +4,7 @@ import { Role, User } from '../payload-types'
 /**
  * @description returns true if the user is an admin or super admin
  */
-export function isAdmin(user: ClientUser | null): boolean {
+export function isAdmin(user: User | ClientUser | null): boolean {
   if (user?.currentRole?.isAdminLevel) {
     return true
   }
