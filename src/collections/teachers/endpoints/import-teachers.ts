@@ -44,16 +44,6 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
       throw new Error('Role teacher not found')
     }
 
-    const { docs: existingTeachers } = await req.payload.find({
-      collection: 'teachers',
-      depth: 0,
-      where: {
-        user: {
-          in: existingUsers.map((user) => user.id),
-        },
-      },
-    })
-
     const nonExistingUsersExcel = json.filter(
       (row) => !existingUsers.some((user) => user.email === row.email),
     )
@@ -80,6 +70,7 @@ export const importTeachers: Omit<Endpoint, 'root'> = {
           },
         },
       })
+
       const {
         docs: [upTeacher],
       } = await req.payload.find({
