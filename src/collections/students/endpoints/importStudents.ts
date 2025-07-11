@@ -19,7 +19,11 @@ export const importStudents: Omit<Endpoint, 'root'> = {
   method: 'post',
   handler: async (req) => {
     try {
-      if (!req.user?.currentRole?.isAdminLevel && !req.user?.currentRole?.isTeacher) {
+      if (
+        !req.user?.currentRole?.isAdminLevel &&
+        !req.user?.currentRole?.isTeacher &&
+        !req.user?.currentRole?.isSuperAdmin
+      ) {
         throw new Error('You are not authorized to import students')
       }
       const createdStudents: Student[] = []
