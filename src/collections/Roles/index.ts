@@ -188,6 +188,7 @@ export const Roles: CollectionConfig<'roles'> = {
     },
     {
       name: 'canWriteReports',
+      hidden: true,
       label: {
         ja: 'レポートを作成できる',
         en: 'Can write reports',
@@ -197,6 +198,7 @@ export const Roles: CollectionConfig<'roles'> = {
     },
     {
       name: 'canWriteHomeworks',
+      hidden: true,
       label: {
         ja: '宿題を作成できる',
         en: 'Can write homeworks',
@@ -206,6 +208,7 @@ export const Roles: CollectionConfig<'roles'> = {
     },
     {
       name: 'canWritePages',
+      hidden: true,
       label: {
         ja: 'ページを作成できる',
         en: 'Can write pages',
@@ -216,6 +219,7 @@ export const Roles: CollectionConfig<'roles'> = {
 
     {
       name: 'canWriteParents',
+      hidden: true,
       label: {
         ja: '保護者を作成できる',
         en: 'Can write parents',
@@ -225,6 +229,7 @@ export const Roles: CollectionConfig<'roles'> = {
     },
     {
       name: 'canWriteStudents',
+      hidden: true,
       label: {
         ja: '生徒を作成できる',
         en: 'Can write students',
@@ -234,6 +239,7 @@ export const Roles: CollectionConfig<'roles'> = {
     },
     {
       name: 'canWriteNotifications',
+      hidden: true,
       label: {
         ja: '通知を作成できる',
         en: 'Can write notifications',
