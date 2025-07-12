@@ -6,6 +6,7 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { User } from '../../payload-types'
 import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { anyone } from '../../access/anyone'
+import { ConsoleLogWriter } from '@payloadcms/db-postgres/drizzle'
 
 export const Roles: CollectionConfig<'roles'> = {
   slug: 'roles',
@@ -145,6 +146,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Super Admin',
         it: 'Amministratore superiore',
       },
+      defaultValue: false,
       admin: {
         hidden: true,
       },
@@ -157,6 +159,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Admin',
         it: 'Amministratore',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -166,6 +169,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Teacher',
         it: 'Docente',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -175,6 +179,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Parent',
         it: 'Genitore',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -184,6 +189,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Operations Committee Member',
         it: 'Membro del comitato di gestione',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -194,6 +200,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Can write reports',
         it: 'Può scrivere rapporti',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -204,6 +211,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Can write homeworks',
         it: 'Può scrivere compiti',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -214,6 +222,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Can write pages',
         it: 'Può scrivere pagine',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
 
@@ -225,6 +234,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Can write parents',
         it: 'Può scrivere genitori',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -235,6 +245,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Can write students',
         it: 'Può scrivere studenti',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
     {
@@ -245,6 +256,7 @@ export const Roles: CollectionConfig<'roles'> = {
         en: 'Can write notifications',
         it: 'Può scrivere notifiche',
       },
+      defaultValue: false,
       type: 'checkbox',
     },
 
