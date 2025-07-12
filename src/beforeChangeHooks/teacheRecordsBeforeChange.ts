@@ -17,7 +17,7 @@ export const teacherOperationBeforeChange: CollectionBeforeChangeHook = async ({
   if (!req.user) {
     throw new APIError('User not authenticated', 401, null, true)
   }
-  if (req.user.currentRole?.isAdminLevel) {
+  if (req.user.currentRole?.isAdmin) {
     if (!data.teacher) {
       throw new APIError('Teacher is required', 400, null, true)
     }

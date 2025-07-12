@@ -20,7 +20,7 @@ export const importStudents: Omit<Endpoint, 'root'> = {
   handler: async (req) => {
     try {
       if (
-        !req.user?.currentRole?.isAdminLevel &&
+        !req.user?.currentRole?.isAdmin &&
         !req.user?.currentRole?.isTeacher &&
         !req.user?.currentRole?.isSuperAdmin
       ) {

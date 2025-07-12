@@ -31,14 +31,14 @@ export const Users: CollectionConfig = {
       if (!req.user) {
         throw new APIError('You must be logged in to access this resource', 401, null, true)
       }
-      if (req.user?.currentRole?.isSuperAdmin || req.user?.currentRole?.isAdminLevel) {
+      if (req.user?.currentRole?.isSuperAdmin || req.user?.currentRole?.isAdmin) {
         return true
       }
       return false
     },
     delete: async ({ req }) => {
       if (req.user) {
-        if (req.user.currentRole?.isSuperAdmin || req.user.currentRole?.isAdminLevel) {
+        if (req.user.currentRole?.isSuperAdmin || req.user.currentRole?.isAdmin) {
           return true
         }
       }

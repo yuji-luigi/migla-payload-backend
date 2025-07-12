@@ -12,7 +12,7 @@ export const currentUserFilterNonAdmin: BaseListFilter = async ({ req }) => {
   if (req.user.currentRole == undefined || req.user.currentRole == null) {
     return query
   }
-  if (req.user.currentRole?.isAdminLevel) {
+  if (req.user.currentRole?.isAdmin) {
     return null
   }
   return query
@@ -43,7 +43,7 @@ export const currentUserFilter =
       },
     }
     if (shouldSkipAdmin) {
-      if (req.user.currentRole?.isAdminLevel) {
+      if (req.user.currentRole?.isAdmin) {
         return null
       }
     }

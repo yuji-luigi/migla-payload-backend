@@ -15,7 +15,7 @@ export const setQueryBeforeChange: CollectionBeforeChangeHook = async ({
   if (!req.user?.currentRole) {
     throw new APIError('You must logged in to complete the operation', 403, null, true)
   }
-  if (req.user.currentRole.isAdminLevel) {
+  if (req.user.currentRole.isAdmin) {
     return
   }
   if (req.user.currentRole.isSuperAdmin) {

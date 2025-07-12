@@ -96,7 +96,7 @@ export const Students: CollectionConfig = {
       if (!req.user) {
         throw new APIError('You must logged in to complete the operation', 403, null, true)
       }
-      if (!req.user.currentRole?.isAdminLevel && !req.user.currentRole?.isSuperAdmin) {
+      if (!req.user.currentRole?.isAdmin && !req.user.currentRole?.isSuperAdmin) {
         const foundTeacher = await findTeacherRoleOfUser({
           user: req.user,
           payload: req.payload,
@@ -153,7 +153,7 @@ export const Students: CollectionConfig = {
             true,
           )
         }
-        if (user.currentRole?.isAdminLevel || user.currentRole?.isSuperAdmin) {
+        if (user.currentRole?.isAdmin || user.currentRole?.isSuperAdmin) {
           return true
         }
         if (user.currentRole?.isTeacher) {
