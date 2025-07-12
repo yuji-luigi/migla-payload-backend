@@ -222,7 +222,7 @@ export const Users: CollectionConfig = {
           type: 'checkbox',
         },
         {
-          name: 'isAdminLevel',
+          name: 'isAdmin',
           type: 'checkbox',
         },
         {
