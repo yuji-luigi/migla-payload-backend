@@ -28,13 +28,13 @@ export const Roles: CollectionConfig<'roles'> = {
         return true
       }
       if (data?.isSuperAdmin) {
-        throw new APIError('You are not allowed to create this role', 403, null, true)
+        return false
       }
       return isAdmin(user)
     },
     delete: ({ req: { user, data } }) => {
       if (data?.isSuperAdmin) {
-        throw new APIError('You are not allowed to delete this role', 403, null, true)
+        return false
       }
       return isAdmin(user)
     },
@@ -44,7 +44,7 @@ export const Roles: CollectionConfig<'roles'> = {
         return true
       }
       if (data?.isSuperAdmin) {
-        throw new APIError('You are not allowed to update this role', 403, null, true)
+        return isSuperAdmin(user)
       }
       return isAdmin(user)
     },
