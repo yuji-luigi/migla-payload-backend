@@ -10,7 +10,7 @@
       "currentRole": {
         "name": null,
         "isSuperAdmin": null,
-        "isAdminLevel": null,
+        "isAdmin": null,
         "isTeacher": null,
         "isParent": null
       },
