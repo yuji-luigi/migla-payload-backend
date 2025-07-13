@@ -17,6 +17,13 @@ export function isSuperAdmin(user: ClientUser | User | null): boolean {
   return false
 }
 
+export function isAboveAdmin(user: ClientUser | User | null): boolean {
+  if (user?.currentRole?.isSuperAdmin || user?.currentRole?.isAdmin) {
+    return true
+  }
+  return false
+}
+
 function getIsAdmin(hydratedRoles: (Role | number)[]) {
   return hydratedRoles
     ?.map((role) => (typeof role === 'object' ? role.slug : null))
