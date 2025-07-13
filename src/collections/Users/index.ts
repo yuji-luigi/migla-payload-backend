@@ -63,7 +63,7 @@ export const Users: CollectionConfig = {
       },
     },
     hidden: ({ user }) => {
-      return !isAdmin(user) && !isSuperAdmin(user)
+      return !isAboveAdmin(user) && !isSuperAdmin(user)
     },
   },
 
