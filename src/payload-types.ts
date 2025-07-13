@@ -384,6 +384,7 @@ export interface User {
     isParent?: boolean | null;
   };
   roles?: (number | Role)[] | null;
+  fcmToken?: string | null;
   fullname?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -1423,6 +1424,7 @@ export interface UsersSelect<T extends boolean = true> {
         isParent?: T;
       };
   roles?: T;
+  fcmToken?: T;
   fullname?: T;
   updatedAt?: T;
   createdAt?: T;
