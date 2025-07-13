@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
   access: {
     admin: authenticated,
 
-    create: async ({ req }) => isAdmin(req.user),
+    create: async ({ req }) => isAdmin(req.user) || isSuperAdmin(req.user),
 
     update: async ({ req, id }) => {
       if (req.user?.id === id) {
