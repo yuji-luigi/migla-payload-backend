@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
   access: {
     admin: authenticated,
 
-    create: async ({ req }) => isAdmin(req.user) || isSuperAdmin(req.user),
+    create: async ({ req }) => isAboveAdmin(req.user),
 
     update: async ({ req, id }) => {
       if (req.user?.id === id) {
@@ -31,10 +31,7 @@ export const Users: CollectionConfig = {
       if (!req.user) {
         throw new APIError('You must be logged in to access this resource', 401, null, true)
       }
-      if (req.user?.currentRole?.isSuperAdmin || req.user?.currentRole?.isAdmin) {
-        return true
-      }
-      return false
+      return isAboveAdmin(req.user)
     },
     delete: async ({ req }) => {
       if (req.user) {
