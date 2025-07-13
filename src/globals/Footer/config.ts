@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateFooter } from './hooks/revalidateFooter'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAboveAdmin, isAdmin } from '../../hooks/showOnlyAdmin'
 import { LabelsT } from '../../types/my_types/labels'
 
 export const Footer: GlobalConfig & {
@@ -22,9 +22,8 @@ export const Footer: GlobalConfig & {
     },
   },
   access: {
-    read: ({ req }) => {
-      return isAdmin(req.user)
-    },
+    read: ({ req }) => true,
+    update: async ({ req }) => isAboveAdmin(req.user),
   },
   fields: [
     {

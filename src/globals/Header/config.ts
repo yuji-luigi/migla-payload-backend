@@ -2,7 +2,7 @@ import type { GlobalConfig, LabelFunction, StaticLabel } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
-import { isAdmin } from '../../hooks/showOnlyAdmin'
+import { isAboveAdmin, isAdmin } from '../../hooks/showOnlyAdmin'
 import { LabelsT } from '../../types/my_types/labels'
 
 export const Header: GlobalConfig & {
@@ -23,8 +23,9 @@ export const Header: GlobalConfig & {
   },
   access: {
     read: ({ req }) => {
-      return isAdmin(req.user)
+      return true
     },
+    update: async ({ req }) => isAboveAdmin(req.user),
   },
   fields: [
     {
