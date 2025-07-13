@@ -262,7 +262,10 @@ export const Users: CollectionConfig = {
         return true
       },
     },
-
+    {
+      name: 'fcmToken',
+      type: 'text',
+    },
     {
       name: 'fullname',
       type: 'text',
