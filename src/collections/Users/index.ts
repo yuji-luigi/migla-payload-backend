@@ -1,7 +1,7 @@
 import { equal } from 'assert'
 import { APIError, logError, Where, type CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
+import { isAboveAdmin, isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
 import { Role, User } from '../../payload-types'
 import { importUsers } from './endpoints/importUsers'
