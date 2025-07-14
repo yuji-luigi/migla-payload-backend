@@ -18,7 +18,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
+import { isAboveAdmin, isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -35,10 +35,10 @@ export const Pages: CollectionConfig<'pages'> = {
     },
   },
   access: {
-    create: async ({ req }) => isAdmin(req.user),
-    delete: async ({ req }) => isAdmin(req.user),
+    create: async ({ req }) => isAboveAdmin(req.user),
+    delete: async ({ req }) => isAboveAdmin(req.user),
     read: async ({ req }) => true,
-    update: async ({ req }) => isAdmin(req.user),
+    update: async ({ req }) => isAboveAdmin(req.user),
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property

@@ -1,12 +1,13 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { anyone } from '../../access/anyone'
+import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin, isSuperAdmin } from '../hooks/showOnlyAdmin'
-import { User } from '../payload-types'
-import { link } from '../fields/link'
-import { linkGroup } from '../fields/linkGroup'
+import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
+import { User } from '../../payload-types'
+import { link } from '../../fields/link'
+import { linkGroup } from '../../fields/linkGroup'
+import { notificationHooks } from './hooks/notificationHooks'
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications',
@@ -23,6 +24,7 @@ export const Notifications: CollectionConfig = {
     },
   },
 
+  hooks: notificationHooks,
   // only admins
   access: {
     create: authenticated,

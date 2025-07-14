@@ -1,7 +1,7 @@
 import { equal } from 'assert'
 import { APIError, logError, Where, type CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
-import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
+import { isAboveAdmin, isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { errorMessages } from '../../lib/error_messages'
 import { Role, User } from '../../payload-types'
 import { importUsers } from './endpoints/importUsers'
@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
   access: {
     admin: authenticated,
 
-    create: async ({ req }) => isAdmin(req.user),
+    create: async ({ req }) => isAboveAdmin(req.user),
 
     update: async ({ req, id }) => {
       if (req.user?.id === id) {
@@ -31,10 +31,7 @@ export const Users: CollectionConfig = {
       if (!req.user) {
         throw new APIError('You must be logged in to access this resource', 401, null, true)
       }
-      if (req.user?.currentRole?.isSuperAdmin || req.user?.currentRole?.isAdmin) {
-        return true
-      }
-      return false
+      return isAboveAdmin(req.user)
     },
     delete: async ({ req }) => {
       if (req.user) {
@@ -66,7 +63,7 @@ export const Users: CollectionConfig = {
       },
     },
     hidden: ({ user }) => {
-      return !isAdmin(user) && !isSuperAdmin(user)
+      return !isAboveAdmin(user) && !isSuperAdmin(user)
     },
   },
 
@@ -265,7 +262,10 @@ export const Users: CollectionConfig = {
         return true
       },
     },
-
+    {
+      name: 'fcmToken',
+      type: 'text',
+    },
     {
       name: 'fullname',
       type: 'text',

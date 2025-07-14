@@ -1,0 +1,19 @@
+[
+  {
+    "relation": ["delegate_permission/common.get_login_creds"],
+    "target": {
+      "namespace": "web",
+      "site": "https://signin.example.com"
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.get_login_creds"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.migla.app",
+      "sha256_cert_fingerprints": [
+        "F2:52:4D:82:E7:1E:68:AF:8C:BC:EA:B0:A2:83:C8:FE:82:51:CF:63:09:6A:4C:64:AE:F4:43:27:20:40:D2:4B"
+      ]
+    }
+  }
+]

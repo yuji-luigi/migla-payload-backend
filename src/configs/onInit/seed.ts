@@ -1,4 +1,5 @@
 import { DatabaseAdapter, Payload } from 'payload'
+import { initFirebaseAdmin } from '../../firebase-config'
 
 export const onInit = async (payload: Payload) => {
   await seed(payload).catch((error) => {
@@ -7,6 +8,7 @@ export const onInit = async (payload: Payload) => {
   await localizeUserFullName(payload).catch((error) => {
     console.log('localizeUserFullName error', error)
   })
+  initFirebaseAdmin()
 }
 
 export const seed = async (payload: Payload) => {
