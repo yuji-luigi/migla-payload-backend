@@ -278,6 +278,7 @@ html[data-theme='light'] {
 main {
   @apply min-h-screen flex flex-col;
   z-index: 1;
+  min-height: 100vh;
 }
 
 @layer utilities {
