@@ -81,6 +81,7 @@ export interface Config {
     media: Media;
     roles: Role;
     settings: Setting;
+    fcmTokens: FcmToken;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -106,6 +107,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     roles: RolesSelect<false> | RolesSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
+    fcmTokens: FcmTokensSelect<false> | FcmTokensSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -128,7 +130,7 @@ export interface Config {
     footer: FooterSelect<false> | FooterSelect<true>;
     logoGlobal: LogoGlobalSelect<false> | LogoGlobalSelect<true>;
   };
-  locale: 'ja' | 'en' | 'it';
+  locale: 'ja' | 'it' | 'en';
   user: User & {
     collection: 'users';
   };
@@ -932,6 +934,19 @@ export interface Setting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fcmTokens".
+ */
+export interface FcmToken {
+  id: number;
+  user?: (number | null) | User;
+  token?: string | null;
+  osName?: string | null;
+  osVersion?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1157,6 +1172,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'settings';
         value: number | Setting;
+      } | null)
+    | ({
+        relationTo: 'fcmTokens';
+        value: number | FcmToken;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1679,6 +1698,18 @@ export interface RolesSelect<T extends boolean = true> {
 export interface SettingsSelect<T extends boolean = true> {
   locale?: T;
   user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fcmTokens_select".
+ */
+export interface FcmTokensSelect<T extends boolean = true> {
+  user?: T;
+  token?: T;
+  osName?: T;
+  osVersion?: T;
   updatedAt?: T;
   createdAt?: T;
 }
