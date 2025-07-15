@@ -1,4 +1,4 @@
-import { ClientUser } from 'payload'
+import { Access, AccessArgs, ClientUser } from 'payload'
 import { Role, User } from '../payload-types'
 
 /**
@@ -28,4 +28,15 @@ function getIsAdmin(hydratedRoles: (Role | number)[]) {
   return hydratedRoles
     ?.map((role) => (typeof role === 'object' ? role.slug : null))
     .some((role) => role === 'admin' || role === 'super_admin')
+}
+
+export function isAboveAdminAccess({ req, id }: AccessArgs) {
+  return isAboveAdmin(req.user)
+}
+
+export function isAdminAccess({ req, id }: AccessArgs) {
+  return isAdmin(req.user)
+}
+export function isSuperAdminAccess({ req, id }: AccessArgs) {
+  return isSuperAdmin(req.user)
 }
