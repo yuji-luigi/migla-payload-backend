@@ -29,6 +29,7 @@ import { LogoGlobal } from './globals/LogoGlobal/config'
 import { i18nConfigs } from './lib/i18n/i18n_configs'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
+import { FcmTokens } from './collections/fcmTokens'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -48,7 +49,7 @@ export default buildConfig({
 
   localization: {
     defaultLocale: 'ja',
-    locales: ['ja', 'en', 'it'],
+    locales: ['ja', 'it', 'en'],
     fallback: true,
   },
   auth: {
@@ -83,6 +84,7 @@ export default buildConfig({
     Media,
     Roles,
     Settings,
+    FcmTokens,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, LogoGlobal],
