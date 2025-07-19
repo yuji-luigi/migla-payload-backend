@@ -7,17 +7,22 @@ const handleSendNotification: CollectionAfterChangeHook<Notification> = async ({
   req,
   doc,
 }) => {
-  const { docs: users } = await req.payload.find({
-    collection: 'users',
-    where: {
-      fcmToken: {
-        exists: true,
-      },
-    },
+  // const { docs: users } = await req.payload.find({
+  //   collection: 'users',
+  //   where: {
+  //     fcmToken: {
+  //       exists: true,
+  //     },
+  //   },
+  // })
+  const { docs: fcmTokens } = await req.payload.find({
+    collection: 'fcmTokens',
   })
   getMessaging()
     .sendEachForMulticast({
-      tokens: users.map((user) => user.fcmToken).filter((token) => typeof token === 'string'),
+      tokens: fcmTokens
+        .map((tokenData) => tokenData.token)
+        .filter((token) => typeof token === 'string'),
       notification: {
         title: doc.title,
         body: doc.body,
