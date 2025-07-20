@@ -21,7 +21,16 @@ export const ReadNotification: CollectionConfig = {
   access: {
     create: authenticated,
     delete: authenticated,
-    read: anyone,
+    read: ({ req: { user } }) => {
+      if (user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+      return {
+        user: {
+          equals: user?.id,
+        },
+      }
+    },
     update: authenticated,
   },
   admin: {
