@@ -24,7 +24,7 @@ import {
   pgEnum,
 } from '@payloadcms/db-postgres/drizzle/pg-core'
 import { sql, relations } from '@payloadcms/db-postgres/drizzle'
-export const enum__locales = pgEnum('enum__locales', ['ja', 'en', 'it'])
+export const enum__locales = pgEnum('enum__locales', ['ja', 'it', 'en'])
 export const enum_pages_hero_links_link_type = pgEnum('enum_pages_hero_links_link_type', [
   'reference',
   'custom',
@@ -116,8 +116,8 @@ export const enum__pages_v_version_status = pgEnum('enum__pages_v_version_status
 ])
 export const enum__pages_v_published_locale = pgEnum('enum__pages_v_published_locale', [
   'ja',
-  'en',
   'it',
+  'en',
 ])
 export const enum_posts_status = pgEnum('enum_posts_status', ['draft', 'published'])
 export const enum__posts_v_version_status = pgEnum('enum__posts_v_version_status', [
@@ -126,8 +126,8 @@ export const enum__posts_v_version_status = pgEnum('enum__posts_v_version_status
 ])
 export const enum__posts_v_published_locale = pgEnum('enum__posts_v_published_locale', [
   'ja',
-  'en',
   'it',
+  'en',
 ])
 export const enum_notifications_links_link_type = pgEnum('enum_notifications_links_link_type', [
   'reference',
@@ -1189,9 +1189,10 @@ export const users = pgTable(
     id: serial('id').primaryKey(),
     currentRole_name: varchar('current_role_name'),
     currentRole_isSuperAdmin: boolean('current_role_is_super_admin'),
-    currentRole_isAdminLevel: boolean('current_role_is_admin_level'),
+    currentRole_isAdmin: boolean('current_role_is_admin'),
     currentRole_isTeacher: boolean('current_role_is_teacher'),
     currentRole_isParent: boolean('current_role_is_parent'),
+    fcmToken: varchar('fcm_token'),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
       .notNull(),
@@ -1759,11 +1760,9 @@ export const media = pgTable(
   {
     id: serial('id').primaryKey(),
     alt: varchar('alt'),
-    createdBy: integer('created_by_id')
-      .notNull()
-      .references(() => users.id, {
-        onDelete: 'set null',
-      }),
+    createdBy: integer('created_by_id').references(() => users.id, {
+      onDelete: 'set null',
+    }),
     caption: jsonb('caption'),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
@@ -1859,17 +1858,17 @@ export const roles = pgTable(
     name: varchar('name').notNull(),
     description: varchar('description'),
     canLoginAdmin: boolean('can_login_admin').default(false),
-    isSuperAdmin: boolean('is_super_admin'),
-    isAdmin: boolean('is_admin'),
-    isTeacher: boolean('is_teacher'),
-    isParent: boolean('is_parent'),
-    isOperationsCommitteeMember: boolean('is_operations_committee_member'),
-    canWriteReports: boolean('can_write_reports'),
-    canWriteHomeworks: boolean('can_write_homeworks'),
-    canWritePages: boolean('can_write_pages'),
-    canWriteParents: boolean('can_write_parents'),
-    canWriteStudents: boolean('can_write_students'),
-    canWriteNotifications: boolean('can_write_notifications'),
+    isSuperAdmin: boolean('is_super_admin').default(false),
+    isAdmin: boolean('is_admin').default(false),
+    isTeacher: boolean('is_teacher').default(false),
+    isParent: boolean('is_parent').default(false),
+    isOperationsCommitteeMember: boolean('is_operations_committee_member').default(false),
+    canWriteReports: boolean('can_write_reports').default(false),
+    canWriteHomeworks: boolean('can_write_homeworks').default(false),
+    canWritePages: boolean('can_write_pages').default(false),
+    canWriteParents: boolean('can_write_parents').default(false),
+    canWriteStudents: boolean('can_write_students').default(false),
+    canWriteNotifications: boolean('can_write_notifications').default(false),
     slug: varchar('slug').notNull(),
     slugLock: boolean('slug_lock').default(true),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
@@ -1928,6 +1927,30 @@ export const settings = pgTable(
     settings_user_idx: index('settings_user_idx').on(columns.user),
     settings_updated_at_idx: index('settings_updated_at_idx').on(columns.updatedAt),
     settings_created_at_idx: index('settings_created_at_idx').on(columns.createdAt),
+  }),
+)
+
+export const fcm_tokens = pgTable(
+  'fcm_tokens',
+  {
+    id: serial('id').primaryKey(),
+    user: integer('user_id').references(() => users.id, {
+      onDelete: 'set null',
+    }),
+    token: varchar('token'),
+    osName: varchar('os_name'),
+    osVersion: varchar('os_version'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    fcm_tokens_user_idx: index('fcm_tokens_user_idx').on(columns.user),
+    fcm_tokens_updated_at_idx: index('fcm_tokens_updated_at_idx').on(columns.updatedAt),
+    fcm_tokens_created_at_idx: index('fcm_tokens_created_at_idx').on(columns.createdAt),
   }),
 )
 
@@ -2771,6 +2794,7 @@ export const payload_locked_documents_rels = pgTable(
     mediaID: integer('media_id'),
     rolesID: integer('roles_id'),
     settingsID: integer('settings_id'),
+    fcmTokensID: integer('fcm_tokens_id'),
     redirectsID: integer('redirects_id'),
     formsID: integer('forms_id'),
     'form-submissionsID': integer('form_submissions_id'),
@@ -2823,6 +2847,9 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_settings_id_idx: index(
       'payload_locked_documents_rels_settings_id_idx',
     ).on(columns.settingsID),
+    payload_locked_documents_rels_fcm_tokens_id_idx: index(
+      'payload_locked_documents_rels_fcm_tokens_id_idx',
+    ).on(columns.fcmTokensID),
     payload_locked_documents_rels_redirects_id_idx: index(
       'payload_locked_documents_rels_redirects_id_idx',
     ).on(columns.redirectsID),
@@ -2912,6 +2939,11 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['settingsID']],
       foreignColumns: [settings.id],
       name: 'payload_locked_documents_rels_settings_fk',
+    }).onDelete('cascade'),
+    fcmTokensIdFk: foreignKey({
+      columns: [columns['fcmTokensID']],
+      foreignColumns: [fcm_tokens.id],
+      name: 'payload_locked_documents_rels_fcm_tokens_fk',
     }).onDelete('cascade'),
     redirectsIdFk: foreignKey({
       columns: [columns['redirectsID']],
@@ -3870,6 +3902,13 @@ export const relations_settings = relations(settings, ({ one }) => ({
     relationName: 'user',
   }),
 }))
+export const relations_fcm_tokens = relations(fcm_tokens, ({ one }) => ({
+  user: one(users, {
+    fields: [fcm_tokens.user],
+    references: [users.id],
+    relationName: 'user',
+  }),
+}))
 export const relations_redirects_rels = relations(redirects_rels, ({ one }) => ({
   parent: one(redirects, {
     fields: [redirects_rels.parent],
@@ -4315,6 +4354,11 @@ export const relations_payload_locked_documents_rels = relations(
       references: [settings.id],
       relationName: 'settings',
     }),
+    fcmTokensID: one(fcm_tokens, {
+      fields: [payload_locked_documents_rels.fcmTokensID],
+      references: [fcm_tokens.id],
+      relationName: 'fcmTokens',
+    }),
     redirectsID: one(redirects, {
       fields: [payload_locked_documents_rels.redirectsID],
       references: [redirects.id],
@@ -4547,6 +4591,7 @@ type DatabaseSchema = {
   roles: typeof roles
   roles_locales: typeof roles_locales
   settings: typeof settings
+  fcm_tokens: typeof fcm_tokens
   redirects: typeof redirects
   redirects_rels: typeof redirects_rels
   forms_blocks_checkbox: typeof forms_blocks_checkbox
@@ -4648,6 +4693,7 @@ type DatabaseSchema = {
   relations_roles_locales: typeof relations_roles_locales
   relations_roles: typeof relations_roles
   relations_settings: typeof relations_settings
+  relations_fcm_tokens: typeof relations_fcm_tokens
   relations_redirects_rels: typeof relations_redirects_rels
   relations_redirects: typeof relations_redirects
   relations_forms_blocks_checkbox_locales: typeof relations_forms_blocks_checkbox_locales
