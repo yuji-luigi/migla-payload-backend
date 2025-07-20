@@ -1,14 +1,21 @@
 import { APIError, getPayload, type CollectionConfig, type User } from 'payload'
-import payloadConfig from '../payload.config'
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import payloadConfig from '../../payload.config'
+import { anyone } from '../../access/anyone'
+import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { Role } from '../payload-types'
+import { Role } from '../../payload-types'
 import internal from 'stream'
-import { Classrooms } from './classrooms'
-import { getStudentsByClassroomId } from '../beforeChangeHooks/getStudentsByClassroomId'
-import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
-import { teacherOperationBeforeChange } from '../beforeChangeHooks/teacheRecordsBeforeChange'
+import { Classrooms } from '../classrooms'
+import { getStudentsByClassroomId } from '../../beforeChangeHooks/getStudentsByClassroomId'
+import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
+import { teacherOperationBeforeChange } from './hooks/teacheRecordsBeforeChange'
+import { reportHooks } from './hooks/reportHooks'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
@@ -51,22 +58,8 @@ export const Reports: CollectionConfig = {
     },
     update: authenticated,
   },
+  hooks: reportHooks,
 
-  // admin: {
-  //   useAsTitle: 'title',
-  //   hidden: ({ user }: { user: User }) => {
-  //     const hidden = !user?.roles.some(
-  //       (role: Role) =>
-  //         role.slug === 'teacher' || role.slug === 'super_admin' || role.slug === 'admin',
-  //     )
-  //     return hidden
-  //   },
-  // },
-
-  hooks: {
-    beforeChange: [teacherOperationBeforeChange],
-    beforeRead: [async ({ req, query }) => {}],
-  },
   fields: [
     {
       name: 'title',
@@ -88,7 +81,7 @@ export const Reports: CollectionConfig = {
         it: 'Sottotitolo',
       },
       type: 'text',
-      required: true,
+      required: false,
       localized: true,
     },
     {
@@ -99,10 +92,31 @@ export const Reports: CollectionConfig = {
         it: 'Corpo',
       },
       type: 'textarea',
-
       required: true,
       localized: true,
     },
+    // {
+    //   name: 'richBody',
+    //   label: {
+    //     ja: '本文',
+    //     en: 'Body',
+    //     it: 'Corpo',
+    //   },
+    //   type: 'richText',
+    //   editor: lexicalEditor({
+    //     features: ({ rootFeatures }) => {
+    //       return [
+    //         ...rootFeatures,
+    //         HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+    //         FixedToolbarFeature(),
+    //         InlineToolbarFeature(),
+    //       ]
+    //     },
+    //   }),
+
+    //   required: false,
+    //   localized: true,
+    // },
 
     {
       name: 'coverImage',
