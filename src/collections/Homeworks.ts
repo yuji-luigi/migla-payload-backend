@@ -5,7 +5,7 @@ import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
 import { getStudentsByClassroomId } from '../beforeChangeHooks/getStudentsByClassroomId'
 import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
-import { teacherOperationBeforeChange } from '../beforeChangeHooks/teacheRecordsBeforeChange'
+import { teacherOperationBeforeChange } from './reports/hooks/teacheRecordsBeforeChange'
 
 export const Homeworks: CollectionConfig = {
   slug: 'homeworks',
