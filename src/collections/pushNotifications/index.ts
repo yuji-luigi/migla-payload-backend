@@ -34,30 +34,11 @@ export const PushNotifications: CollectionConfig = {
   },
 
   fields: [
-    {
-      name: 'user',
-      type: 'relationship',
-      relationTo: 'users',
-      hasMany: false,
-    },
-    {
-      name: 'token',
-      type: 'text',
-      // unique: true,
-    },
-
-    {
-      name: 'osName',
-      type: 'text',
-    },
-    {
-      name: 'osVersion',
-      type: 'text',
-    },
-    // {
-    //   name: 'deviceID',
-    //   type: 'text',
-    // }
+    { name: 'title', type: 'text' },
+    { name: 'body', type: 'text' },
+    { name: 'type', type: 'text' },
+    { name: 'collection', type: 'text' },
+    { name: 'data', type: 'text' },
   ],
   timestamps: true,
 }
