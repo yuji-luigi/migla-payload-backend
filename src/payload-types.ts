@@ -91,7 +91,11 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    notifications: {
+      readRecords: 'read-notifications';
+    };
+  };
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -889,6 +893,11 @@ export interface Notification {
     | null;
   students?: (number | Student)[] | null;
   hasAttachments?: boolean | null;
+  readRecords?: {
+    docs?: (number | ReadNotification)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   isRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -1542,6 +1551,7 @@ export interface NotificationsSelect<T extends boolean = true> {
       };
   students?: T;
   hasAttachments?: T;
+  readRecords?: T;
   isRead?: T;
   updatedAt?: T;
   createdAt?: T;
