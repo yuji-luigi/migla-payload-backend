@@ -27,7 +27,13 @@ export const PushNotifications: CollectionConfig = {
   },
   access: {
     admin: isSuperAdminAccess,
-    create: () => true,
+    create: ({ req: { context, user } }) => {
+      if (context.fromSendPushNotification || user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+
+      return false
+    },
     read: ({ req: { user } }) => {
       if (user?.currentRole?.isSuperAdmin) {
         return true
@@ -38,8 +44,8 @@ export const PushNotifications: CollectionConfig = {
         },
       }
     },
-    update: isAboveAdminAccess,
-    delete: isAboveAdminAccess,
+    update: isSuperAdminAccess,
+    delete: isSuperAdminAccess,
   },
 
   fields: [

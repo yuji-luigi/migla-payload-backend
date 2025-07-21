@@ -189,7 +189,7 @@ export const Reports: CollectionConfig = {
       hooks: {
         afterRead: [
           async ({ originalDoc, req, operation, findMany, context }) => {
-            const isRead = originalDoc.readRecords?.docs?.length > 0
+            const isRead = Boolean(originalDoc.readRecords?.docs?.length > 0)
             return isRead
           },
         ],
