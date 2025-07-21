@@ -128,6 +128,16 @@ export const Reports: CollectionConfig = {
       hasMany: true,
       localized: true,
     },
+    {
+      name: 'readRecords',
+      type: 'join',
+      collection: 'read-reports',
+      on: 'report',
+      admin: {
+        hidden: true,
+      },
+      maxDepth: 0,
+    },
     // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN in Form
     {
       name: 'students',
@@ -167,6 +177,23 @@ export const Reports: CollectionConfig = {
       relationTo: 'teachers',
       hasMany: false,
       // hidden: true,
+    },
+    {
+      // Virtual flag, only in the Admin/GraphQL, never persisted
+      name: 'isRead',
+      type: 'checkbox',
+      virtual: true,
+
+      // graphQL: { read: true },    // ensure it shows up in the schema
+      admin: { hidden: true }, // hide from the UI form
+      hooks: {
+        afterRead: [
+          async ({ originalDoc, req, operation, findMany, context }) => {
+            const isRead = originalDoc.readRecords.docs?.length > 0
+            return isRead
+          },
+        ],
+      },
     },
     ...slugField(),
   ],
