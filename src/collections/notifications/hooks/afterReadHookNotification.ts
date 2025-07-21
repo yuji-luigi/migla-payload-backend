@@ -1,11 +1,5 @@
-import { getMessaging } from 'firebase-admin/messaging'
-import {
-  CollectionAfterChangeHook,
-  CollectionAfterReadHook,
-  CollectionBeforeReadHook,
-} from 'payload'
+import { CollectionAfterReadHook } from 'payload'
 import { Notification } from '../../../payload-types'
-import { sendPushNotificationsForEach } from '../../../configs/firebase/sendPushNotificationsForEach'
 
 export const createReadNotification: CollectionAfterReadHook<Notification> = async ({
   req,
