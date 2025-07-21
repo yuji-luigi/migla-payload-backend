@@ -1992,7 +1992,10 @@ export const push_notifications = pgTable(
     body: varchar('body'),
     type: varchar('type'),
     collection: varchar('collection'),
-    data: varchar('data'),
+    data: jsonb('data')
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    imageUrl: varchar('image_url'),
     isModifiedNotification: boolean('is_modified_notification'),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()

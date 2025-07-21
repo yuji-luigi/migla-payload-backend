@@ -988,7 +988,16 @@ export interface PushNotification {
   body?: string | null;
   type?: string | null;
   collection?: string | null;
-  data?: string | null;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  imageUrl?: string | null;
   users: (number | User)[];
   isModifiedNotification?: boolean | null;
   updatedAt: string;
@@ -1793,6 +1802,7 @@ export interface PushNotificationsSelect<T extends boolean = true> {
   type?: T;
   collection?: T;
   data?: T;
+  imageUrl?: T;
   users?: T;
   isModifiedNotification?: T;
   updatedAt?: T;
