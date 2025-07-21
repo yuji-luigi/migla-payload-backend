@@ -33,7 +33,7 @@ export const PushNotifications: CollectionConfig = {
         return true
       }
       return {
-        user: {
+        users: {
           equals: user?.id,
         },
       }
@@ -47,7 +47,26 @@ export const PushNotifications: CollectionConfig = {
     { name: 'body', type: 'text' },
     { name: 'type', type: 'text' },
     { name: 'collection', type: 'text' },
-    { name: 'data', type: 'text' },
+    {
+      name: 'data',
+      type: 'json',
+      required: true,
+      defaultValue: {}, // you can default to an empty object
+      validate: (val) => {
+        // enforce “string→string” if you like
+        if (
+          typeof val === 'object' &&
+          val !== null &&
+          Object.values(val).every((v) => typeof v === 'string')
+        )
+          return true
+        return 'Must be an object of string→string'
+      },
+    },
+    {
+      name: 'imageUrl',
+      type: 'text',
+    },
     {
       name: 'users',
       type: 'relationship',
