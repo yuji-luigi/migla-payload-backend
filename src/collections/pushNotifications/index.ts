@@ -28,7 +28,16 @@ export const PushNotifications: CollectionConfig = {
   access: {
     admin: isSuperAdminAccess,
     create: () => true,
-    read: () => true,
+    read: ({ req: { user } }) => {
+      if (user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+      return {
+        user: {
+          equals: user?.id,
+        },
+      }
+    },
     update: isAboveAdminAccess,
     delete: isAboveAdminAccess,
   },
@@ -39,6 +48,17 @@ export const PushNotifications: CollectionConfig = {
     { name: 'type', type: 'text' },
     { name: 'collection', type: 'text' },
     { name: 'data', type: 'text' },
+    {
+      name: 'users',
+      type: 'relationship',
+      relationTo: 'users',
+      required: true,
+      hasMany: true,
+    },
+    {
+      name: 'isModifiedNotification',
+      type: 'checkbox',
+    },
   ],
   timestamps: true,
 }
