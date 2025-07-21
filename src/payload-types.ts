@@ -83,6 +83,7 @@ export interface Config {
     settings: Setting;
     fcmTokens: FcmToken;
     'read-reports': ReadReport;
+    'push-notifications': PushNotification;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -117,6 +118,7 @@ export interface Config {
     settings: SettingsSelect<false> | SettingsSelect<true>;
     fcmTokens: FcmTokensSelect<false> | FcmTokensSelect<true>;
     'read-reports': ReadReportsSelect<false> | ReadReportsSelect<true>;
+    'push-notifications': PushNotificationsSelect<false> | PushNotificationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -978,6 +980,22 @@ export interface FcmToken {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-notifications".
+ */
+export interface PushNotification {
+  id: number;
+  title?: string | null;
+  body?: string | null;
+  type?: string | null;
+  collection?: string | null;
+  data?: string | null;
+  users: (number | User)[];
+  isModifiedNotification?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1211,6 +1229,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'read-reports';
         value: number | ReadReport;
+      } | null)
+    | ({
+        relationTo: 'push-notifications';
+        value: number | PushNotification;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1758,6 +1780,21 @@ export interface FcmTokensSelect<T extends boolean = true> {
 export interface ReadReportsSelect<T extends boolean = true> {
   user?: T;
   report?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-notifications_select".
+ */
+export interface PushNotificationsSelect<T extends boolean = true> {
+  title?: T;
+  body?: T;
+  type?: T;
+  collection?: T;
+  data?: T;
+  users?: T;
+  isModifiedNotification?: T;
   updatedAt?: T;
   createdAt?: T;
 }
