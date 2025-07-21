@@ -82,6 +82,7 @@ export interface Config {
     roles: Role;
     settings: Setting;
     fcmTokens: FcmToken;
+    'read-reports': ReadReport;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -92,6 +93,9 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    reports: {
+      readRecords: 'read-reports';
+    };
     notifications: {
       readRecords: 'read-notifications';
     };
@@ -112,6 +116,7 @@ export interface Config {
     roles: RolesSelect<false> | RolesSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
     fcmTokens: FcmTokensSelect<false> | FcmTokensSelect<true>;
+    'read-reports': ReadReportsSelect<false> | ReadReportsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -849,11 +854,28 @@ export interface Report {
   body: string;
   coverImage?: (number | null) | Media;
   attachments?: (number | Media)[] | null;
+  readRecords?: {
+    docs?: (number | ReadReport)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   students?: (number | Student)[] | null;
   createdBy?: (number | null) | User;
   teacher?: (number | null) | Teacher;
+  isRead?: boolean | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-reports".
+ */
+export interface ReadReport {
+  id: number;
+  user: number | User;
+  report: number | Report;
   updatedAt: string;
   createdAt: string;
 }
@@ -1187,6 +1209,10 @@ export interface PayloadLockedDocument {
         value: number | FcmToken;
       } | null)
     | ({
+        relationTo: 'read-reports';
+        value: number | ReadReport;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1503,9 +1529,11 @@ export interface ReportsSelect<T extends boolean = true> {
   body?: T;
   coverImage?: T;
   attachments?: T;
+  readRecords?: T;
   students?: T;
   createdBy?: T;
   teacher?: T;
+  isRead?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1720,6 +1748,16 @@ export interface FcmTokensSelect<T extends boolean = true> {
   token?: T;
   osName?: T;
   osVersion?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-reports_select".
+ */
+export interface ReadReportsSelect<T extends boolean = true> {
+  user?: T;
+  report?: T;
   updatedAt?: T;
   createdAt?: T;
 }
