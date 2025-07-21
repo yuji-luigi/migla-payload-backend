@@ -1,21 +1,7 @@
-import { APIError, getPayload, type CollectionConfig, type User } from 'payload'
-import payloadConfig from '../../payload.config'
-import { anyone } from '../../access/anyone'
-import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { Role } from '../../payload-types'
-import internal from 'stream'
-import { Classrooms } from '../classrooms'
-import { getStudentsByClassroomId } from '../../beforeChangeHooks/getStudentsByClassroomId'
-import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
-import { teacherOperationBeforeChange } from './hooks/teacheRecordsBeforeChange'
+import { type CollectionConfig } from 'payload'
+import { authenticated } from '../../access/authenticated'
 import { reportHooks } from './hooks/reportHooks'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
