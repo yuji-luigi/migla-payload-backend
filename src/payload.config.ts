@@ -31,6 +31,7 @@ import { i18nConfigs } from './lib/i18n/i18n_configs'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 import { ReadReport } from './collections/ReadReport'
+import { PushNotifications } from './collections/pushNotifications'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -87,6 +88,7 @@ export default buildConfig({
     Settings,
     FcmTokens,
     ReadReport,
+    PushNotifications,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, LogoGlobal],
