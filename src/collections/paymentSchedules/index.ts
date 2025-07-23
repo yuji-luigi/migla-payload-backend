@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
+import { createPaymentRecordsAfterSchedule } from './hooks/createPaymentRecordsAfterSchedule'
 
 export const PaymentSchedules: CollectionConfig = {
   slug: 'payment-schedules',
@@ -22,10 +23,27 @@ export const PaymentSchedules: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  hooks: {
+    afterChange: [createPaymentRecordsAfterSchedule],
+  },
   admin: {
     useAsTitle: 'name',
   },
   fields: [
+    {
+      name: 'goToPaymentRecords',
+      type: 'ui',
+      label: {
+        ja: '支払い記録リンク',
+        en: 'Payment Records Link',
+        it: 'Link Pagamenti',
+      },
+      admin: {
+        components: {
+          Cell: '@/collections/paymentSchedules/components/GoToPaymentRecords',
+        },
+      },
+    },
     {
       name: 'name',
       type: 'text',
