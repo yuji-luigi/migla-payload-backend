@@ -1,6 +1,6 @@
 import { APIError, CollectionBeforeChangeHook } from 'payload'
-import { findTeacherRoleOfUser } from '../access/filters/findTeacherRoleOfUser'
-import { getStudentsByClassroomId } from './getStudentsByClassroomId'
+import { findTeacherRoleOfUser } from '../../../access/filters/findTeacherRoleOfUser'
+import { getStudentsByClassroomId } from '../../../beforeChangeHooks/getStudentsByClassroomId'
 import { ApiError } from 'next/dist/server/api-utils'
 
 /**

@@ -841,7 +841,7 @@ export interface Student {
 export interface Report {
   id: number;
   title: string;
-  subtitle: string;
+  subtitle?: string | null;
   body: string;
   coverImage?: (number | null) | Media;
   attachments?: (number | Media)[] | null;

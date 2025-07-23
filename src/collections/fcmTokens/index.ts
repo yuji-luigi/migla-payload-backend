@@ -41,7 +41,7 @@ export const FcmTokens: CollectionConfig = {
     {
       name: 'token',
       type: 'text',
-      unique: true,
+      // unique: true,
     },
 
     {
