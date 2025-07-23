@@ -56,8 +56,6 @@ export const PushNotifications: CollectionConfig = {
     {
       name: 'data',
       type: 'json',
-      required: true,
-      defaultValue: {}, // you can default to an empty object
       validate: (val) => {
         // enforce “string→string” if you like
         if (
