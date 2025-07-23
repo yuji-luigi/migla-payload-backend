@@ -988,7 +988,7 @@ export interface PushNotification {
   body?: string | null;
   type?: string | null;
   collection?: string | null;
-  data:
+  data?:
     | {
         [k: string]: unknown;
       }
