@@ -82,6 +82,8 @@ export interface Config {
     roles: Role;
     settings: Setting;
     fcmTokens: FcmToken;
+    'read-reports': ReadReport;
+    'push-notifications': PushNotification;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -91,7 +93,14 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    reports: {
+      readRecords: 'read-reports';
+    };
+    notifications: {
+      readRecords: 'read-notifications';
+    };
+  };
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -108,6 +117,8 @@ export interface Config {
     roles: RolesSelect<false> | RolesSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
     fcmTokens: FcmTokensSelect<false> | FcmTokensSelect<true>;
+    'read-reports': ReadReportsSelect<false> | ReadReportsSelect<true>;
+    'push-notifications': PushNotificationsSelect<false> | PushNotificationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -845,11 +856,28 @@ export interface Report {
   body: string;
   coverImage?: (number | null) | Media;
   attachments?: (number | Media)[] | null;
+  readRecords?: {
+    docs?: (number | ReadReport)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   students?: (number | Student)[] | null;
   createdBy?: (number | null) | User;
   teacher?: (number | null) | Teacher;
+  isRead?: boolean | null;
   slug?: string | null;
   slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-reports".
+ */
+export interface ReadReport {
+  id: number;
+  user: number | User;
+  report: number | Report;
   updatedAt: string;
   createdAt: string;
 }
@@ -889,6 +917,11 @@ export interface Notification {
     | null;
   students?: (number | Student)[] | null;
   hasAttachments?: boolean | null;
+  readRecords?: {
+    docs?: (number | ReadNotification)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   isRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -942,6 +975,31 @@ export interface FcmToken {
   token?: string | null;
   osName?: string | null;
   osVersion?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-notifications".
+ */
+export interface PushNotification {
+  id: number;
+  title?: string | null;
+  body?: string | null;
+  type?: string | null;
+  collection?: string | null;
+  data?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  imageUrl?: string | null;
+  users: (number | User)[];
+  isModifiedNotification?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1176,6 +1234,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'fcmTokens';
         value: number | FcmToken;
+      } | null)
+    | ({
+        relationTo: 'read-reports';
+        value: number | ReadReport;
+      } | null)
+    | ({
+        relationTo: 'push-notifications';
+        value: number | PushNotification;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1494,9 +1560,11 @@ export interface ReportsSelect<T extends boolean = true> {
   body?: T;
   coverImage?: T;
   attachments?: T;
+  readRecords?: T;
   students?: T;
   createdBy?: T;
   teacher?: T;
+  isRead?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1542,6 +1610,7 @@ export interface NotificationsSelect<T extends boolean = true> {
       };
   students?: T;
   hasAttachments?: T;
+  readRecords?: T;
   isRead?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1710,6 +1779,32 @@ export interface FcmTokensSelect<T extends boolean = true> {
   token?: T;
   osName?: T;
   osVersion?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-reports_select".
+ */
+export interface ReadReportsSelect<T extends boolean = true> {
+  user?: T;
+  report?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-notifications_select".
+ */
+export interface PushNotificationsSelect<T extends boolean = true> {
+  title?: T;
+  body?: T;
+  type?: T;
+  collection?: T;
+  data?: T;
+  imageUrl?: T;
+  users?: T;
+  isModifiedNotification?: T;
   updatedAt?: T;
   createdAt?: T;
 }

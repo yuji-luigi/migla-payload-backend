@@ -1,21 +1,7 @@
-import { APIError, getPayload, type CollectionConfig, type User } from 'payload'
-import payloadConfig from '../../payload.config'
-import { anyone } from '../../access/anyone'
-import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { Role } from '../../payload-types'
-import internal from 'stream'
-import { Classrooms } from '../classrooms'
-import { getStudentsByClassroomId } from '../../beforeChangeHooks/getStudentsByClassroomId'
-import { findTeacherRoleOfUser } from '../../access/filters/findTeacherRoleOfUser'
-import { teacherOperationBeforeChange } from './hooks/teacheRecordsBeforeChange'
+import { type CollectionConfig } from 'payload'
+import { authenticated } from '../../access/authenticated'
 import { reportHooks } from './hooks/reportHooks'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
@@ -142,6 +128,16 @@ export const Reports: CollectionConfig = {
       hasMany: true,
       localized: true,
     },
+    {
+      name: 'readRecords',
+      type: 'join',
+      collection: 'read-reports',
+      on: 'report',
+      admin: {
+        hidden: true,
+      },
+      maxDepth: 0,
+    },
     // TODO: CREATE CUSTOM COMPONENT TO SHOW ONLY TO SUPER_ADMIN in Form
     {
       name: 'students',
@@ -181,6 +177,23 @@ export const Reports: CollectionConfig = {
       relationTo: 'teachers',
       hasMany: false,
       // hidden: true,
+    },
+    {
+      // Virtual flag, only in the Admin/GraphQL, never persisted
+      name: 'isRead',
+      type: 'checkbox',
+      virtual: true,
+
+      // graphQL: { read: true },    // ensure it shows up in the schema
+      admin: { hidden: true }, // hide from the UI form
+      hooks: {
+        afterRead: [
+          async ({ originalDoc, req, operation, findMany, context }) => {
+            const isRead = Boolean(originalDoc.readRecords?.docs?.length > 0)
+            return isRead
+          },
+        ],
+      },
     },
     ...slugField(),
   ],

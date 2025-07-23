@@ -4,18 +4,18 @@ import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
 
-export const ReadNotification: CollectionConfig = {
-  slug: 'read-notifications',
+export const ReadReport: CollectionConfig = {
+  slug: 'read-reports',
   labels: {
     singular: {
-      ja: '既読通知',
-      en: 'Read Notification',
-      it: 'Notifica letta',
+      ja: '既読レポート',
+      en: 'Read Report',
+      it: 'Report letto',
     },
     plural: {
-      ja: '既読通知',
-      en: 'Read Notifications',
-      it: 'Notifiche lette',
+      ja: '既読レポート',
+      en: 'Read Reports',
+      it: 'Report letti',
     },
   },
   access: {
@@ -44,9 +44,9 @@ export const ReadNotification: CollectionConfig = {
       required: true,
     },
     {
-      name: 'notification',
+      name: 'report',
       type: 'relationship',
-      relationTo: 'notifications',
+      relationTo: 'reports',
       required: true,
     },
   ],
@@ -56,7 +56,7 @@ export const ReadNotification: CollectionConfig = {
    */
   indexes: [
     {
-      fields: ['user', 'notification'],
+      fields: ['user', 'report'],
       unique: true,
     },
   ],

@@ -1384,7 +1384,7 @@ export const reports_locales = pgTable(
   'reports_locales',
   {
     title: varchar('title').notNull(),
-    subtitle: varchar('subtitle').notNull(),
+    subtitle: varchar('subtitle'),
     body: varchar('body').notNull(),
     coverImage: integer('cover_image_id').references(() => media.id, {
       onDelete: 'set null',
@@ -1951,6 +1951,95 @@ export const fcm_tokens = pgTable(
     fcm_tokens_user_idx: index('fcm_tokens_user_idx').on(columns.user),
     fcm_tokens_updated_at_idx: index('fcm_tokens_updated_at_idx').on(columns.updatedAt),
     fcm_tokens_created_at_idx: index('fcm_tokens_created_at_idx').on(columns.createdAt),
+  }),
+)
+
+export const read_reports = pgTable(
+  'read_reports',
+  {
+    id: serial('id').primaryKey(),
+    user: integer('user_id')
+      .notNull()
+      .references(() => users.id, {
+        onDelete: 'set null',
+      }),
+    report: integer('report_id')
+      .notNull()
+      .references(() => reports.id, {
+        onDelete: 'set null',
+      }),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    read_reports_user_idx: index('read_reports_user_idx').on(columns.user),
+    read_reports_report_idx: index('read_reports_report_idx').on(columns.report),
+    read_reports_updated_at_idx: index('read_reports_updated_at_idx').on(columns.updatedAt),
+    read_reports_created_at_idx: index('read_reports_created_at_idx').on(columns.createdAt),
+    user_report_idx: uniqueIndex('user_report_idx').on(columns.user, columns.report),
+  }),
+)
+
+export const push_notifications = pgTable(
+  'push_notifications',
+  {
+    id: serial('id').primaryKey(),
+    title: varchar('title'),
+    body: varchar('body'),
+    type: varchar('type'),
+    collection: varchar('collection'),
+    data: jsonb('data')
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    imageUrl: varchar('image_url'),
+    isModifiedNotification: boolean('is_modified_notification'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    push_notifications_updated_at_idx: index('push_notifications_updated_at_idx').on(
+      columns.updatedAt,
+    ),
+    push_notifications_created_at_idx: index('push_notifications_created_at_idx').on(
+      columns.createdAt,
+    ),
+  }),
+)
+
+export const push_notifications_rels = pgTable(
+  'push_notifications_rels',
+  {
+    id: serial('id').primaryKey(),
+    order: integer('order'),
+    parent: integer('parent_id').notNull(),
+    path: varchar('path').notNull(),
+    usersID: integer('users_id'),
+  },
+  (columns) => ({
+    order: index('push_notifications_rels_order_idx').on(columns.order),
+    parentIdx: index('push_notifications_rels_parent_idx').on(columns.parent),
+    pathIdx: index('push_notifications_rels_path_idx').on(columns.path),
+    push_notifications_rels_users_id_idx: index('push_notifications_rels_users_id_idx').on(
+      columns.usersID,
+    ),
+    parentFk: foreignKey({
+      columns: [columns['parent']],
+      foreignColumns: [push_notifications.id],
+      name: 'push_notifications_rels_parent_fk',
+    }).onDelete('cascade'),
+    usersIdFk: foreignKey({
+      columns: [columns['usersID']],
+      foreignColumns: [users.id],
+      name: 'push_notifications_rels_users_fk',
+    }).onDelete('cascade'),
   }),
 )
 
@@ -2795,6 +2884,8 @@ export const payload_locked_documents_rels = pgTable(
     rolesID: integer('roles_id'),
     settingsID: integer('settings_id'),
     fcmTokensID: integer('fcm_tokens_id'),
+    'read-reportsID': integer('read_reports_id'),
+    'push-notificationsID': integer('push_notifications_id'),
     redirectsID: integer('redirects_id'),
     formsID: integer('forms_id'),
     'form-submissionsID': integer('form_submissions_id'),
@@ -2850,6 +2941,12 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_fcm_tokens_id_idx: index(
       'payload_locked_documents_rels_fcm_tokens_id_idx',
     ).on(columns.fcmTokensID),
+    payload_locked_documents_rels_read_reports_id_idx: index(
+      'payload_locked_documents_rels_read_reports_id_idx',
+    ).on(columns['read-reportsID']),
+    payload_locked_documents_rels_push_notifications_id_idx: index(
+      'payload_locked_documents_rels_push_notifications_id_idx',
+    ).on(columns['push-notificationsID']),
     payload_locked_documents_rels_redirects_id_idx: index(
       'payload_locked_documents_rels_redirects_id_idx',
     ).on(columns.redirectsID),
@@ -2944,6 +3041,16 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['fcmTokensID']],
       foreignColumns: [fcm_tokens.id],
       name: 'payload_locked_documents_rels_fcm_tokens_fk',
+    }).onDelete('cascade'),
+    'read-reportsIdFk': foreignKey({
+      columns: [columns['read-reportsID']],
+      foreignColumns: [read_reports.id],
+      name: 'payload_locked_documents_rels_read_reports_fk',
+    }).onDelete('cascade'),
+    'push-notificationsIdFk': foreignKey({
+      columns: [columns['push-notificationsID']],
+      foreignColumns: [push_notifications.id],
+      name: 'payload_locked_documents_rels_push_notifications_fk',
     }).onDelete('cascade'),
     redirectsIdFk: foreignKey({
       columns: [columns['redirectsID']],
@@ -3909,6 +4016,35 @@ export const relations_fcm_tokens = relations(fcm_tokens, ({ one }) => ({
     relationName: 'user',
   }),
 }))
+export const relations_read_reports = relations(read_reports, ({ one }) => ({
+  user: one(users, {
+    fields: [read_reports.user],
+    references: [users.id],
+    relationName: 'user',
+  }),
+  report: one(reports, {
+    fields: [read_reports.report],
+    references: [reports.id],
+    relationName: 'report',
+  }),
+}))
+export const relations_push_notifications_rels = relations(push_notifications_rels, ({ one }) => ({
+  parent: one(push_notifications, {
+    fields: [push_notifications_rels.parent],
+    references: [push_notifications.id],
+    relationName: '_rels',
+  }),
+  usersID: one(users, {
+    fields: [push_notifications_rels.usersID],
+    references: [users.id],
+    relationName: 'users',
+  }),
+}))
+export const relations_push_notifications = relations(push_notifications, ({ many }) => ({
+  _rels: many(push_notifications_rels, {
+    relationName: '_rels',
+  }),
+}))
 export const relations_redirects_rels = relations(redirects_rels, ({ one }) => ({
   parent: one(redirects, {
     fields: [redirects_rels.parent],
@@ -4359,6 +4495,16 @@ export const relations_payload_locked_documents_rels = relations(
       references: [fcm_tokens.id],
       relationName: 'fcmTokens',
     }),
+    'read-reportsID': one(read_reports, {
+      fields: [payload_locked_documents_rels['read-reportsID']],
+      references: [read_reports.id],
+      relationName: 'read-reports',
+    }),
+    'push-notificationsID': one(push_notifications, {
+      fields: [payload_locked_documents_rels['push-notificationsID']],
+      references: [push_notifications.id],
+      relationName: 'push-notifications',
+    }),
     redirectsID: one(redirects, {
       fields: [payload_locked_documents_rels.redirectsID],
       references: [redirects.id],
@@ -4592,6 +4738,9 @@ type DatabaseSchema = {
   roles_locales: typeof roles_locales
   settings: typeof settings
   fcm_tokens: typeof fcm_tokens
+  read_reports: typeof read_reports
+  push_notifications: typeof push_notifications
+  push_notifications_rels: typeof push_notifications_rels
   redirects: typeof redirects
   redirects_rels: typeof redirects_rels
   forms_blocks_checkbox: typeof forms_blocks_checkbox
@@ -4694,6 +4843,9 @@ type DatabaseSchema = {
   relations_roles: typeof relations_roles
   relations_settings: typeof relations_settings
   relations_fcm_tokens: typeof relations_fcm_tokens
+  relations_read_reports: typeof relations_read_reports
+  relations_push_notifications_rels: typeof relations_push_notifications_rels
+  relations_push_notifications: typeof relations_push_notifications
   relations_redirects_rels: typeof relations_redirects_rels
   relations_redirects: typeof relations_redirects
   relations_forms_blocks_checkbox_locales: typeof relations_forms_blocks_checkbox_locales

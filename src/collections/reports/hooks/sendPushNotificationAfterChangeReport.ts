@@ -8,6 +8,7 @@ export const sendPushNotificationAfterChangeReport: CollectionAfterChangeHook<Re
   req,
   doc,
   collection,
+  operation,
 }) => {
   const studentsIds =
     doc.students?.map((student) => student).filter((id) => typeof id === 'number') ?? []
@@ -35,5 +36,6 @@ export const sendPushNotificationAfterChangeReport: CollectionAfterChangeHook<Re
     body: doc.body.substring(0, 100),
     type: 'teacher_report',
     payload: req.payload,
+    isModifiedNotification: operation === 'update',
   })
 }
