@@ -9,9 +9,10 @@ import { fileURLToPath } from 'url'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { Categories } from './collections/Categories'
 import { Classrooms } from './collections/classrooms'
+import { FcmTokens } from './collections/fcmTokens'
 import { Homeworks } from './collections/Homeworks'
 import { Media } from './collections/Media'
-import { Notifications } from './collections/notificaitons'
+import { Notifications } from './collections/notifications'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { ReadNotification } from './collections/ReadNotification'
@@ -29,10 +30,11 @@ import { LogoGlobal } from './globals/LogoGlobal/config'
 import { i18nConfigs } from './lib/i18n/i18n_configs'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
-import { FcmTokens } from './collections/fcmTokens'
 import { Products } from './collections/products'
 import { PaymentSchedules } from './collections/paymentSchedules'
 import { PaymentRecords } from './collections/paymentRecords'
+import { ReadReport } from './collections/ReadReport'
+import { PushNotifications } from './collections/pushNotifications'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -91,6 +93,8 @@ export default buildConfig({
     Products,
     PaymentSchedules,
     PaymentRecords,
+    ReadReport,
+    PushNotifications,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, LogoGlobal],

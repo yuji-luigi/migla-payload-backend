@@ -1,8 +1,10 @@
 import { getMessaging } from 'firebase-admin/messaging'
 import { FcmToken, Notification } from '../../payload-types'
 import { CollectionSlug, Payload } from 'payload'
+import { push_notifications } from '../../payload-generated-schema'
+import { extractID } from '../../utilities/extractID'
 
-export function sendPushNotificationsForEach({
+export async function sendPushNotificationsForEach({
   payload,
   fcmTokens,
   title,
@@ -11,6 +13,7 @@ export function sendPushNotificationsForEach({
   data,
   collection,
   type,
+  isModifiedNotification,
 }: {
   payload: Payload
   data?: Record<string, string>
@@ -20,7 +23,22 @@ export function sendPushNotificationsForEach({
   imageUrl?: string
   collection: CollectionSlug
   type: Notification['type'] | 'teacher_report'
+  isModifiedNotification: boolean
 }) {
+  // create push notification in db
+  payload.create({
+    collection: 'push-notifications',
+    data: {
+      title: title,
+      body: body,
+      imageUrl: imageUrl,
+      collection: collection,
+      type: type,
+      data: data || {},
+      users: fcmTokens.map((tokenData) => extractID(tokenData.user)),
+      isModifiedNotification: isModifiedNotification,
+    },
+  })
   getMessaging()
     .sendEachForMulticast({
       tokens: fcmTokens
