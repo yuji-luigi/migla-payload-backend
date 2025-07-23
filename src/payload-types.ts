@@ -1022,14 +1022,26 @@ export interface PaymentSchedule {
  */
 export interface PaymentRecord {
   id: number;
+  paymentSchedule: number | PaymentSchedule;
   payer: number | User;
   studentCount: number;
   tuitionFee: number;
+  tuitionFeeTotalAndSingle?: string | null;
   tuitionFeeDescription: string;
   materialFee?: number | null;
   materialFeeDescription?: string | null;
-  products?: (number | Product)[] | null;
+  purchases?:
+    | {
+        productAndQuantity?: {
+          product?: (number | null) | Product;
+          quantity?: number | null;
+          price?: number | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
   total?: number | null;
+  totalString?: string | null;
   paid: boolean;
   notificationStatus: 'idle' | 'sent' | 'seen';
   updatedAt: string;
@@ -1886,14 +1898,28 @@ export interface PaymentSchedulesSelect<T extends boolean = true> {
  * via the `definition` "payment-records_select".
  */
 export interface PaymentRecordsSelect<T extends boolean = true> {
+  paymentSchedule?: T;
   payer?: T;
   studentCount?: T;
   tuitionFee?: T;
+  tuitionFeeTotalAndSingle?: T;
   tuitionFeeDescription?: T;
   materialFee?: T;
   materialFeeDescription?: T;
-  products?: T;
+  purchases?:
+    | T
+    | {
+        productAndQuantity?:
+          | T
+          | {
+              product?: T;
+              quantity?: T;
+              price?: T;
+            };
+        id?: T;
+      };
   total?: T;
+  totalString?: T;
   paid?: T;
   notificationStatus?: T;
   updatedAt?: T;
