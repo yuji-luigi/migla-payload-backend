@@ -123,6 +123,8 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'payment-schedules': PaymentSchedulesSelect<false> | PaymentSchedulesSelect<true>;
     'payment-records': PaymentRecordsSelect<false> | PaymentRecordsSelect<true>;
+    'read-reports': ReadReportsSelect<false> | ReadReportsSelect<true>;
+    'push-notifications': PushNotificationsSelect<false> | PushNotificationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1030,6 +1032,11 @@ export interface PaymentRecord {
   total?: number | null;
   paid: boolean;
   notificationStatus: 'idle' | 'sent' | 'seen';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "push-notifications".
  */
 export interface PushNotification {
@@ -1296,6 +1303,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'payment-records';
         value: number | PaymentRecord;
+      } | null)
+    | ({
+        relationTo: 'read-reports';
+        value: number | ReadReport;
+      } | null)
+    | ({
+        relationTo: 'push-notifications';
+        value: number | PushNotification;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1881,6 +1896,32 @@ export interface PaymentRecordsSelect<T extends boolean = true> {
   total?: T;
   paid?: T;
   notificationStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-reports_select".
+ */
+export interface ReadReportsSelect<T extends boolean = true> {
+  user?: T;
+  report?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "push-notifications_select".
+ */
+export interface PushNotificationsSelect<T extends boolean = true> {
+  title?: T;
+  body?: T;
+  type?: T;
+  collection?: T;
+  data?: T;
+  imageUrl?: T;
+  users?: T;
+  isModifiedNotification?: T;
   updatedAt?: T;
   createdAt?: T;
 }
