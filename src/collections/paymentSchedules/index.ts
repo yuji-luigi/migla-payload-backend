@@ -61,9 +61,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'number',
       required: true,
       label: {
-        ja: '授業料',
-        en: 'Tuition Fee',
-        it: 'Tassa di Iscrizione',
+        ja: '授業料(後から個別に変更可能)',
+        en: 'Tuition Fee (can be changed individually)',
+        it: 'Tassa di Iscrizione (può essere cambiata individualmente)',
       },
     },
     {
@@ -71,9 +71,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'text',
       required: true,
       label: {
-        ja: '授業料の説明',
-        en: 'Tuition Fee Description',
-        it: 'Descrizione Tassa di Iscrizione',
+        ja: '授業料の説明(後から個別に変更可能)',
+        en: 'Tuition Fee Description (can be changed individually)',
+        it: 'Descrizione Tassa di Iscrizione (può essere cambiata individualmente)',
       },
     },
     {
@@ -81,9 +81,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'number',
       required: false,
       label: {
-        ja: '教材費',
-        en: 'Material Fee',
-        it: 'Tassa Materiali',
+        ja: '教材費(後から個別に変更可能)',
+        en: 'Material Fee (can be changed individually)',
+        it: 'Tassa Materiali (può essere cambiata individualmente)',
       },
     },
     {
@@ -91,9 +91,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'text',
       required: false,
       label: {
-        ja: '教材費の説明',
-        en: 'Material Fee Description',
-        it: 'Descrizione Tassa Materiali',
+        ja: '教材費の説明(後から個別に変更可能)',
+        en: 'Material Fee Description (can be changed individually)',
+        it: 'Descrizione Tassa Materiali (può essere cambiata individualmente)',
       },
     },
     {
@@ -101,9 +101,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'text',
       required: true,
       label: {
-        ja: '通知タイトル',
-        en: 'Notification Title',
-        it: 'Titolo Notifica',
+        ja: 'タイトル',
+        en: 'Title',
+        it: 'Titolo',
       },
     },
     {
@@ -111,9 +111,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'text',
       required: false,
       label: {
-        ja: '通知サブタイトル',
-        en: 'Notification Subtitle',
-        it: 'Sottotitolo Notifica',
+        ja: 'サブタイトル',
+        en: 'Subtitle',
+        it: 'Sottotitolo',
       },
     },
     {
@@ -121,9 +121,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'textarea',
       required: false,
       label: {
-        ja: '通知本文',
-        en: 'Notification Body',
-        it: 'Corpo Notifica',
+        ja: '本文',
+        en: 'Body',
+        it: 'Corpo',
       },
     },
     {
@@ -131,9 +131,9 @@ export const PaymentSchedules: CollectionConfig = {
       type: 'text',
       required: false,
       label: {
-        ja: '通知アラートメッセージ',
-        en: 'Notification Alert Message',
-        it: 'Messaggio di Allerta Notifica',
+        ja: '注意書き',
+        en: 'Warning text',
+        it: 'Testo di Attenzione',
       },
     },
   ],
