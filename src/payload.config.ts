@@ -30,6 +30,9 @@ import { i18nConfigs } from './lib/i18n/i18n_configs'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
 import { FcmTokens } from './collections/fcmTokens'
+import { Products } from './collections/products'
+import { PaymentSchedules } from './collections/paymentSchedules'
+import { PaymentRecords } from './collections/paymentRecords'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -85,6 +88,9 @@ export default buildConfig({
     Roles,
     Settings,
     FcmTokens,
+    Products,
+    PaymentSchedules,
+    PaymentRecords,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, LogoGlobal],

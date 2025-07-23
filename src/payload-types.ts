@@ -82,6 +82,9 @@ export interface Config {
     roles: Role;
     settings: Setting;
     fcmTokens: FcmToken;
+    products: Product;
+    'payment-schedules': PaymentSchedule;
+    'payment-records': PaymentRecord;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -108,6 +111,9 @@ export interface Config {
     roles: RolesSelect<false> | RolesSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
     fcmTokens: FcmTokensSelect<false> | FcmTokensSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    'payment-schedules': PaymentSchedulesSelect<false> | PaymentSchedulesSelect<true>;
+    'payment-records': PaymentRecordsSelect<false> | PaymentRecordsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -947,6 +953,57 @@ export interface FcmToken {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-schedules".
+ */
+export interface PaymentSchedule {
+  id: number;
+  name: string;
+  paymentDue: string;
+  notificationScheduledAt: string;
+  tuitionFee: number;
+  tuitionFeeDescription: string;
+  materialFee?: number | null;
+  materialFeeDescription?: string | null;
+  notificationTitle: string;
+  notificationSubtitle?: string | null;
+  notificationBody?: string | null;
+  notificationAlertMessage?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-records".
+ */
+export interface PaymentRecord {
+  id: number;
+  payer: number | User;
+  studentCount: number;
+  tuitionFee: number;
+  tuitionFeeDescription: string;
+  materialFee?: number | null;
+  materialFeeDescription?: string | null;
+  products?: (number | Product)[] | null;
+  total?: number | null;
+  paid: boolean;
+  notificationStatus: 'idle' | 'sent' | 'seen';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1176,6 +1233,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'fcmTokens';
         value: number | FcmToken;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'payment-schedules';
+        value: number | PaymentSchedule;
+      } | null)
+    | ({
+        relationTo: 'payment-records';
+        value: number | PaymentRecord;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1710,6 +1779,54 @@ export interface FcmTokensSelect<T extends boolean = true> {
   token?: T;
   osName?: T;
   osVersion?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  price?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-schedules_select".
+ */
+export interface PaymentSchedulesSelect<T extends boolean = true> {
+  name?: T;
+  paymentDue?: T;
+  notificationScheduledAt?: T;
+  tuitionFee?: T;
+  tuitionFeeDescription?: T;
+  materialFee?: T;
+  materialFeeDescription?: T;
+  notificationTitle?: T;
+  notificationSubtitle?: T;
+  notificationBody?: T;
+  notificationAlertMessage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-records_select".
+ */
+export interface PaymentRecordsSelect<T extends boolean = true> {
+  payer?: T;
+  studentCount?: T;
+  tuitionFee?: T;
+  tuitionFeeDescription?: T;
+  materialFee?: T;
+  materialFeeDescription?: T;
+  products?: T;
+  total?: T;
+  paid?: T;
+  notificationStatus?: T;
   updatedAt?: T;
   createdAt?: T;
 }
