@@ -106,6 +106,9 @@ export const jaCustomTranslations = {
       loadingText: '教室データを作成しています。しばらくお待ちください。',
     },
   },
+  paymentSchedules: {
+    paymentRecordLinkText: '支払い記録を表示',
+  },
   errors: {
     excel: {
       valueNotProvided: 'セルに値がありません。',

@@ -22,6 +22,5 @@ export async function calculatePaymentRecordTotal(paymentRecord: PaymentRecord, 
 
     return acc + price * (purchase.productAndQuantity?.quantity || 0)
   }, 0)
-  console.log({ tuitionFee, materialFee, productsTotal })
   return tuitionFee + materialFee + (productsTotal || 0)
 }

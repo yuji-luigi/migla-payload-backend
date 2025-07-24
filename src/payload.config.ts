@@ -51,7 +51,32 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   i18n: i18nConfigs,
+  // folders: {
+  //   collectionOverrides:[({collection})=>{
+  //     if(collection.slug === 'payment-schedules'){
+  //       return {
 
+  //         ...collection,
+  //         fields:[
+
+  //           ...collection.fields,
+  //           {
+  //             name:'folder',
+  //             type:'folder',
+  //             label:'Folder',
+  //             required:true,
+  //             admin:{
+  //               components:{
+  //                 // Field:
+  //               }
+  //             }
+  //           }
+  //         ]
+  //       }
+  //     }
+  //     return collection
+  //   }]
+  // },
   localization: {
     defaultLocale: 'ja',
     locales: ['ja', 'it', 'en'],

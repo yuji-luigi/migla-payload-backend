@@ -103,6 +103,9 @@ export const itCustomTranslations = {
       dropzoneButton: 'Importa',
     },
   },
+  paymentSchedules: {
+    paymentRecordLinkText: 'Vai alle registrazioni di pagamento',
+  },
   errors: {
     excel: {
       valueNotProvided: 'Il valore non è fornito nella cella',

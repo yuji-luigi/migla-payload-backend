@@ -2,9 +2,11 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { createPaymentRecordsAfterSchedule } from './hooks/createPaymentRecordsAfterSchedule'
+import PaymentScheduleEditView from './components/PaymentRecordLinkFromSchedule'
 
 export const PaymentSchedules: CollectionConfig = {
   slug: 'payment-schedules',
+  // folders: true,
   labels: {
     singular: {
       ja: '支払い表',
@@ -23,31 +25,43 @@ export const PaymentSchedules: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+
   hooks: {
     afterChange: [createPaymentRecordsAfterSchedule],
   },
   admin: {
     useAsTitle: 'name',
+    components: {
+      edit: {
+        beforeDocumentControls: [
+          '@/collections/paymentSchedules/components/PaymentRecordLinkFromSchedule',
+        ],
+      },
+    },
   },
   fields: [
     {
-      name: 'goToPaymentRecords',
-      type: 'ui',
-      label: {
-        ja: '支払い記録リンク',
-        en: 'Payment Records Link',
-        it: 'Link Pagamenti',
-      },
+      name: 'paymentRecords',
+      label: 'Payment Records',
+      type: 'relationship',
+      relationTo: 'payment-records',
+      hasMany: true,
+      // only pull records whose `paymentSchedule` field equals *this* schedule’s ID
+      filterOptions: ({ id }) => ({
+        paymentSchedule: { equals: id },
+      }),
       admin: {
-        components: {
-          Cell: '@/collections/paymentSchedules/components/GoToPaymentRecords',
-        },
+        // show it in the sidebar for quick access
+        position: 'sidebar',
+        // optionally disable creating here if you prefer
+        // hideCreate: false,
       },
     },
     {
       name: 'name',
       type: 'text',
       required: true,
+
       label: {
         ja: 'スケジュール名',
         en: 'Schedule Name',

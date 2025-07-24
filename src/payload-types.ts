@@ -1002,6 +1002,7 @@ export interface Product {
  */
 export interface PaymentSchedule {
   id: number;
+  paymentRecords?: (number | PaymentRecord)[] | null;
   name: string;
   paymentDue: string;
   notificationScheduledAt: string;
@@ -1879,6 +1880,7 @@ export interface ProductsSelect<T extends boolean = true> {
  * via the `definition` "payment-schedules_select".
  */
 export interface PaymentSchedulesSelect<T extends boolean = true> {
+  paymentRecords?: T;
   name?: T;
   paymentDue?: T;
   notificationScheduledAt?: T;
