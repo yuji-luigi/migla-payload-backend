@@ -1,5 +1,6 @@
 import { DatabaseAdapter, Payload } from 'payload'
 import { initFirebaseAdmin } from '../firebase/firebase-config'
+import { sql } from '@payloadcms/db-postgres/drizzle'
 
 export const onInit = async (payload: Payload) => {
   await seed(payload).catch((error) => {
@@ -16,7 +17,6 @@ export const seed = async (payload: Payload) => {
   try {
     await payload.create({
       collection: 'roles',
-
       data: {
         name: 'super_admin',
         slug: 'super_admin',

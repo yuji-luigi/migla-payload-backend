@@ -1,6 +1,6 @@
 import { getMessaging } from 'firebase-admin/messaging'
 import { FcmToken, Notification } from '../../payload-types'
-import { CollectionSlug, Payload } from 'payload'
+import { BasePayload, CollectionSlug, Payload } from 'payload'
 import { push_notifications } from '../../payload-generated-schema'
 import { extractID } from '../../utilities/extractID'
 
@@ -15,19 +15,19 @@ export async function sendPushNotificationsForEach({
   type,
   isModifiedNotification,
 }: {
-  payload: Payload
+  payload: Payload | BasePayload
   data?: Record<string, string>
   fcmTokens: FcmToken[]
   title: string
   body: string
   imageUrl?: string
   collection: CollectionSlug
-  type: Notification['type'] | 'teacher_report'
+  type: Notification['type']
   isModifiedNotification: boolean
 }) {
   // create push notification in db
   payload.create({
-    collection: 'push-notifications',
+    collection: 'notifications',
     data: {
       title: title,
       body: body,
@@ -80,6 +80,6 @@ export async function sendPushNotificationsForEach({
       // console.log('Successfully sent message:', result)
     })
     .catch((error) => {
-      console.log('Error sending message:', error)
+      console.log('Error sending message:', error.errorInfo)
     })
 }

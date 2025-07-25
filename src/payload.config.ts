@@ -35,6 +35,7 @@ import { PaymentSchedules } from './collections/paymentSchedules'
 import { PaymentRecords } from './collections/paymentRecords'
 import { ReadReport } from './collections/ReadReport'
 import { PushNotifications } from './collections/pushNotifications'
+import { jobs } from './configs/jobs/jobs'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -95,7 +96,6 @@ export default buildConfig({
     },
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  onInit,
 
   collections: [
     // default collections leave here for d emo
@@ -132,19 +132,6 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  jobs: {
-    access: {
-      run: ({ req }: { req: PayloadRequest }): boolean => {
-        // Allow logged in users to execute this endpoint (default)
-        if (req.user) return true
-
-        // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
-        const authHeader = req.headers.get('authorization')
-        return authHeader === `Bearer ${process.env.CRON_SECRET}`
-      },
-    },
-    tasks: [],
-  },
+  jobs,
+  onInit,
 })

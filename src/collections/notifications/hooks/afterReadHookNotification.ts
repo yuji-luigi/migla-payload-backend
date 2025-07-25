@@ -8,15 +8,16 @@ export const createReadNotification: CollectionAfterReadHook<Notification> = asy
   context,
   findMany,
 }) => {
+  if (findMany) {
+  }
   if (!findMany) {
-    await req.payload
-      .create({
-        collection: 'read-notifications',
-        data: {
-          user: req.user!.id,
-          notification: doc.id,
-        },
-      })
-      .catch((error) => {})
+    // NOTE: this fails when there are multiple notifications so no await let it fail.(case of delete also runs this block.)
+    req.payload.create({
+      collection: 'read-notifications',
+      data: {
+        user: req.user!.id,
+        notification: doc.id,
+      },
+    })
   }
 }

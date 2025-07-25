@@ -1,7 +1,7 @@
 import { getMessaging } from 'firebase-admin/messaging'
 import { CollectionAfterChangeHook } from 'payload'
 import { Notification } from '../../../payload-types'
-import { sendPushNotificationsForEach } from '../../../configs/firebase/sendPushNotificationsForEach'
+import { sendPushNotificationsForEach } from '../../../configs/pushNotifications/sendPushNotificationsForEach'
 
 const handleSendNotification: CollectionAfterChangeHook<Notification> = async ({
   operation,

@@ -3,6 +3,7 @@ import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { createPaymentRecordsAfterSchedule } from './hooks/createPaymentRecordsAfterSchedule'
 import PaymentScheduleEditView from './components/PaymentRecordLinkFromSchedule'
+import { queueSendNotification } from './hooks/queueSendNotification'
 
 export const PaymentSchedules: CollectionConfig = {
   slug: 'payment-schedules',
@@ -27,7 +28,7 @@ export const PaymentSchedules: CollectionConfig = {
   },
 
   hooks: {
-    afterChange: [createPaymentRecordsAfterSchedule],
+    afterChange: [createPaymentRecordsAfterSchedule, queueSendNotification],
   },
   admin: {
     useAsTitle: 'name',

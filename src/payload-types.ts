@@ -153,6 +153,7 @@ export interface Config {
   };
   jobs: {
     tasks: {
+      sendScheduledPaymentNotification: TaskSendScheduledPaymentNotification;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -895,8 +896,21 @@ export interface Notification {
   id: number;
   title: string;
   body: string;
-  type: 'payment' | 'general_notification' | 'event';
+  type: 'payment' | 'general_notification' | 'event' | 'teacher_report';
   attachments?: (number | Media)[] | null;
+  imageUrl?: string | null;
+  collection?: string | null;
+  data?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  users?: (number | User)[] | null;
+  isModifiedNotification?: boolean | null;
   links?:
     | {
         link: {
@@ -928,7 +942,6 @@ export interface Notification {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  isRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1198,7 +1211,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug: 'inline' | 'sendScheduledPaymentNotification' | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -1231,7 +1244,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?: ('inline' | 'sendScheduledPaymentNotification' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1675,6 +1688,11 @@ export interface NotificationsSelect<T extends boolean = true> {
   body?: T;
   type?: T;
   attachments?: T;
+  imageUrl?: T;
+  collection?: T;
+  data?: T;
+  users?: T;
+  isModifiedNotification?: T;
   links?:
     | T
     | {
@@ -1693,7 +1711,6 @@ export interface NotificationsSelect<T extends boolean = true> {
   students?: T;
   hasAttachments?: T;
   readRecords?: T;
-  isRead?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2334,6 +2351,18 @@ export interface LogoGlobalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSendScheduledPaymentNotification".
+ */
+export interface TaskSendScheduledPaymentNotification {
+  input: {
+    paymentScheduleId?: number | null;
+  };
+  output: {
+    success?: boolean | null;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

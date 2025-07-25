@@ -109,6 +109,11 @@ export const jaCustomTranslations = {
   paymentSchedules: {
     paymentRecordLinkText: '支払い記録を表示',
   },
+  notifications: {
+    teacherReport: {
+      title: '先生からの通信',
+    },
+  },
   errors: {
     excel: {
       valueNotProvided: 'セルに値がありません。',
