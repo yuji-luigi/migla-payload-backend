@@ -27,6 +27,7 @@ export const Notifications: CollectionConfig = {
   hooks: notificationHooks,
   // only admins
   access: {
+    // TODO: create update must set the custom condition
     create: authenticated,
     delete: authenticated,
     read: authenticated,
@@ -114,16 +115,18 @@ export const Notifications: CollectionConfig = {
         en: 'Data',
         it: 'Dati',
       },
+      defaultValue: {},
       type: 'json',
       validate: (val) => {
         // enforce "string→string" if you like
-        if (
-          typeof val === 'object' &&
-          val !== null &&
-          Object.values(val).every((v) => typeof v === 'string')
-        )
-          return true
-        return 'Must be an object of string→string'
+        if (!!val) {
+          if (typeof val === 'object' && Object.values(val).every((v) => typeof v === 'string')) {
+            return true
+          } else {
+            return 'Must be an object of string→string'
+          }
+        }
+        return true
       },
     },
     {
