@@ -4,6 +4,7 @@ import { authenticated } from '../../access/authenticated'
 import { createPaymentRecordsAfterSchedule } from './hooks/createPaymentRecordsAfterSchedule'
 import PaymentScheduleEditView from './components/PaymentRecordLinkFromSchedule'
 import { queueSendNotification } from './hooks/queueSendNotification'
+import { isAboveAdmin, isAboveAdminAccess } from '../../hooks/showOnlyAdmin'
 
 export const PaymentSchedules: CollectionConfig = {
   slug: 'payment-schedules',
@@ -32,6 +33,9 @@ export const PaymentSchedules: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    hidden: ({ user }) => {
+      return !isAboveAdmin(user)
+    },
     components: {
       edit: {
         beforeDocumentControls: [

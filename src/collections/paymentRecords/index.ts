@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { calculatePaymentRecordTotal } from '../../utilities/calculatePaymentRecordTotal'
+import { isAboveAdmin } from '../../hooks/showOnlyAdmin'
 
 export const PaymentRecords: CollectionConfig = {
   slug: 'payment-records',
@@ -20,7 +21,8 @@ export const PaymentRecords: CollectionConfig = {
   access: {
     create: authenticated,
     delete: authenticated,
-    read: anyone,
+    // TODO: case parent
+    read: authenticated,
     update: authenticated,
   },
 
@@ -38,7 +40,9 @@ export const PaymentRecords: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'id',
-
+    hidden: ({ user }) => {
+      return !isAboveAdmin(user)
+    },
     listSearchableFields: [
       'id',
       'payer.name',

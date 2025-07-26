@@ -1,5 +1,7 @@
 import { JobsConfig, PayloadRequest, TaskConfig } from 'payload'
 import { sendPaymentScheduleNotification } from './tasks/sendPaymentScheduleNotification'
+import { isAboveAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
+import { isSubscriptionOperation } from '@apollo/client/utilities'
 
 export const jobs: JobsConfig = {
   access: {
@@ -29,7 +31,9 @@ export const jobs: JobsConfig = {
       defaultJobsCollection.admin = {}
     }
 
-    defaultJobsCollection.admin.hidden = false
+    defaultJobsCollection.admin.hidden = ({ user }) => {
+      return !isSuperAdmin(user)
+    }
     return defaultJobsCollection
   },
 }

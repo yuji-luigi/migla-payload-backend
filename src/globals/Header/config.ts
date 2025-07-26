@@ -27,6 +27,11 @@ export const Header: GlobalConfig & {
     },
     update: async ({ req }) => isAboveAdmin(req.user),
   },
+  admin: {
+    hidden: ({ user }) => {
+      return !isAboveAdmin(user)
+    },
+  },
   fields: [
     {
       name: 'navItems',
