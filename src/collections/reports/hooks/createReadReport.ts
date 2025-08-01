@@ -9,14 +9,12 @@ export const createReadReport: CollectionAfterReadHook<Report> = async ({
   findMany,
 }) => {
   if (!findMany) {
-    await req.payload
-      .create({
-        collection: 'read-reports',
-        data: {
-          user: req.user!.id,
-          report: doc.id,
-        },
-      })
-      .catch((error) => {})
+    req.payload.create({
+      collection: 'read-reports',
+      data: {
+        user: req.user!.id,
+        report: doc.id,
+      },
+    })
   }
 }

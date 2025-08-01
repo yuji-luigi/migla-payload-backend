@@ -119,7 +119,7 @@ export default buildConfig({
     PaymentSchedules,
     PaymentRecords,
     ReadReport,
-    PushNotifications,
+    // PushNotifications,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, LogoGlobal],

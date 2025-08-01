@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
+import { isAboveAdmin } from '../../hooks/showOnlyAdmin'
+import { toFixedWithoutRounding } from '../../lib/toFixedWithoutRounding'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -24,6 +26,9 @@ export const Products: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    hidden: ({ user }) => {
+      return !isAboveAdmin(user)
+    },
   },
   fields: [
     {
@@ -44,6 +49,23 @@ export const Products: CollectionConfig = {
         ja: '価格',
         en: 'Price',
         it: 'Prezzo',
+      },
+    },
+    {
+      name: 'priceString',
+      type: 'text',
+      virtual: true,
+      label: {
+        ja: '価格表示用',
+        en: 'Price for display',
+        it: 'Prezzo per mostrare',
+      },
+      hooks: {
+        afterRead: [
+          ({ siblingData }) => {
+            return `${toFixedWithoutRounding(siblingData.price)}`
+          },
+        ],
       },
     },
     {

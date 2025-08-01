@@ -1,5 +1,5 @@
 import { CollectionSlug, Payload } from 'payload'
-import { FcmToken, Notification, Report } from '../../payload-types'
+import { FcmToken, Notification, PaymentSchedule, Report } from '../../payload-types'
 import { sendPushNotificationsForEach } from './sendPushNotificationsForEach'
 import { I18n } from '@payloadcms/translations'
 import { I18nTFunc } from '../../types/my_types/i18n_types'
@@ -7,36 +7,35 @@ import { extractID } from '../../utilities/extractID'
 import { notificationHooks } from '../../collections/paymentSchedules/hooks/notificationHooks'
 import { NotificationMultiDto } from './NotificationBaseDto'
 
-export function sendTeacherReportNotification({
+export async function sendPaymentScheduleNotification({
   fcmTokens,
   payload,
   isModifiedNotification,
-  report,
+  paymentSchedule,
   // t,
 }: {
   fcmTokens: FcmToken[]
   payload: Payload
   isModifiedNotification: boolean
-  report: Report
+  paymentSchedule: PaymentSchedule
   // t: I18n['t']
 }) {
-  // const _t = t as unknown as I18nTFunc
-  const title = '先生からの通信' + (isModifiedNotification ? ' (更新)' : '')
-  const body = report.title // push notification body will be modified title + body
+  const title = '支払いのお知らせ'
   const notificationBaseDto: NotificationMultiDto = {
     title,
-    body,
+    body: paymentSchedule.name,
     fcmTokens,
     isModifiedNotification,
     data: {
-      collectionRecordId: report.id.toString(),
-      collection: 'reports',
-      type: 'teacher_report',
+      collectionRecordId: paymentSchedule.id.toString(),
+      collection: 'payment-schedules',
+      type: 'payment_record',
     },
   }
 
   sendPushNotificationsForEach({
     notificationBaseDto,
     payload,
+    pushNotificationBody: paymentSchedule.notificationBody,
   })
 }

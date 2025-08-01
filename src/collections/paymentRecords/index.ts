@@ -3,6 +3,7 @@ import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { calculatePaymentRecordTotal } from '../../utilities/calculatePaymentRecordTotal'
 import { isAboveAdmin } from '../../hooks/showOnlyAdmin'
+import { toFixedWithoutRounding } from '../../lib/toFixedWithoutRounding'
 
 export const PaymentRecords: CollectionConfig = {
   slug: 'payment-records',
@@ -27,6 +28,13 @@ export const PaymentRecords: CollectionConfig = {
   },
 
   hooks: {
+    // afterRead: [
+    //   ({ doc, findMany, query, req }) => {
+    //     const opName = req.body as string | undefined
+
+    //     // console.dir(query?.and[0])
+    //   },
+    // ],
     beforeOperation: [
       ({ operation, args }) => {
         // only on list‐ or detail‐reads from the Admin UI
@@ -58,6 +66,7 @@ export const PaymentRecords: CollectionConfig = {
       type: 'relationship',
       relationTo: 'payment-schedules',
       required: true,
+      admin: { hidden: true },
       label: {
         ja: '支払いスケジュール',
         en: 'Payment Schedule',
@@ -66,6 +75,11 @@ export const PaymentRecords: CollectionConfig = {
     },
     {
       name: 'payer',
+      admin: {
+        readOnly: true,
+        allowEdit: false,
+        allowCreate: false,
+      },
       type: 'relationship',
       relationTo: 'users',
       required: true,
@@ -110,7 +124,7 @@ export const PaymentRecords: CollectionConfig = {
       hooks: {
         afterRead: [
           ({ siblingData }) => {
-            return `${siblingData.tuitionFee}€ (${siblingData.tuitionFee * siblingData.studentCount}€)`
+            return `${siblingData.tuitionFee}€ x ${siblingData.studentCount} <${siblingData.tuitionFee * siblingData.studentCount}€>`
           },
         ],
       },
@@ -136,6 +150,26 @@ export const PaymentRecords: CollectionConfig = {
       },
     },
     {
+      name: 'materialFeeTotalAndSingle',
+      type: 'text',
+      virtual: true,
+      label: {
+        ja: '教材費(合計)',
+        en: 'Material Fee (Total)',
+        it: 'Tassa Materiali (Totale)',
+      },
+      admin: {
+        hidden: true,
+      },
+      hooks: {
+        afterRead: [
+          ({ siblingData }) => {
+            return `${siblingData.materialFee}€ x ${siblingData.studentCount} <${siblingData.materialFee * siblingData.studentCount}€>`
+          },
+        ],
+      },
+    },
+    {
       name: 'materialFeeDescription',
       type: 'text',
       required: false,
@@ -158,7 +192,6 @@ export const PaymentRecords: CollectionConfig = {
             {
               name: 'product',
               type: 'relationship',
-              maxDepth: 2,
               relationTo: 'products',
             },
             {
@@ -288,6 +321,12 @@ export const PaymentRecords: CollectionConfig = {
         en: 'Notification Status',
         it: 'Stato Notifica',
       },
+    },
+  ],
+  indexes: [
+    {
+      fields: ['paymentSchedule', 'payer'],
+      unique: true,
     },
   ],
   timestamps: true,

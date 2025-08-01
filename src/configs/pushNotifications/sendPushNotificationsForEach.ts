@@ -12,6 +12,7 @@ export async function sendPushNotificationsForEach({
   // body,
   // imageUrl,
   notificationBaseDto,
+  pushNotificationBody,
   shouldCreateNotification = true,
   // data,
   // collection,
@@ -19,7 +20,7 @@ export async function sendPushNotificationsForEach({
   // isModifiedNotification,
 }: {
   payload: Payload | BasePayload
-  data?: Record<string, string>
+  pushNotificationBody?: string | null
   // fcmTokens: FcmToken[]
   // title: string
   // body: string
@@ -31,16 +32,14 @@ export async function sendPushNotificationsForEach({
   shouldCreateNotification?: boolean
 }) {
   if (shouldCreateNotification) {
+    console.log('create notification', notificationBaseDto)
     payload.create({
       collection: 'notifications',
-      data: {
-        ...notificationBaseDto,
-        users: notificationBaseDto.fcmTokens
-          .filter((fcmToken) => !!fcmToken.user)
-          .map((fcmToken) => extractID(fcmToken.user)),
-      },
+      data: notificationBaseDto,
     })
   }
+
+  const body = pushNotificationBody ?? notificationBaseDto.body
 
   getMessaging()
     .sendEachForMulticast({
@@ -50,14 +49,14 @@ export async function sendPushNotificationsForEach({
       data: notificationBaseDto.data,
       notification: {
         title: notificationBaseDto.title,
-        body: notificationBaseDto.body,
+        body,
         imageUrl: notificationBaseDto.imageUrl,
       },
       android: {
         priority: 'high',
         notification: {
           title: notificationBaseDto.title,
-          body: notificationBaseDto.body,
+          body,
         },
       },
       apns: {
@@ -65,7 +64,7 @@ export async function sendPushNotificationsForEach({
           aps: {
             alert: {
               title: notificationBaseDto.title,
-              body: notificationBaseDto.body,
+              body,
             },
           },
         },

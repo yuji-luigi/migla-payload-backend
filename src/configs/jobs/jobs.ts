@@ -1,5 +1,5 @@
 import { JobsConfig, PayloadRequest, TaskConfig } from 'payload'
-import { sendPaymentScheduleNotification } from './tasks/sendPaymentScheduleNotification'
+import { sendScheduledPaymentNotificationQueue } from './tasks/sendScheduledPaymentNotificationQueue'
 import { isAboveAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
 import { isSubscriptionOperation } from '@apollo/client/utilities'
 
@@ -25,7 +25,7 @@ export const jobs: JobsConfig = {
     },
     // add as many cron jobs as you want
   ],
-  tasks: [sendPaymentScheduleNotification],
+  tasks: [sendScheduledPaymentNotificationQueue],
   jobsCollectionOverrides: ({ defaultJobsCollection }) => {
     if (!defaultJobsCollection.admin) {
       defaultJobsCollection.admin = {}

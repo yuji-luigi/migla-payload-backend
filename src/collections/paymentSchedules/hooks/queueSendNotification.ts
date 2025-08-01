@@ -26,7 +26,7 @@ export const queueSendNotification: CollectionAfterChangeHook<PaymentSchedule> =
     //     },
     //     // (optionally scoping it to your particular task)
     //     taskSlug: {
-    //       equals: 'sendScheduledPaymentNotification',
+    //       equals: 'sendScheduledPaymentNotificationQueue',
     //     },
     //   },
     // })
@@ -41,9 +41,9 @@ export const queueSendNotification: CollectionAfterChangeHook<PaymentSchedule> =
   }
   if (operation === 'create' || operation === 'update') {
     await req.payload.jobs.queue({
-      task: 'sendScheduledPaymentNotification',
+      task: 'sendScheduledPaymentNotificationQueue',
       queue: 'every-five-seconds',
-      waitUntil: new Date(doc.notificationScheduledAt),
+      waitUntil: new Date(new Date(doc.notificationScheduledAt).getTime() - 1000 * 60 * 60 * 12),
       input: {
         paymentScheduleId: doc.id,
       },

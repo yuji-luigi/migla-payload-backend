@@ -41,7 +41,6 @@ export const createPaymentRecordsAfterSchedule: CollectionAfterChangeHook = asyn
         },
       },
     })
-    console.log('allStudents', allStudents)
 
     if (allStudents.length === 0) {
       console.log('No students found in classrooms, skipping payment record creation')

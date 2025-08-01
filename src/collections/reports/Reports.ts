@@ -178,23 +178,7 @@ export const Reports: CollectionConfig = {
       hasMany: false,
       // hidden: true,
     },
-    {
-      // Virtual flag, only in the Admin/GraphQL, never persisted
-      name: 'isRead',
-      type: 'checkbox',
-      virtual: true,
 
-      // graphQL: { read: true },    // ensure it shows up in the schema
-      admin: { hidden: true }, // hide from the UI form
-      hooks: {
-        afterRead: [
-          async ({ originalDoc, req, operation, findMany, context }) => {
-            const isRead = Boolean(originalDoc.readRecords?.docs?.length > 0)
-            return isRead
-          },
-        ],
-      },
-    },
     ...slugField(),
   ],
 

@@ -8,6 +8,7 @@ import { User } from '../../payload-types'
 import { link } from '../../fields/link'
 import { linkGroup } from '../../fields/linkGroup'
 import { notificationHooks } from '../paymentSchedules/hooks/notificationHooks'
+import { notificationEndpoints } from './endpoints'
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications',
@@ -23,7 +24,7 @@ export const Notifications: CollectionConfig = {
       it: 'Notifiche',
     },
   },
-
+  endpoints: notificationEndpoints,
   hooks: notificationHooks,
   // only admins
   access: {
@@ -62,23 +63,7 @@ export const Notifications: CollectionConfig = {
       type: 'textarea',
       required: true,
     },
-    {
-      name: 'type',
-      label: {
-        ja: 'タイプ',
-        en: 'Type',
-        it: 'Tipo',
-      },
-      type: 'select',
-      required: true,
-      // options: ['payment', 'general_notification', 'event'],
-      options: [
-        { label: 'Payment', value: 'payment' },
-        { label: 'General Notification', value: 'general_notification' },
-        { label: 'Event', value: 'event' },
-        { label: 'Teacher Report', value: 'teacher_report' },
-      ],
-    },
+
     {
       name: 'attachments',
       label: {
@@ -99,15 +84,7 @@ export const Notifications: CollectionConfig = {
       },
       type: 'text',
     },
-    {
-      name: 'collection',
-      label: {
-        ja: 'コレクション',
-        en: 'Collection',
-        it: 'Collezione',
-      },
-      type: 'text',
-    },
+
     {
       name: 'data',
       label: {
@@ -115,19 +92,59 @@ export const Notifications: CollectionConfig = {
         en: 'Data',
         it: 'Dati',
       },
-      defaultValue: {},
-      type: 'json',
-      validate: (val) => {
-        // enforce "string→string" if you like
-        if (!!val) {
-          if (typeof val === 'object' && Object.values(val).every((v) => typeof v === 'string')) {
-            return true
-          } else {
-            return 'Must be an object of string→string'
-          }
-        }
-        return true
-      },
+      type: 'group',
+      fields: [
+        {
+          name: 'collection',
+          label: {
+            ja: 'コレクション',
+            en: 'Collection',
+            it: 'Collezione',
+          },
+          required: true,
+          type: 'text',
+        },
+        {
+          name: 'collectionRecordId',
+          type: 'text',
+          required: true,
+          label: {
+            ja: 'ID',
+            en: 'ID',
+            it: 'ID',
+          },
+        },
+        {
+          name: 'type',
+          label: {
+            ja: 'タイプ',
+            en: 'Type',
+            it: 'Tipo',
+          },
+          // type: 'text',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Payment', value: 'payment' },
+            { label: 'Payment Schedule', value: 'payment_schedule' },
+            { label: 'Payment Schedule', value: 'payment_record' },
+            { label: 'General Notification', value: 'general_notification' },
+            { label: 'Event', value: 'event' },
+            { label: 'Teacher Report', value: 'teacher_report' },
+          ],
+        },
+      ],
+      // validate: (val) => {
+      //   // enforce "string→string" if you like
+      //   if (!!val) {
+      //     if (typeof val === 'object' && Object.values(val).every((v) => typeof v === 'string')) {
+      //       return true
+      //     } else {
+      //       return 'Must be an object of string→string'
+      //     }
+      //   }
+      //   return true
+      // },
     },
     {
       name: 'users',

@@ -37,7 +37,7 @@ export const sendPushNotificationAfterChangeReport: CollectionAfterChangeHook<Re
     payload: req.payload,
     isModifiedNotification: operation === 'update',
     report: doc,
-    t: req.i18n.t,
+    // t: req.i18n.t,
   })
   // sendPushNotificationsForEach({
   //   collection: 'reports',

@@ -5,6 +5,7 @@ import { createPaymentRecordsAfterSchedule } from './hooks/createPaymentRecordsA
 import PaymentScheduleEditView from './components/PaymentRecordLinkFromSchedule'
 import { queueSendNotification } from './hooks/queueSendNotification'
 import { isAboveAdmin, isAboveAdminAccess } from '../../hooks/showOnlyAdmin'
+import { deleteChildPaymentRecordsBeforeDelete } from './hooks/deleteChildPaymentRecordsBeforeDelete'
 
 export const PaymentSchedules: CollectionConfig = {
   slug: 'payment-schedules',
@@ -29,6 +30,7 @@ export const PaymentSchedules: CollectionConfig = {
   },
 
   hooks: {
+    beforeDelete: [deleteChildPaymentRecordsBeforeDelete],
     afterChange: [createPaymentRecordsAfterSchedule, queueSendNotification],
   },
   admin: {
@@ -66,11 +68,41 @@ export const PaymentSchedules: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-
       label: {
         ja: 'スケジュール名',
         en: 'Schedule Name',
         it: 'Nome Programma',
+      },
+    },
+    {
+      name: 'notificationTitle',
+      type: 'text',
+      required: true,
+      label: {
+        ja: '通知タイトル(共通)',
+        en: 'Notification Title(Common)',
+        it: 'Titolo Notifica(Comune)',
+      },
+    },
+
+    {
+      name: 'notificationBody',
+      type: 'textarea',
+      required: true,
+      label: {
+        ja: '通知本文(共通)',
+        en: 'Notification Body(Common)',
+        it: 'Corpo Notifica(Comune)',
+      },
+    },
+    {
+      name: 'notificationAlertMessage',
+      type: 'textarea',
+      required: false,
+      label: {
+        ja: '通知注意書き(共通)',
+        en: 'Notification Warning Text(Common)',
+        it: 'Testo di Attenzione Notifica(Comune)',
       },
     },
     {
@@ -131,46 +163,6 @@ export const PaymentSchedules: CollectionConfig = {
         ja: '教材費の説明(後から個別に変更可能)',
         en: 'Material Fee Description (can be changed individually)',
         it: 'Descrizione Tassa Materiali (può essere cambiata individualmente)',
-      },
-    },
-    {
-      name: 'notificationTitle',
-      type: 'text',
-      required: true,
-      label: {
-        ja: 'タイトル',
-        en: 'Title',
-        it: 'Titolo',
-      },
-    },
-    {
-      name: 'notificationSubtitle',
-      type: 'text',
-      required: false,
-      label: {
-        ja: 'サブタイトル',
-        en: 'Subtitle',
-        it: 'Sottotitolo',
-      },
-    },
-    {
-      name: 'notificationBody',
-      type: 'textarea',
-      required: false,
-      label: {
-        ja: '本文',
-        en: 'Body',
-        it: 'Corpo',
-      },
-    },
-    {
-      name: 'notificationAlertMessage',
-      type: 'text',
-      required: false,
-      label: {
-        ja: '注意書き',
-        en: 'Warning text',
-        it: 'Testo di Attenzione',
       },
     },
   ],
