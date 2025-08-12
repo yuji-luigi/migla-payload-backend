@@ -8,7 +8,8 @@ export const createReadReport: CollectionAfterReadHook<Report> = async ({
   context,
   findMany,
 }) => {
-  if (!findMany) {
+  // change logic if teacher needs isRead
+  if (req.user?.currentRole?.isParent && !findMany) {
     req.payload.create({
       collection: 'read-reports',
       data: {

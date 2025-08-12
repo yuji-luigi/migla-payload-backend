@@ -59,17 +59,17 @@ export const Reports: CollectionConfig = {
       required: true,
       localized: true,
     },
-    {
-      name: 'subtitle',
-      label: {
-        ja: 'サブタイトル',
-        en: 'Subtitle',
-        it: 'Sottotitolo',
-      },
-      type: 'text',
-      required: false,
-      localized: true,
-    },
+    // {
+    //   name: 'subtitle',
+    //   label: {
+    //     ja: 'サブタイトル',
+    //     en: 'Subtitle',
+    //     it: 'Sottotitolo',
+    //   },
+    //   type: 'text',
+    //   required: false,
+    //   localized: true,
+    // },
     {
       name: 'body',
       label: {

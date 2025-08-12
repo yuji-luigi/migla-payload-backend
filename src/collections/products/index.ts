@@ -34,7 +34,18 @@ export const Products: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
-      required: true,
+      required: false,
+      label: {
+        ja: '商品名',
+        en: 'Product Name',
+        it: 'Nome Prodotto',
+      },
+    },
+    {
+      name: 'nameLocale',
+      type: 'text',
+      localized: true,
+      required: false,
       label: {
         ja: '商品名',
         en: 'Product Name',

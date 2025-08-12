@@ -43,12 +43,16 @@ export const Users: CollectionConfig = {
     },
     read: authenticated,
   },
-  auth: true,
+  auth: {
+    // tokenExpiration: 1, // 1 second
+    tokenExpiration: 1000 * 60 * 60 * 24 * 2, // 2 days
+  },
   admin: {
     defaultColumns: ['name', 'surname', 'email'],
     useAsTitle: 'fullname',
     components: {
       // beforeList
+
       beforeList: [
         {
           path: '@/collections/Users/ui/UserImportModal.tsx',

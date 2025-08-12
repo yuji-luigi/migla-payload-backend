@@ -857,7 +857,6 @@ export interface Student {
 export interface Report {
   id: number;
   title: string;
-  subtitle?: string | null;
   body: string;
   coverImage?: (number | null) | Media;
   attachments?: (number | Media)[] | null;
@@ -994,7 +993,8 @@ export interface FcmToken {
  */
 export interface Product {
   id: number;
-  name: string;
+  name?: string | null;
+  nameLocale?: string | null;
   price: number;
   priceString?: string | null;
   description?: string | null;
@@ -1614,7 +1614,6 @@ export interface StudentsSelect<T extends boolean = true> {
  */
 export interface ReportsSelect<T extends boolean = true> {
   title?: T;
-  subtitle?: T;
   body?: T;
   coverImage?: T;
   attachments?: T;
@@ -1853,6 +1852,7 @@ export interface FcmTokensSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   name?: T;
+  nameLocale?: T;
   price?: T;
   priceString?: T;
   description?: T;
