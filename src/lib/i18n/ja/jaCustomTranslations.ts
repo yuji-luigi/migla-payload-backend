@@ -108,6 +108,7 @@ export const jaCustomTranslations = {
   },
   paymentSchedules: {
     paymentRecordLinkText: '支払い記録を表示',
+    sendPaymentReminder: '未払いのユーザーに支払いのお知らせを送信する',
   },
   notifications: {
     teacherReport: {

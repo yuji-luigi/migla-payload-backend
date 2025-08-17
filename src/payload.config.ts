@@ -36,6 +36,8 @@ import { PaymentRecords } from './collections/paymentRecords'
 import { ReadReport } from './collections/ReadReport'
 import { PushNotifications } from './collections/pushNotifications'
 import { jobs } from './configs/jobs/jobs'
+import paymentRecordsToNotify from './graphql/queries/paymentRecordsToNofify/resolver'
+import { graphQLConfig } from './graphql/graphql.config'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -52,32 +54,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   i18n: i18nConfigs,
-  // folders: {
-  //   collectionOverrides:[({collection})=>{
-  //     if(collection.slug === 'payment-schedules'){
-  //       return {
 
-  //         ...collection,
-  //         fields:[
-
-  //           ...collection.fields,
-  //           {
-  //             name:'folder',
-  //             type:'folder',
-  //             label:'Folder',
-  //             required:true,
-  //             admin:{
-  //               components:{
-  //                 // Field:
-  //               }
-  //             }
-  //           }
-  //         ]
-  //       }
-  //     }
-  //     return collection
-  //   }]
-  // },
   localization: {
     defaultLocale: 'ja',
     locales: ['ja', 'it', 'en'],
@@ -86,7 +63,6 @@ export default buildConfig({
   auth: {
     jwtOrder: ['Bearer', 'cookie'],
   },
-  graphQL: {},
   admin: getAdminConfig(dirname),
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,

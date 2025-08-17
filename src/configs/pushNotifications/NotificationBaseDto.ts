@@ -9,6 +9,7 @@ export type NotificationMultiDto = {
   fcmTokens: FcmToken[]
   isModifiedNotification: boolean
   imageUrl?: string
+  users: number[]
   /** [key: string]: string */
   data: Notification['data']
 }

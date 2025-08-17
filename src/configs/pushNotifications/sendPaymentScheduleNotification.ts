@@ -26,6 +26,8 @@ export async function sendPaymentScheduleNotification({
     body: paymentSchedule.name,
     fcmTokens,
     isModifiedNotification,
+    users: fcmTokens.filter((token) => token.user).map((token) => extractID(token.user)),
+
     data: {
       collectionRecordId: paymentSchedule.id.toString(),
       collection: 'payment-schedules',

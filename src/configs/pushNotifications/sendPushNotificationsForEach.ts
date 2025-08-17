@@ -36,6 +36,9 @@ export async function sendPushNotificationsForEach({
     payload.create({
       collection: 'notifications',
       data: notificationBaseDto,
+      context: {
+        isFromSendPushNotificationsMethod: false,
+      },
     })
   }
 

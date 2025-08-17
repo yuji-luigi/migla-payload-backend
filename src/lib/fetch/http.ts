@@ -13,7 +13,7 @@ export const http = {
       body?: Record<string, string> | FormData
       headers?: HeadersInit
       otherOptions?: any // specify all other params from fetchx
-    },
+    } = {},
   ) => {
     const response = await fetch(url, {
       method: 'POST',

@@ -1,7 +1,9 @@
+import { equal } from 'assert'
 import { slugField } from '@/fields/slug'
-import { type CollectionConfig } from 'payload'
+import { Where, type CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { reportHooks } from './hooks/reportHooks'
+import { isAboveAdmin } from '../../hooks/showOnlyAdmin'
 
 export const Reports: CollectionConfig = {
   slug: 'reports',
@@ -19,14 +21,39 @@ export const Reports: CollectionConfig = {
   // only admins
   access: {
     create: authenticated,
-    delete: authenticated,
+    delete: ({ req }) => {
+      if (req.user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+      if (!req.user?.id) {
+        return false
+      }
+
+      return {
+        or: [
+          {
+            teacher: {
+              equals: req.user.id,
+            },
+          },
+          {
+            createdBy: {
+              equals: req.user.id,
+            },
+          },
+        ] as Where[],
+      }
+    },
     read: async ({ req }) => {
-      if (req.url?.includes('/admin/collections/reports') && req.user?.currentRole?.isTeacher) {
+      if (!req.user?.id || !req.user.currentRole) {
+        return false
+      }
+      if (req.user.currentRole.isTeacher) {
         const userTeacher = await req.payload.find({
           collection: 'teachers',
           where: {
             user: {
-              equals: req.user?.id,
+              equals: req.user.id,
             },
           },
         })
@@ -37,10 +64,26 @@ export const Reports: CollectionConfig = {
           teacher: {
             equals: userTeacher.docs[0].id,
           },
+        } as Where
+      }
+      if (req.user.currentRole.isParent) {
+        const { docs: students } = await req.payload.find({
+          collection: 'students',
+          where: {
+            parent: {
+              equals: req.user.id,
+            },
+          },
+        })
+        const ids = students.map((student) => student.id)
+        return {
+          students: { in: ids },
         }
       }
-
-      return true
+      if (isAboveAdmin(req.user)) {
+        return true
+      }
+      return false
     },
     update: authenticated,
   },

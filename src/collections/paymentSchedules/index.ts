@@ -2,10 +2,11 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { createPaymentRecordsAfterSchedule } from './hooks/createPaymentRecordsAfterSchedule'
-import PaymentScheduleEditView from './components/PaymentRecordLinkFromSchedule'
+import PaymentScheduleEditView from './components/beforeDocumentControls/PaymentRecordLinkFromSchedule'
 import { queueSendNotification } from './hooks/queueSendNotification'
 import { isAboveAdmin, isAboveAdminAccess } from '../../hooks/showOnlyAdmin'
 import { deleteChildPaymentRecordsBeforeDelete } from './hooks/deleteChildPaymentRecordsBeforeDelete'
+import { paymentScheduleEndpoints } from './endpoints'
 
 export const PaymentSchedules: CollectionConfig = {
   slug: 'payment-schedules',
@@ -28,6 +29,7 @@ export const PaymentSchedules: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  endpoints: paymentScheduleEndpoints,
 
   hooks: {
     beforeDelete: [deleteChildPaymentRecordsBeforeDelete],
@@ -41,7 +43,8 @@ export const PaymentSchedules: CollectionConfig = {
     components: {
       edit: {
         beforeDocumentControls: [
-          '@/collections/paymentSchedules/components/PaymentRecordLinkFromSchedule',
+          '@/collections/paymentSchedules/components/beforeDocumentControls/SendReminderPaymentButton',
+          '@/collections/paymentSchedules/components/beforeDocumentControls/PaymentRecordLinkFromSchedule',
         ],
       },
     },

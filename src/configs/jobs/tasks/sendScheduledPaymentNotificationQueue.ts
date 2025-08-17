@@ -74,8 +74,6 @@ export const sendScheduledPaymentNotificationQueue: TaskConfig<'sendScheduledPay
           depth: 0,
         })
 
-        console.log(`Found ${fcmTokens.length} FCM tokens for payers`)
-
         // Step 4: Get the payment schedule details for notification content
         const paymentSchedule = await req.payload.findByID({
           collection: 'payment-schedules',

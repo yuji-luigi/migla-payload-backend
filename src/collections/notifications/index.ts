@@ -3,12 +3,13 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin, isSuperAdminAccess } from '../../hooks/showOnlyAdmin'
 import { User } from '../../payload-types'
 import { link } from '../../fields/link'
 import { linkGroup } from '../../fields/linkGroup'
 import { notificationHooks } from '../paymentSchedules/hooks/notificationHooks'
 import { notificationEndpoints } from './endpoints'
+import { ConsoleLogWriter } from '@payloadcms/db-postgres/drizzle'
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications',
@@ -28,11 +29,26 @@ export const Notifications: CollectionConfig = {
   hooks: notificationHooks,
   // only admins
   access: {
-    // TODO: create update must set the custom condition
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: ({ req }) => {
+      // only from dashboard
+      if (req.context.isFromSendPushNotificationsMethod) {
+        return true
+      }
+      return false
+    },
+    delete: isSuperAdminAccess,
+    read: ({ req }) => {
+      if (req.user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+      console.log(req.user?.id)
+      return {
+        users: {
+          in: [req.user?.id],
+        },
+      }
+    },
+    update: isSuperAdminAccess,
   },
   admin: {
     useAsTitle: 'title',
