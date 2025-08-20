@@ -17,7 +17,8 @@ export const teacherOperationBeforeChange: CollectionBeforeChangeHook = async ({
   if (!req.user) {
     throw new APIError('User not authenticated', 401, null, true)
   }
-  if (req.user.currentRole?.isAdmin) {
+  // NOTE: super admin or admin can create freely from dashboard choosing the teacher
+  if (req.user.currentRole?.isAdmin || req.user.currentRole?.isSuperAdmin) {
     if (!data.teacher) {
       throw new APIError('Teacher is required', 400, null, true)
     }

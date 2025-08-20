@@ -100,6 +100,9 @@ export const enCustomTranslations = {
       loadingText: 'Classrooms data is being created. It can take some minutes...',
     },
   },
+  paymentSchedules: {
+    paymentRecordLinkText: 'Go to payment records',
+  },
   errors: {
     excel: {
       valueNotProvided: 'Value is not provided in the cell',

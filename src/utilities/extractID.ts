@@ -4,5 +4,6 @@ export function extractID(data: number | any): number {
   } else if (data && 'id' in data) {
     return data.id
   }
-  throw new Error('the argument is not a valid collection document')
+  return -1
+  // throw new Error('the argument is not a valid collection document')
 }

@@ -3,11 +3,13 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
 import { slugField } from '@/fields/slug'
-import { isAdmin, isSuperAdmin } from '../../hooks/showOnlyAdmin'
+import { isAdmin, isSuperAdmin, isSuperAdminAccess } from '../../hooks/showOnlyAdmin'
 import { User } from '../../payload-types'
 import { link } from '../../fields/link'
 import { linkGroup } from '../../fields/linkGroup'
-import { notificationHooks } from './hooks/notificationHooks'
+import { notificationHooks } from '../paymentSchedules/hooks/notificationHooks'
+import { notificationEndpoints } from './endpoints'
+import { ConsoleLogWriter } from '@payloadcms/db-postgres/drizzle'
 
 export const Notifications: CollectionConfig = {
   slug: 'notifications',
@@ -23,14 +25,30 @@ export const Notifications: CollectionConfig = {
       it: 'Notifiche',
     },
   },
-
+  endpoints: notificationEndpoints,
   hooks: notificationHooks,
   // only admins
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticated,
-    update: authenticated,
+    create: ({ req }) => {
+      // only from dashboard
+      if (req.context.isFromSendPushNotificationsMethod) {
+        return true
+      }
+      return false
+    },
+    delete: isSuperAdminAccess,
+    read: ({ req }) => {
+      if (req.user?.currentRole?.isSuperAdmin) {
+        return true
+      }
+      console.log(req.user?.id)
+      return {
+        users: {
+          in: [req.user?.id],
+        },
+      }
+    },
+    update: isSuperAdminAccess,
   },
   admin: {
     useAsTitle: 'title',
@@ -61,22 +79,7 @@ export const Notifications: CollectionConfig = {
       type: 'textarea',
       required: true,
     },
-    {
-      name: 'type',
-      label: {
-        ja: 'タイプ',
-        en: 'Type',
-        it: 'Tipo',
-      },
-      type: 'select',
-      required: true,
-      // options: ['payment', 'general_notification', 'event'],
-      options: [
-        { label: 'Payment', value: 'payment' },
-        { label: 'General Notification', value: 'general_notification' },
-        { label: 'Event', value: 'event' },
-      ],
-    },
+
     {
       name: 'attachments',
       label: {
@@ -87,6 +90,97 @@ export const Notifications: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       hasMany: true,
+    },
+    {
+      name: 'imageUrl',
+      label: {
+        ja: '画像URL',
+        en: 'Image URL',
+        it: 'URL Immagine',
+      },
+      type: 'text',
+    },
+
+    {
+      name: 'data',
+      label: {
+        ja: 'データ',
+        en: 'Data',
+        it: 'Dati',
+      },
+      type: 'group',
+      fields: [
+        {
+          name: 'collection',
+          label: {
+            ja: 'コレクション',
+            en: 'Collection',
+            it: 'Collezione',
+          },
+          required: true,
+          type: 'text',
+        },
+        {
+          name: 'collectionRecordId',
+          type: 'text',
+          required: true,
+          label: {
+            ja: 'ID',
+            en: 'ID',
+            it: 'ID',
+          },
+        },
+        {
+          name: 'type',
+          label: {
+            ja: 'タイプ',
+            en: 'Type',
+            it: 'Tipo',
+          },
+          // type: 'text',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Payment', value: 'payment' },
+            { label: 'Payment Schedule', value: 'payment_schedule' },
+            { label: 'Payment Schedule', value: 'payment_record' },
+            { label: 'General Notification', value: 'general_notification' },
+            { label: 'Event', value: 'event' },
+            { label: 'Teacher Report', value: 'teacher_report' },
+          ],
+        },
+      ],
+      // validate: (val) => {
+      //   // enforce "string→string" if you like
+      //   if (!!val) {
+      //     if (typeof val === 'object' && Object.values(val).every((v) => typeof v === 'string')) {
+      //       return true
+      //     } else {
+      //       return 'Must be an object of string→string'
+      //     }
+      //   }
+      //   return true
+      // },
+    },
+    {
+      name: 'users',
+      label: {
+        ja: '通知対象者(ユーザー)',
+        en: 'Notification Target (Users)',
+        it: 'Destinatari Notifiche (Utenti)',
+      },
+      type: 'relationship',
+      relationTo: 'users',
+      hasMany: true,
+    },
+    {
+      name: 'isModifiedNotification',
+      label: {
+        ja: '修正された通知',
+        en: 'Modified Notification',
+        it: 'Notifica Modificata',
+      },
+      type: 'checkbox',
     },
     linkGroup({
       overrides: {
@@ -126,29 +220,30 @@ export const Notifications: CollectionConfig = {
       type: 'join',
       collection: 'read-notifications',
       on: 'notification',
+      virtual: true,
       admin: {
         hidden: true,
       },
       maxDepth: 0,
     },
 
-    {
-      // Virtual flag, only in the Admin/GraphQL, never persisted
-      name: 'isRead',
-      type: 'checkbox',
-      virtual: true,
+    // {
+    //   // Virtual flag, only in the Admin/GraphQL, never persisted
+    //   name: 'isRead',
+    //   type: 'checkbox',
+    //   virtual: true,
 
-      // graphQL: { read: true },    // ensure it shows up in the schema
-      admin: { hidden: true }, // hide from the UI form
-      hooks: {
-        afterRead: [
-          async ({ originalDoc, req, operation, findMany, context }) => {
-            const isRead = Boolean(originalDoc.readRecords?.docs?.length > 0)
-            return isRead
-          },
-        ],
-      },
-    },
+    //   // graphQL: { read: true },    // ensure it shows up in the schema
+    //   admin: { hidden: true }, // hide from the UI form
+    //   hooks: {
+    //     afterRead: [
+    //       async ({ originalDoc, req, operation, findMany, context }) => {
+    //         const isRead = Boolean(originalDoc.readRecords?.docs?.length > 0)
+    //         return isRead
+    //       },
+    //     ],
+    //   },
+    // },
   ],
 
   timestamps: true,

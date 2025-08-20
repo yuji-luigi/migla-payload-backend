@@ -106,6 +106,15 @@ export const jaCustomTranslations = {
       loadingText: '教室データを作成しています。しばらくお待ちください。',
     },
   },
+  paymentSchedules: {
+    paymentRecordLinkText: '支払い記録を表示',
+    sendPaymentReminder: '未払いのユーザーに支払いのお知らせを送信する',
+  },
+  notifications: {
+    teacherReport: {
+      title: '先生からの通信',
+    },
+  },
   errors: {
     excel: {
       valueNotProvided: 'セルに値がありません。',

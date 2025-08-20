@@ -15,6 +15,7 @@ export async function findTeacherRoleOfUser({
     collection: 'teachers',
     where: { user: { equals: user.id } },
   })
+
   // if (teacherPag.docs.length === 0) {
   //   payload.logger.warn(
   //     'finding teacherPag that has no teacher role. function findTeacherRoleOfUser.\n',

@@ -143,6 +143,10 @@ export const enum_notifications_type = pgEnum('enum_notifications_type', [
   'event',
 ])
 export const enum_settings_locale = pgEnum('enum_settings_locale', ['en', 'ja', 'it'])
+export const enum_payment_records_notification_status = pgEnum(
+  'enum_payment_records_notification_status',
+  ['idle', 'sent', 'seen'],
+)
 export const enum_redirects_to_type = pgEnum('enum_redirects_to_type', ['reference', 'custom'])
 export const enum_forms_confirmation_type = pgEnum('enum_forms_confirmation_type', [
   'message',
@@ -1954,6 +1958,135 @@ export const fcm_tokens = pgTable(
   }),
 )
 
+export const products = pgTable(
+  'products',
+  {
+    id: serial('id').primaryKey(),
+    name: varchar('name').notNull(),
+    price: numeric('price').notNull(),
+    description: varchar('description'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    products_updated_at_idx: index('products_updated_at_idx').on(columns.updatedAt),
+    products_created_at_idx: index('products_created_at_idx').on(columns.createdAt),
+  }),
+)
+
+export const payment_schedules = pgTable(
+  'payment_schedules',
+  {
+    id: serial('id').primaryKey(),
+    name: varchar('name').notNull(),
+    paymentDue: timestamp('payment_due', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+    notificationScheduledAt: timestamp('notification_scheduled_at', {
+      mode: 'string',
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+    tuitionFee: numeric('tuition_fee').notNull(),
+    tuitionFeeDescription: varchar('tuition_fee_description').notNull(),
+    materialFee: numeric('material_fee'),
+    materialFeeDescription: varchar('material_fee_description'),
+    notificationTitle: varchar('notification_title').notNull(),
+    notificationSubtitle: varchar('notification_subtitle'),
+    notificationBody: varchar('notification_body'),
+    notificationAlertMessage: varchar('notification_alert_message'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    payment_schedules_updated_at_idx: index('payment_schedules_updated_at_idx').on(
+      columns.updatedAt,
+    ),
+    payment_schedules_created_at_idx: index('payment_schedules_created_at_idx').on(
+      columns.createdAt,
+    ),
+  }),
+)
+
+export const payment_records = pgTable(
+  'payment_records',
+  {
+    id: serial('id').primaryKey(),
+    paymentSchedule: integer('payment_schedule_id')
+      .notNull()
+      .references(() => payment_schedules.id, {
+        onDelete: 'set null',
+      }),
+    payer: integer('payer_id')
+      .notNull()
+      .references(() => users.id, {
+        onDelete: 'set null',
+      }),
+    studentCount: numeric('student_count').notNull(),
+    tuitionFee: numeric('tuition_fee').notNull(),
+    tuitionFeeDescription: varchar('tuition_fee_description').notNull(),
+    materialFee: numeric('material_fee'),
+    materialFeeDescription: varchar('material_fee_description'),
+    paid: boolean('paid').notNull().default(false),
+    notificationStatus: enum_payment_records_notification_status('notification_status')
+      .notNull()
+      .default('idle'),
+    updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'string', withTimezone: true, precision: 3 })
+      .defaultNow()
+      .notNull(),
+  },
+  (columns) => ({
+    payment_records_payment_schedule_idx: index('payment_records_payment_schedule_idx').on(
+      columns.paymentSchedule,
+    ),
+    payment_records_payer_idx: index('payment_records_payer_idx').on(columns.payer),
+    payment_records_updated_at_idx: index('payment_records_updated_at_idx').on(columns.updatedAt),
+    payment_records_created_at_idx: index('payment_records_created_at_idx').on(columns.createdAt),
+  }),
+)
+
+export const payment_records_rels = pgTable(
+  'payment_records_rels',
+  {
+    id: serial('id').primaryKey(),
+    order: integer('order'),
+    parent: integer('parent_id').notNull(),
+    path: varchar('path').notNull(),
+    productsID: integer('products_id'),
+  },
+  (columns) => ({
+    order: index('payment_records_rels_order_idx').on(columns.order),
+    parentIdx: index('payment_records_rels_parent_idx').on(columns.parent),
+    pathIdx: index('payment_records_rels_path_idx').on(columns.path),
+    payment_records_rels_products_id_idx: index('payment_records_rels_products_id_idx').on(
+      columns.productsID,
+    ),
+    parentFk: foreignKey({
+      columns: [columns['parent']],
+      foreignColumns: [payment_records.id],
+      name: 'payment_records_rels_parent_fk',
+    }).onDelete('cascade'),
+    productsIdFk: foreignKey({
+      columns: [columns['productsID']],
+      foreignColumns: [products.id],
+      name: 'payment_records_rels_products_fk',
+    }).onDelete('cascade'),
+  }),
+)
+
 export const read_reports = pgTable(
   'read_reports',
   {
@@ -1992,9 +2125,7 @@ export const push_notifications = pgTable(
     body: varchar('body'),
     type: varchar('type'),
     collection: varchar('collection'),
-    data: jsonb('data')
-      .notNull()
-      .default(sql`'{}'::jsonb`),
+    data: jsonb('data'),
     imageUrl: varchar('image_url'),
     isModifiedNotification: boolean('is_modified_notification'),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
@@ -2884,6 +3015,9 @@ export const payload_locked_documents_rels = pgTable(
     rolesID: integer('roles_id'),
     settingsID: integer('settings_id'),
     fcmTokensID: integer('fcm_tokens_id'),
+    productsID: integer('products_id'),
+    'payment-schedulesID': integer('payment_schedules_id'),
+    'payment-recordsID': integer('payment_records_id'),
     'read-reportsID': integer('read_reports_id'),
     'push-notificationsID': integer('push_notifications_id'),
     redirectsID: integer('redirects_id'),
@@ -2941,6 +3075,15 @@ export const payload_locked_documents_rels = pgTable(
     payload_locked_documents_rels_fcm_tokens_id_idx: index(
       'payload_locked_documents_rels_fcm_tokens_id_idx',
     ).on(columns.fcmTokensID),
+    payload_locked_documents_rels_products_id_idx: index(
+      'payload_locked_documents_rels_products_id_idx',
+    ).on(columns.productsID),
+    payload_locked_documents_rels_payment_schedules_id_idx: index(
+      'payload_locked_documents_rels_payment_schedules_id_idx',
+    ).on(columns['payment-schedulesID']),
+    payload_locked_documents_rels_payment_records_id_idx: index(
+      'payload_locked_documents_rels_payment_records_id_idx',
+    ).on(columns['payment-recordsID']),
     payload_locked_documents_rels_read_reports_id_idx: index(
       'payload_locked_documents_rels_read_reports_id_idx',
     ).on(columns['read-reportsID']),
@@ -3041,6 +3184,21 @@ export const payload_locked_documents_rels = pgTable(
       columns: [columns['fcmTokensID']],
       foreignColumns: [fcm_tokens.id],
       name: 'payload_locked_documents_rels_fcm_tokens_fk',
+    }).onDelete('cascade'),
+    productsIdFk: foreignKey({
+      columns: [columns['productsID']],
+      foreignColumns: [products.id],
+      name: 'payload_locked_documents_rels_products_fk',
+    }).onDelete('cascade'),
+    'payment-schedulesIdFk': foreignKey({
+      columns: [columns['payment-schedulesID']],
+      foreignColumns: [payment_schedules.id],
+      name: 'payload_locked_documents_rels_payment_schedules_fk',
+    }).onDelete('cascade'),
+    'payment-recordsIdFk': foreignKey({
+      columns: [columns['payment-recordsID']],
+      foreignColumns: [payment_records.id],
+      name: 'payload_locked_documents_rels_payment_records_fk',
     }).onDelete('cascade'),
     'read-reportsIdFk': foreignKey({
       columns: [columns['read-reportsID']],
@@ -4016,6 +4174,35 @@ export const relations_fcm_tokens = relations(fcm_tokens, ({ one }) => ({
     relationName: 'user',
   }),
 }))
+export const relations_products = relations(products, () => ({}))
+export const relations_payment_schedules = relations(payment_schedules, () => ({}))
+export const relations_payment_records_rels = relations(payment_records_rels, ({ one }) => ({
+  parent: one(payment_records, {
+    fields: [payment_records_rels.parent],
+    references: [payment_records.id],
+    relationName: '_rels',
+  }),
+  productsID: one(products, {
+    fields: [payment_records_rels.productsID],
+    references: [products.id],
+    relationName: 'products',
+  }),
+}))
+export const relations_payment_records = relations(payment_records, ({ one, many }) => ({
+  paymentSchedule: one(payment_schedules, {
+    fields: [payment_records.paymentSchedule],
+    references: [payment_schedules.id],
+    relationName: 'paymentSchedule',
+  }),
+  payer: one(users, {
+    fields: [payment_records.payer],
+    references: [users.id],
+    relationName: 'payer',
+  }),
+  _rels: many(payment_records_rels, {
+    relationName: '_rels',
+  }),
+}))
 export const relations_read_reports = relations(read_reports, ({ one }) => ({
   user: one(users, {
     fields: [read_reports.user],
@@ -4495,6 +4682,21 @@ export const relations_payload_locked_documents_rels = relations(
       references: [fcm_tokens.id],
       relationName: 'fcmTokens',
     }),
+    productsID: one(products, {
+      fields: [payload_locked_documents_rels.productsID],
+      references: [products.id],
+      relationName: 'products',
+    }),
+    'payment-schedulesID': one(payment_schedules, {
+      fields: [payload_locked_documents_rels['payment-schedulesID']],
+      references: [payment_schedules.id],
+      relationName: 'payment-schedules',
+    }),
+    'payment-recordsID': one(payment_records, {
+      fields: [payload_locked_documents_rels['payment-recordsID']],
+      references: [payment_records.id],
+      relationName: 'payment-records',
+    }),
     'read-reportsID': one(read_reports, {
       fields: [payload_locked_documents_rels['read-reportsID']],
       references: [read_reports.id],
@@ -4675,6 +4877,7 @@ type DatabaseSchema = {
   enum_notifications_links_link_appearance: typeof enum_notifications_links_link_appearance
   enum_notifications_type: typeof enum_notifications_type
   enum_settings_locale: typeof enum_settings_locale
+  enum_payment_records_notification_status: typeof enum_payment_records_notification_status
   enum_redirects_to_type: typeof enum_redirects_to_type
   enum_forms_confirmation_type: typeof enum_forms_confirmation_type
   enum_payload_jobs_log_task_slug: typeof enum_payload_jobs_log_task_slug
@@ -4738,6 +4941,10 @@ type DatabaseSchema = {
   roles_locales: typeof roles_locales
   settings: typeof settings
   fcm_tokens: typeof fcm_tokens
+  products: typeof products
+  payment_schedules: typeof payment_schedules
+  payment_records: typeof payment_records
+  payment_records_rels: typeof payment_records_rels
   read_reports: typeof read_reports
   push_notifications: typeof push_notifications
   push_notifications_rels: typeof push_notifications_rels
@@ -4843,6 +5050,10 @@ type DatabaseSchema = {
   relations_roles: typeof relations_roles
   relations_settings: typeof relations_settings
   relations_fcm_tokens: typeof relations_fcm_tokens
+  relations_products: typeof relations_products
+  relations_payment_schedules: typeof relations_payment_schedules
+  relations_payment_records_rels: typeof relations_payment_records_rels
+  relations_payment_records: typeof relations_payment_records
   relations_read_reports: typeof relations_read_reports
   relations_push_notifications_rels: typeof relations_push_notifications_rels
   relations_push_notifications: typeof relations_push_notifications

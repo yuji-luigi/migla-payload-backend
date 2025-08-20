@@ -24,6 +24,8 @@ import { default as default_cacc620a5844ea10fa498565a40f1e4a } from '@/collectio
 import { default as default_8d76106131be6f63bada73a9ca22318f } from '@/collections/teachers/ui/DescriptionTeachers'
 import { default as default_b20ec1ff5f090478282d8dd824fa2ff6 } from '@/collections/students/ui/DescriptionStudents.tsx'
 import { default as default_5346adc0b5bffbd1a761e5b1c8a0dd21 } from '@/collections/classrooms/components/Description'
+import { default as default_c2d9514359e4c0a2287d0affd4b7cf66 } from '@/collections/paymentSchedules/components/beforeDocumentControls/SendReminderPaymentButton'
+import { default as default_19a0bef5ccc3cd0b65b19b9f12f7d57d } from '@/collections/paymentSchedules/components/beforeDocumentControls/PaymentRecordLinkFromSchedule'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { RowLabel as RowLabel_17c6ef4bfe47bfa29d923fb5718170b7 } from '@/globals/Header/RowLabel'
@@ -64,6 +66,8 @@ export const importMap = {
   "@/collections/teachers/ui/DescriptionTeachers#default": default_8d76106131be6f63bada73a9ca22318f,
   "@/collections/students/ui/DescriptionStudents.tsx#default": default_b20ec1ff5f090478282d8dd824fa2ff6,
   "@/collections/classrooms/components/Description#default": default_5346adc0b5bffbd1a761e5b1c8a0dd21,
+  "@/collections/paymentSchedules/components/beforeDocumentControls/SendReminderPaymentButton#default": default_c2d9514359e4c0a2287d0affd4b7cf66,
+  "@/collections/paymentSchedules/components/beforeDocumentControls/PaymentRecordLinkFromSchedule#default": default_19a0bef5ccc3cd0b65b19b9f12f7d57d,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "@/globals/Header/RowLabel#RowLabel": RowLabel_17c6ef4bfe47bfa29d923fb5718170b7,

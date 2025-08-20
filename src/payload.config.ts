@@ -30,8 +30,14 @@ import { LogoGlobal } from './globals/LogoGlobal/config'
 import { i18nConfigs } from './lib/i18n/i18n_configs'
 import { plugins } from './plugins'
 import { getServerSideURL } from './utilities/getURL'
+import { Products } from './collections/products'
+import { PaymentSchedules } from './collections/paymentSchedules'
+import { PaymentRecords } from './collections/paymentRecords'
 import { ReadReport } from './collections/ReadReport'
 import { PushNotifications } from './collections/pushNotifications'
+import { jobs } from './configs/jobs/jobs'
+import paymentRecordsToNotify from './graphql/queries/paymentRecordsToNofify/resolver'
+import { graphQLConfig } from './graphql/graphql.config'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -57,7 +63,6 @@ export default buildConfig({
   auth: {
     jwtOrder: ['Bearer', 'cookie'],
   },
-  graphQL: {},
   admin: getAdminConfig(dirname),
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
@@ -67,7 +72,6 @@ export default buildConfig({
     },
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
-  onInit,
 
   collections: [
     // default collections leave here for d emo
@@ -87,8 +91,11 @@ export default buildConfig({
     Roles,
     Settings,
     FcmTokens,
+    Products,
+    PaymentSchedules,
+    PaymentRecords,
     ReadReport,
-    PushNotifications,
+    // PushNotifications,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, LogoGlobal],
@@ -101,19 +108,6 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  jobs: {
-    access: {
-      run: ({ req }: { req: PayloadRequest }): boolean => {
-        // Allow logged in users to execute this endpoint (default)
-        if (req.user) return true
-
-        // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
-        const authHeader = req.headers.get('authorization')
-        return authHeader === `Bearer ${process.env.CRON_SECRET}`
-      },
-    },
-    tasks: [],
-  },
+  jobs,
+  onInit,
 })

@@ -30,7 +30,11 @@ export const FcmTokens: CollectionConfig = {
     update: isAboveAdminAccess,
     delete: isAboveAdminAccess,
   },
-
+  admin: {
+    hidden: ({ user }) => {
+      return !isAboveAdmin(user)
+    },
+  },
   fields: [
     {
       name: 'user',

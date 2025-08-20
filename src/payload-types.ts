@@ -82,8 +82,10 @@ export interface Config {
     roles: Role;
     settings: Setting;
     fcmTokens: FcmToken;
+    products: Product;
+    'payment-schedules': PaymentSchedule;
+    'payment-records': PaymentRecord;
     'read-reports': ReadReport;
-    'push-notifications': PushNotification;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -117,8 +119,10 @@ export interface Config {
     roles: RolesSelect<false> | RolesSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
     fcmTokens: FcmTokensSelect<false> | FcmTokensSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    'payment-schedules': PaymentSchedulesSelect<false> | PaymentSchedulesSelect<true>;
+    'payment-records': PaymentRecordsSelect<false> | PaymentRecordsSelect<true>;
     'read-reports': ReadReportsSelect<false> | ReadReportsSelect<true>;
-    'push-notifications': PushNotificationsSelect<false> | PushNotificationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -147,6 +151,7 @@ export interface Config {
   };
   jobs: {
     tasks: {
+      sendScheduledPaymentNotificationQueue: TaskSendScheduledPaymentNotificationQueue;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -852,7 +857,6 @@ export interface Student {
 export interface Report {
   id: number;
   title: string;
-  subtitle?: string | null;
   body: string;
   coverImage?: (number | null) | Media;
   attachments?: (number | Media)[] | null;
@@ -864,7 +868,6 @@ export interface Report {
   students?: (number | Student)[] | null;
   createdBy?: (number | null) | User;
   teacher?: (number | null) | Teacher;
-  isRead?: boolean | null;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -889,8 +892,15 @@ export interface Notification {
   id: number;
   title: string;
   body: string;
-  type: 'payment' | 'general_notification' | 'event';
   attachments?: (number | Media)[] | null;
+  imageUrl?: string | null;
+  data: {
+    collection: string;
+    collectionRecordId: string;
+    type: 'payment' | 'payment_schedule' | 'payment_record' | 'general_notification' | 'event' | 'teacher_report';
+  };
+  users?: (number | User)[] | null;
+  isModifiedNotification?: boolean | null;
   links?:
     | {
         link: {
@@ -922,7 +932,6 @@ export interface Notification {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  isRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -980,26 +989,67 @@ export interface FcmToken {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "push-notifications".
+ * via the `definition` "products".
  */
-export interface PushNotification {
+export interface Product {
   id: number;
-  title?: string | null;
-  body?: string | null;
-  type?: string | null;
-  collection?: string | null;
-  data?:
+  name?: string | null;
+  nameLocale?: string | null;
+  price: number;
+  priceString?: string | null;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-schedules".
+ */
+export interface PaymentSchedule {
+  id: number;
+  paymentRecords?: (number | PaymentRecord)[] | null;
+  name: string;
+  notificationTitle: string;
+  notificationBody: string;
+  notificationAlertMessage?: string | null;
+  paymentDue: string;
+  notificationScheduledAt: string;
+  tuitionFee: number;
+  tuitionFeeDescription: string;
+  materialFee?: number | null;
+  materialFeeDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-records".
+ */
+export interface PaymentRecord {
+  id: number;
+  paymentSchedule: number | PaymentSchedule;
+  payer: number | User;
+  studentCount: number;
+  tuitionFee: number;
+  tuitionFeeTotalAndSingle?: string | null;
+  tuitionFeeDescription: string;
+  materialFee?: number | null;
+  materialFeeTotalAndSingle?: string | null;
+  materialFeeDescription?: string | null;
+  purchases?:
     | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
+        productAndQuantity?: {
+          product?: (number | null) | Product;
+          quantity?: number | null;
+          price?: number | null;
+        };
+        id?: string | null;
+      }[]
     | null;
-  imageUrl?: string | null;
-  users: (number | User)[];
-  isModifiedNotification?: boolean | null;
+  total?: number | null;
+  totalString?: string | null;
+  paid: boolean;
+  notificationStatus: 'idle' | 'sent' | 'seen';
   updatedAt: string;
   createdAt: string;
 }
@@ -1128,7 +1178,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug: 'inline' | 'sendScheduledPaymentNotificationQueue' | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -1161,7 +1211,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?: ('inline' | 'sendScheduledPaymentNotificationQueue' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1236,12 +1286,20 @@ export interface PayloadLockedDocument {
         value: number | FcmToken;
       } | null)
     | ({
-        relationTo: 'read-reports';
-        value: number | ReadReport;
+        relationTo: 'products';
+        value: number | Product;
       } | null)
     | ({
-        relationTo: 'push-notifications';
-        value: number | PushNotification;
+        relationTo: 'payment-schedules';
+        value: number | PaymentSchedule;
+      } | null)
+    | ({
+        relationTo: 'payment-records';
+        value: number | PaymentRecord;
+      } | null)
+    | ({
+        relationTo: 'read-reports';
+        value: number | ReadReport;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1556,7 +1614,6 @@ export interface StudentsSelect<T extends boolean = true> {
  */
 export interface ReportsSelect<T extends boolean = true> {
   title?: T;
-  subtitle?: T;
   body?: T;
   coverImage?: T;
   attachments?: T;
@@ -1564,7 +1621,6 @@ export interface ReportsSelect<T extends boolean = true> {
   students?: T;
   createdBy?: T;
   teacher?: T;
-  isRead?: T;
   slug?: T;
   slugLock?: T;
   updatedAt?: T;
@@ -1591,8 +1647,17 @@ export interface ClassroomsSelect<T extends boolean = true> {
 export interface NotificationsSelect<T extends boolean = true> {
   title?: T;
   body?: T;
-  type?: T;
   attachments?: T;
+  imageUrl?: T;
+  data?:
+    | T
+    | {
+        collection?: T;
+        collectionRecordId?: T;
+        type?: T;
+      };
+  users?: T;
+  isModifiedNotification?: T;
   links?:
     | T
     | {
@@ -1611,7 +1676,6 @@ export interface NotificationsSelect<T extends boolean = true> {
   students?: T;
   hasAttachments?: T;
   readRecords?: T;
-  isRead?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1784,27 +1848,76 @@ export interface FcmTokensSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "read-reports_select".
+ * via the `definition` "products_select".
  */
-export interface ReadReportsSelect<T extends boolean = true> {
-  user?: T;
-  report?: T;
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  nameLocale?: T;
+  price?: T;
+  priceString?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "push-notifications_select".
+ * via the `definition` "payment-schedules_select".
  */
-export interface PushNotificationsSelect<T extends boolean = true> {
-  title?: T;
-  body?: T;
-  type?: T;
-  collection?: T;
-  data?: T;
-  imageUrl?: T;
-  users?: T;
-  isModifiedNotification?: T;
+export interface PaymentSchedulesSelect<T extends boolean = true> {
+  paymentRecords?: T;
+  name?: T;
+  notificationTitle?: T;
+  notificationBody?: T;
+  notificationAlertMessage?: T;
+  paymentDue?: T;
+  notificationScheduledAt?: T;
+  tuitionFee?: T;
+  tuitionFeeDescription?: T;
+  materialFee?: T;
+  materialFeeDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payment-records_select".
+ */
+export interface PaymentRecordsSelect<T extends boolean = true> {
+  paymentSchedule?: T;
+  payer?: T;
+  studentCount?: T;
+  tuitionFee?: T;
+  tuitionFeeTotalAndSingle?: T;
+  tuitionFeeDescription?: T;
+  materialFee?: T;
+  materialFeeTotalAndSingle?: T;
+  materialFeeDescription?: T;
+  purchases?:
+    | T
+    | {
+        productAndQuantity?:
+          | T
+          | {
+              product?: T;
+              quantity?: T;
+              price?: T;
+            };
+        id?: T;
+      };
+  total?: T;
+  totalString?: T;
+  paid?: T;
+  notificationStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "read-reports_select".
+ */
+export interface ReadReportsSelect<T extends boolean = true> {
+  user?: T;
+  report?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2189,6 +2302,18 @@ export interface LogoGlobalSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSendScheduledPaymentNotificationQueue".
+ */
+export interface TaskSendScheduledPaymentNotificationQueue {
+  input: {
+    paymentScheduleId?: number | null;
+  };
+  output: {
+    success?: boolean | null;
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

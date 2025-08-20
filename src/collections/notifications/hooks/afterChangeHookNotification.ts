@@ -1,7 +1,7 @@
 import { getMessaging } from 'firebase-admin/messaging'
 import { CollectionAfterChangeHook } from 'payload'
 import { Notification } from '../../../payload-types'
-import { sendPushNotificationsForEach } from '../../../configs/firebase/sendPushNotificationsForEach'
+import { sendPushNotificationsForEach } from '../../../configs/pushNotifications/sendPushNotificationsForEach'
 
 const handleSendNotification: CollectionAfterChangeHook<Notification> = async ({
   operation,
@@ -12,16 +12,20 @@ const handleSendNotification: CollectionAfterChangeHook<Notification> = async ({
   const { docs: fcmTokens } = await req.payload.find({
     collection: 'fcmTokens',
   })
-  // TODO: set the title and body based on the doc.type  ex: type == 'payment' => title: There is a new payment, body: New payment received from MIGLA. Check it out!
-  sendPushNotificationsForEach({
-    payload: req.payload,
-    fcmTokens,
-    title: doc.title,
-    body: doc.body,
-    collection: collection.slug,
-    type: doc.type,
-    isModifiedNotification: operation === 'update',
-  })
+
+  // TODO: consider send push notifications here by stored user list
+  // sendPushNotificationsForEach({
+  //   payload: req.payload,
+  //   shouldCreateNotification: false,
+  //   notificationBaseDto: {
+  //     fcmTokens,
+  //     title: doc.title,
+  //     body: doc.body,
+  //     collection: collection.slug,
+  //     type: doc.type,
+  //     isModifiedNotification: operation === 'update',
+  //   },
+  // })
 }
 
 export const afterChangeNotification: CollectionAfterChangeHook<Notification>[] = [
