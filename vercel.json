@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/payload-jobs/run",
+      "path": "/api/payload-jobs/run?queue=every-five-seconds&limit=50",
       "schedule": "0 7 * * *"
     }
   ]
